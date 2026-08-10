@@ -1,0 +1,26 @@
+{
+  "Name": "Vein & Vine",
+  "InternalName": "VeinAndVine",
+  "Author": "CinthyaBunny",
+  "Punchline": "Priority-sorted gathering node tracker. No automation.",
+  "Description": "Shows a priority-sorted list of active and upcoming gathering nodes from your wishlist, using FFXIV's deterministic weather and Eorzea clock.\n\nRead-only by design: it never moves your character and never gathers for you. The only action it takes is placing a map flag, which you still have to walk to.",
+  "RepoUrl": "",
+  "ApplicableVersion": "any",
+  "DalamudApiLevel": 15,
+  "LoadRequiredState": 0,
+  "LoadSync": false,
+  "CanUnloadAsync": false,
+  "LoadPriority": 0,
+  "AcceptsFeedback": true,
+  "Tags": [
+    "gathering",
+    "botany",
+    "mining",
+    "fishing"
+  ],
+  "CategoryTags": [
+    "jobs"
+  ],
+  "IconUrl": "",
+  "Changelog": ""
+}

@@ -1,0 +1,12 @@
+{
+  "recommendations": [
+    // Roslyn language server: IntelliSense, go-to-definition, and the
+    // coreclr debugger type used by launch.json. This one is required.
+    "ms-dotnettools.csharp",
+
+    // Optional: solution explorer and test integration. Free for individuals
+    // and small businesses, but not open-source licensed - skip it if that
+    // matters to you, everything here works without it.
+    "ms-dotnettools.csdevkit"
+  ]
+}

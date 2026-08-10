@@ -1,0 +1,23 @@
+<Project>
+
+  <!--
+    Locates the Dalamud "dev" assemblies that plugins compile against.
+
+    Resolution order:
+      1. $(DALAMUD_HOME)              - set this if you use a non-default install
+      2. %AppData%\XIVLauncher\...    - the standard XIVLauncher location
+
+    These are reference-only. Never ship them with the plugin (Private=false).
+  -->
+  <PropertyGroup>
+    <DalamudLibPath Condition="'$(DALAMUD_HOME)' != ''">$(DALAMUD_HOME)\</DalamudLibPath>
+    <DalamudLibPath Condition="'$(DalamudLibPath)' == ''">$(AppData)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>
+  </PropertyGroup>
+
+  <Target Name="VerifyDalamudLibPath" BeforeTargets="BeforeBuild">
+    <Error
+      Condition="!Exists('$(DalamudLibPath)Dalamud.dll')"
+      Text="Could not find Dalamud.dll at '$(DalamudLibPath)'. Run FFXIV with Dalamud at least once, or set the DALAMUD_HOME environment variable to your Dalamud dev folder." />
+  </Target>
+
+</Project>

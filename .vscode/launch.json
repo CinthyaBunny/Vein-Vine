@@ -1,0 +1,35 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      // Dalamud plugins are never launched by the debugger - the game is
+      // already running with the plugin loaded, so you attach to it.
+      //
+      // Before attaching: build, then load/reload the dev plugin in
+      // /xlplugins -> Dev Tools. Attaching does not load your plugin.
+      "name": "Attach to FFXIV",
+      "type": "coreclr",
+      "request": "attach",
+      "processName": "ffxiv_dx11.exe",
+
+      // Dalamud and FFXIVClientStructs frames are not "my code". Leaving this
+      // false lets you step into them, which is most of the value when you're
+      // working out why a sheet read or a payload isn't behaving.
+      "justMyCode": false,
+
+      // The game throws first-chance exceptions during normal operation.
+      // Breaking on all of them makes the session unusable.
+      "symbolOptions": {
+        "searchMicrosoftSymbolServer": false
+      }
+    },
+    {
+      // Same thing, but pick the process yourself. Useful if you run more than
+      // one client, or are on the DX9/other executable name.
+      "name": "Attach to FFXIV (pick process)",
+      "type": "coreclr",
+      "request": "attach",
+      "justMyCode": false
+    }
+  ]
+}
