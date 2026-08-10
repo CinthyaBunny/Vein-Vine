@@ -236,8 +236,8 @@ public sealed class MainWindow : Window, IDisposable
                 "Where the node list lives.\n\n" +
                 "Docked gives it its own panel welded to this window's left edge. It\n" +
                 "follows this window around and matches its height, but you set its\n" +
-                "width by dragging its left border - so the list can be as wide as it\n" +
-                "needs without making this window wider.\n\n" +
+                "width with the grip in its bottom-left corner - so the list can be as\n" +
+                "wide as it needs without making this window wider.\n\n" +
                 "Experimental."))
         {
             configuration.NodeListPlacement = placement;

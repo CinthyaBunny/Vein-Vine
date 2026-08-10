@@ -209,14 +209,20 @@ The geometry is deliberately lopsided:
 |---|---|
 | Position | The host — recomputed every frame, so the panel follows it around |
 | Height | The host — pinned by `SetNextWindowSizeConstraints` with equal min and max |
-| Width | You — drag the left border; the right edge stays welded |
+| Width | You — the grip in the bottom-left corner; the right edge stays welded |
 
-Height is pinned with a *constraint* rather than by forcing the size. Forcing it
-would overwrite the very field ImGui's resize handler is trying to change, and
-the two end up fighting inside a single `Begin`; a constraint just clamps
-whatever the drag produces. The width read back each frame feeds the next
-frame's position, which is what keeps the right edge glued while the left edge
-travels.
+**The resize grip is hand-drawn on the bottom-left**, and ImGui's own resizing
+is switched off (`NoResize`) rather than steered. Its grip is fixed to the
+bottom-right, which is the corner that *cannot* move here — the right edge is
+welded to the host — and the second grip it offers on the bottom-left only
+exists when the user has enabled resize-from-edges globally, which is not
+something a plugin should depend on or change.
+
+So the panel draws its own: an `InvisibleButton` in the corner, the mouse delta
+subtracted from the width (dragging left grows it, because width is the
+distance the left edge has travelled from a fixed right edge), and the same
+triangle ImGui uses for its grips, mirrored. With nothing else writing the
+size, both axes are then just set outright each frame.
 
 The panel hangs off the host's `IsDrawing`, not its `IsOpen` — a window that is
 open but collapsed has no rect to pin to, and the panel would otherwise strand

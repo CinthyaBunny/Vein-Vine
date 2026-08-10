@@ -19,14 +19,14 @@ rest of the steps.
 
 - **The node list can be docked to the main window's left edge** instead of
   living in a tab — `Appearance` → `Node list`. The panel follows the window
-  around and matches its height, but its width is yours: drag its left border
-  and it widens leftwards into free space rather than shoving the window it is
-  attached to. The Nodes tab steps aside while docked, and both share one
-  `NodeListTab`, so their sort state cannot drift apart.
+  around and matches its height, but its width is yours: drag the grip in its
+  bottom-left corner and it widens leftwards into free space rather than
+  shoving the window it is attached to. The Nodes tab steps aside while docked,
+  and both share one `NodeListTab`, so their sort state cannot drift apart.
 
-  Experimental, and the geometry is the interesting part: height is pinned with
-  a size *constraint* rather than by forcing the size, because forcing it would
-  overwrite the field ImGui's own resize handler is trying to change.
+  Experimental. The grip is hand-drawn and ImGui's own resizing switched off:
+  its grip sits on the bottom-right, which is the one corner that cannot move
+  when the right edge is welded to the host.
 
 ### Changed
 

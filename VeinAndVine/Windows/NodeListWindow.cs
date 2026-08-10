@@ -1,5 +1,6 @@
 using System.Numerics;
 using Dalamud.Bindings.ImGui;
+using Dalamud.Interface.Utility;
 using Dalamud.Interface.Windowing;
 using VeinAndVine.Services;
 
@@ -18,9 +19,15 @@ namespace VeinAndVine.Windows;
 /// with it. Width is the one dimension left to the player, because it is the
 /// one that decides how much of the item and zone columns you can read.
 ///
-/// Drag the panel's left border to widen it. The right edge stays welded to
-/// the main window, so widening runs leftwards into free screen space rather
-/// than pushing the window it is attached to.
+/// Drag the grip in the panel's bottom-left corner to widen it. The right edge
+/// stays welded to the main window, so widening runs leftwards into free
+/// screen space rather than pushing the window it is attached to - which is
+/// why the grip is on the left, on the corner that actually moves.
+///
+/// ImGui's own resizing is switched off rather than steered. Its grip is fixed
+/// to the bottom-right, and the second grip it offers on the bottom-left only
+/// appears when the user has turned on resize-from-edges globally - not
+/// something a plugin should be depending on, or changing.
 /// </summary>
 public sealed class NodeListWindow : Window, IDisposable
 {
@@ -65,7 +72,8 @@ public sealed class NodeListWindow : Window, IDisposable
         ImGuiWindowFlags.NoMove |
         ImGuiWindowFlags.NoCollapse |
         ImGuiWindowFlags.NoScrollbar |
-        ImGuiWindowFlags.NoDocking;
+        ImGuiWindowFlags.NoDocking |
+        ImGuiWindowFlags.NoResize;
 
     public void Dispose() { }
 
@@ -86,20 +94,10 @@ public sealed class NodeListWindow : Window, IDisposable
 
         width = Math.Clamp(width, MinimumWidth, MaximumWidth);
 
-        // Height pinned by making the constraint's min and max equal, rather
-        // than by forcing the size outright. Forcing it would mean overwriting
-        // the very value the resize handler is trying to change, and the two
-        // fight over the same field within one Begin; a constraint just clamps
-        // whatever the drag produces, so the width stays the player's and the
-        // height stays the host's.
-        var height = host.LastSize.Y;
-        ImGui.SetNextWindowSizeConstraints(
-            new Vector2(MinimumWidth, height),
-            new Vector2(MaximumWidth, height));
-
-        // Only needed the first time; after that the window remembers its own
-        // width and the constraint keeps it legal.
-        ImGui.SetNextWindowSize(new Vector2(width, height), ImGuiCond.FirstUseEver);
+        // Both axes are set outright now that ImGui's own resizing is off.
+        // Nothing else writes the size, so there is no contention to design
+        // around: the height comes from the host, the width from the grip.
+        ImGui.SetNextWindowSize(new Vector2(width, host.LastSize.Y), ImGuiCond.Always);
 
         // Right edge welded to the host's left edge, so widening runs leftwards
         // into free space instead of shoving the window it belongs to. Always,
@@ -116,13 +114,52 @@ public sealed class NodeListWindow : Window, IDisposable
         plugin.UiStyle.DrawChrome();
         nodeList.Draw();
 
-        // Whatever the player dragged the border to, already clamped by the
-        // constraint. Height is not read back - it is the host's to decide.
-        // Feeding this into next frame's position is what keeps the right edge
-        // welded while the left edge moves.
-        width = ImGui.GetWindowSize().X;
-
+        DrawResizeGrip();
         PersistWidthWhenDragFinishes();
+    }
+
+    /// <summary>
+    /// The bottom-left resize corner, drawn and driven by hand.
+    ///
+    /// Dragging left grows the panel, so the mouse delta is subtracted: the
+    /// right edge is fixed, and the width is the distance the left edge has
+    /// travelled away from it. The new width lands in next frame's position as
+    /// well as its size, which is what keeps the right edge from drifting.
+    /// </summary>
+    private void DrawResizeGrip()
+    {
+        var size = 14f * ImGuiHelpers.GlobalScale;
+        var windowPos = ImGui.GetWindowPos();
+        var windowSize = ImGui.GetWindowSize();
+
+        // Bottom-left corner of the window, in screen space.
+        var corner = new Vector2(windowPos.X, windowPos.Y + windowSize.Y);
+
+        ImGui.SetCursorScreenPos(new Vector2(corner.X, corner.Y - size));
+        ImGui.InvisibleButton("##resize_grip", new Vector2(size, size));
+
+        var hovered = ImGui.IsItemHovered();
+        var active = ImGui.IsItemActive();
+
+        if (hovered || active)
+            ImGui.SetMouseCursor(ImGuiMouseCursor.ResizeNesw);
+
+        if (active)
+            width = Math.Clamp(width - ImGui.GetIO().MouseDelta.X, MinimumWidth, MaximumWidth);
+
+        // Same triangle ImGui draws for its own grips, mirrored to this corner,
+        // so it reads as a resize handle rather than a stray decoration.
+        var colour = ImGui.GetColorU32(
+            active ? ImGuiCol.ResizeGripActive :
+            hovered ? ImGuiCol.ResizeGripHovered :
+            ImGuiCol.ResizeGrip);
+
+        ImGui.AddTriangleFilled(
+            ImGui.GetWindowDrawList(),
+            corner,
+            new Vector2(corner.X + size, corner.Y),
+            new Vector2(corner.X, corner.Y - size),
+            colour);
     }
 
     /// <summary>
