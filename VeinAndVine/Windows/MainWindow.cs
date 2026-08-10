@@ -1,16 +1,12 @@
 using System.Numerics;
 using Dalamud.Bindings.ImGui;
-using Dalamud.Game.Text.SeStringHandling.Payloads;
-using Dalamud.Interface;
-using Dalamud.Interface.Components;
 using Dalamud.Interface.Utility;
 using Dalamud.Interface.Windowing;
-using VeinAndVine.Models;
 using VeinAndVine.Services;
 
 namespace VeinAndVine.Windows;
 
-public sealed class MainWindow : Window, IDisposable
+public sealed class ConfigWindow : Window, IDisposable
 {
     private const ImGuiTableFlags TableFlags =
         ImGuiTableFlags.Resizable |
@@ -22,242 +18,356 @@ public sealed class MainWindow : Window, IDisposable
         ImGuiTableFlags.ScrollY |
         ImGuiTableFlags.SizingStretchProp;
 
+    private const string AnyZone = "All zones";
+
     private readonly Plugin plugin;
+    private readonly Configuration configuration;
 
-    // Mirrors the table's own sort state, which ImGui persists in its ini. Kept
-    // here only so the list can be ordered before the rows are emitted.
-    private NodeSort sort = NodeSort.Priority;
-    private bool sortDescending;
+    // Picker state. Deliberately not persisted: a search box and a level slider
+    // are where you left them within a session, but restoring a filter you set
+    // last week only hides items you're now looking for.
+    private string search = string.Empty;
+    private string? zoneFilter;
+    private bool trackedOnly;
+    private bool timedOnly;
+    private int minLevel = NodeFilter.MinGatheringLevel;
+    private int maxLevel = NodeFilter.MaxGatheringLevel;
 
-    public MainWindow(Plugin plugin) : base("Vein & Vine###VeinAndVineMain")
+    // The per-item index walks the whole dataset, so it's built once per load
+    // rather than once per frame. The version is the dataset's, bumped on reload.
+    private List<GatherItem> items = [];
+    private List<string> zones = [];
+    private int indexedVersion = -1;
+
+    /// <summary>
+    /// Per-tab state. Each job tab keeps its own sort and its own filtered
+    /// list, so switching between them is instant and sorting Miner by level
+    /// doesn't disturb how Botanist was left.
+    /// </summary>
+    private sealed class JobTab
+    {
+        public NodeSort Sort = NodeSort.ItemName;
+        public bool Descending;
+
+        // Filtering and sorting a thousand-odd rows is not free, and none of
+        // its inputs change more than a few times a second. Recomputed only
+        // when one of them actually does.
+        public List<GatherItem> Visible = [];
+        public object? VisibleKey;
+    }
+
+    private readonly Dictionary<JobFilter, JobTab> jobTabs = new()
+    {
+        [JobFilter.All] = new JobTab(),
+        [JobFilter.Miner] = new JobTab(),
+        [JobFilter.Botanist] = new JobTab(),
+    };
+
+    /// <summary>Set to jump to a tab the next time the window draws.</summary>
+    private bool selectWishlistTab;
+
+    public ConfigWindow(Plugin plugin) : base("Vein & Vine Settings###VeinAndVineConfig")
     {
         this.plugin = plugin;
+        configuration = plugin.Configuration;
+
         SizeConstraints = new WindowSizeConstraints
         {
-            MinimumSize = new Vector2(480, 240),
+            MinimumSize = new Vector2(560, 380),
             MaximumSize = new Vector2(1400, 1200),
         };
     }
 
     public void Dispose() { }
 
+    /// <summary>Opens the window on the item picker, from wherever it was last.</summary>
+    public void OpenWishlist()
+    {
+        selectWishlistTab = true;
+        IsOpen = true;
+    }
+
     public override void Draw()
+    {
+        if (!ImGui.BeginTabBar("##veinandvine_config_tabs"))
+            return;
+
+        var wishlistFlags = selectWishlistTab ? ImGuiTabItemFlags.SetSelected : ImGuiTabItemFlags.None;
+        selectWishlistTab = false;
+
+        if (ImGui.BeginTabItem("Wishlist", wishlistFlags))
+        {
+            DrawWishlistTab();
+            ImGui.EndTabItem();
+        }
+
+        if (ImGui.BeginTabItem("Display"))
+        {
+            DrawDisplayTab();
+            ImGui.EndTabItem();
+        }
+
+        ImGui.EndTabBar();
+    }
+
+    private void DrawWishlistTab()
     {
         if (plugin.NodeDatabase.Count == 0)
         {
-            DrawNoDataset();
+            ImGui.TextWrapped(
+                "No node data loaded, so there is nothing to pick from. Drop a " +
+                $"dataset at Data/{Services.NodeDatabase.DataFileName} next to the plugin DLL.");
+            if (ImGui.Button("Reload data"))
+                plugin.ReloadNodeDatabase();
             return;
         }
 
-        var config = plugin.Configuration;
-        var player = GetPlayerPosition();
+        RefreshIndex();
 
-        DrawToolbar(player);
+        // Filters sit above the tabs because they apply to all of them - a
+        // search you have to retype when you switch jobs is worse than no tabs.
+        DrawPickerFilters();
 
-        // Counted off the wishlist rather than the results, so an empty list
-        // can tell "you haven't picked anything" apart from "your filters hide
-        // everything you picked" - they need opposite advice.
-        var trackedCount = config.Wishlist.Count(w => w.Enabled);
-        if (trackedCount == 0)
-        {
-            ImGui.Spacing();
-            ImGui.TextWrapped("Nothing tracked yet. Pick the items you're hunting for and they'll show up here.");
-            ImGui.Spacing();
-            if (ImGui.Button("Pick items to track"))
-                plugin.OpenWishlist();
+        if (!ImGui.BeginTabBar("##veinandvine_picker_jobs"))
             return;
-        }
 
-        var results = plugin.PriorityEngine.BuildPriorityList(
-            plugin.NodeDatabase,
-            config.Wishlist,
-            player,
-            BuildFilter(player));
+        DrawJobTab("All", JobFilter.All);
+        DrawJobTab("Miner", JobFilter.Miner);
+        DrawJobTab("Botanist", JobFilter.Botanist);
 
-        var visible = config.ShowInactiveNodes
-            ? results
-            : results.Where(r => r.IsActive).ToList();
-
-        DrawSummary(results, trackedCount);
-
-        if (visible.Count == 0)
-        {
-            ImGui.Spacing();
-            ImGui.TextDisabled(results.Count == 0
-                ? $"None of your {trackedCount} tracked item(s) match the filters above."
-                : "Nothing is up right now. Tick \"Upcoming\" to see what's next.");
-            return;
-        }
-
-        DrawTable(visible);
+        ImGui.EndTabBar();
     }
 
-    private void DrawNoDataset()
+    private void DrawJobTab(string label, JobFilter jobs)
     {
-        ImGui.TextDisabled("No node data loaded.");
-        ImGui.TextDisabled($"Expected: Data/{NodeDatabase.DataFileName}");
-        if (ImGui.SmallButton("Reload data"))
-            plugin.ReloadNodeDatabase();
-        ImGui.SameLine();
-        if (ImGui.SmallButton("Settings"))
-            plugin.ToggleConfigUi();
+        if (!ImGui.BeginTabItem(label))
+            return;
+
+        var tab = jobTabs[jobs];
+        RefreshVisible(tab, jobs);
+
+        DrawPickerTable(tab, jobs);
+        DrawPickerFooter(tab.Visible, jobs, configuration.Wishlist.Count);
+
+        ImGui.EndTabItem();
     }
 
-    private void DrawToolbar((float X, float Y, uint TerritoryTypeId)? player)
+    /// <summary>
+    /// Re-filters and re-sorts only when something it depends on changed. The
+    /// wishlist is in the key because "tracked only" reads it, and the sort is
+    /// in it because the table reports a header click a frame after the fact.
+    /// </summary>
+    private void RefreshVisible(JobTab tab, JobFilter jobs)
     {
-        var config = plugin.Configuration;
-        var dirty = false;
+        var key = (search, zoneFilter, trackedOnly, timedOnly, jobs,
+                   EffectiveMinLevel, EffectiveMaxLevel, tab.Sort, tab.Descending,
+                   indexedVersion, plugin.WishlistVersion);
 
-        var mining = config.ShowMiningNodes;
-        if (ImGui.Checkbox("Miner", ref mining))
+        if (tab.VisibleKey is not null && key.Equals(tab.VisibleKey))
+            return;
+
+        tab.VisibleKey = key;
+
+        var filter = new NodeFilter
         {
-            config.ShowMiningNodes = mining;
-            dirty = true;
+            Jobs = jobs,
+            Search = search,
+            ZoneName = zoneFilter,
+            MinLevel = EffectiveMinLevel,
+            MaxLevel = EffectiveMaxLevel,
+            TimedOnly = timedOnly,
+        };
+
+        var matched = items
+            .Where(filter.Matches)
+            .Where(i => !trackedOnly || plugin.IsTracked(i.ItemId));
+
+        tab.Visible = NodeQuery.SortItems(matched, tab.Sort, tab.Descending);
+    }
+
+    // The level boxes are free text, so mid-edit they can hold 0 or 250 or a
+    // min above the max. Filtering reads these instead of the raw fields, so a
+    // half-typed number never empties the list; the fields themselves are
+    // tidied up when editing finishes.
+    private int EffectiveMinLevel => Math.Clamp(
+        Math.Min(minLevel, maxLevel), NodeFilter.MinGatheringLevel, NodeFilter.MaxGatheringLevel);
+
+    private int EffectiveMaxLevel => Math.Clamp(
+        Math.Max(minLevel, maxLevel), NodeFilter.MinGatheringLevel, NodeFilter.MaxGatheringLevel);
+
+    /// <summary>Rebuilds the item and zone indexes when the dataset changes underneath us.</summary>
+    private void RefreshIndex()
+    {
+        if (indexedVersion == plugin.NodeDatabaseVersion)
+            return;
+
+        items = NodeQuery.BuildItemIndex(plugin.NodeDatabase);
+        zones = NodeQuery.BuildZoneIndex(plugin.NodeDatabase);
+        indexedVersion = plugin.NodeDatabaseVersion;
+
+        // A zone that no longer exists in the dataset would filter everything
+        // out with no obvious way back.
+        if (zoneFilter is not null && !zones.Contains(zoneFilter, StringComparer.Ordinal))
+            zoneFilter = null;
+    }
+
+    private void DrawPickerFilters()
+    {
+        var scale = ImGuiHelpers.GlobalScale;
+
+        ImGui.SetNextItemWidth(-220f * scale);
+        ImGui.InputTextWithHint("##search", "Search items and zones...", ref search, 128);
+
+        ImGui.SameLine();
+        if (ImGui.SmallButton("Clear"))
+        {
+            search = string.Empty;
+            zoneFilter = null;
+            trackedOnly = false;
+            timedOnly = false;
+            minLevel = NodeFilter.MinGatheringLevel;
+            maxLevel = NodeFilter.MaxGatheringLevel;
+        }
+
+        UiShared.Tooltip("Reset every filter back to its default.");
+
+        ImGui.SameLine();
+        ImGui.Checkbox("Tracked only", ref trackedOnly);
+
+        ImGui.SameLine();
+        ImGui.Checkbox("Timed only", ref timedOnly);
+        UiShared.Tooltip("Only items with a spawn window. Most items are always up.");
+
+        ImGui.SetNextItemWidth(180f * scale);
+        if (ImGui.BeginCombo("##zone", zoneFilter ?? AnyZone))
+        {
+            if (ImGui.Selectable(AnyZone, zoneFilter is null))
+                zoneFilter = null;
+
+            foreach (var zone in zones)
+            {
+                if (ImGui.Selectable(zone, string.Equals(zone, zoneFilter, StringComparison.Ordinal)))
+                    zoneFilter = zone;
+            }
+
+            ImGui.EndCombo();
         }
 
         ImGui.SameLine();
-        var botany = config.ShowBotanyNodes;
-        if (ImGui.Checkbox("Botanist", ref botany))
-        {
-            config.ShowBotanyNodes = botany;
-            dirty = true;
-        }
+        ImGui.AlignTextToFramePadding();
+        ImGui.TextDisabled("Lv");
 
-        ImGui.SameLine();
-        ImGui.TextDisabled("|");
+        ImGui.SameLine(0, ImGui.GetStyle().ItemInnerSpacing.X);
+        DrawLevelBox("##minlevel", ref minLevel, "Lowest gathering level to show.");
 
-        ImGui.SameLine();
-        var timedOnly = config.TimedNodesOnly;
-        if (ImGui.Checkbox("Timed only", ref timedOnly))
-        {
-            config.TimedNodesOnly = timedOnly;
-            dirty = true;
-        }
+        ImGui.SameLine(0, ImGui.GetStyle().ItemInnerSpacing.X);
+        ImGui.AlignTextToFramePadding();
+        ImGui.TextDisabled("to");
 
-        UiShared.Tooltip(
-            "Hide nodes that are always up, leaving only the ones with a\n" +
-            "spawn window. Most of the dataset is always up, so this is the\n" +
-            "switch between \"where do I get this\" and \"what's up now\".");
-
-        ImGui.SameLine();
-        var showInactive = config.ShowInactiveNodes;
-        if (ImGui.Checkbox("Upcoming", ref showInactive))
-        {
-            config.ShowInactiveNodes = showInactive;
-            dirty = true;
-        }
-
-        UiShared.Tooltip("Also list nodes that aren't up yet, with a countdown.");
-
-        ImGui.SameLine();
-        ImGui.BeginDisabled(player is null);
-        var zoneOnly = config.CurrentZoneOnly;
-        if (ImGui.Checkbox("This zone", ref zoneOnly))
-        {
-            config.CurrentZoneOnly = zoneOnly;
-            dirty = true;
-        }
-
-        UiShared.Tooltip(player is null
-            ? "Needs a logged-in character."
-            : "Only nodes in the zone you're standing in.");
-        ImGui.EndDisabled();
-
-        UiShared.RightAlign(ImGui.GetFrameHeight());
-        if (ImGuiComponents.IconButton("##pick", FontAwesomeIcon.Cog))
-            plugin.OpenWishlist();
-
-        UiShared.Tooltip("Pick items to track");
-
-        if (dirty)
-            config.Save();
+        ImGui.SameLine(0, ImGui.GetStyle().ItemInnerSpacing.X);
+        DrawLevelBox("##maxlevel", ref maxLevel, "Highest gathering level to show.");
 
         ImGui.Separator();
     }
 
     /// <summary>
-    /// The one line worth reading at a glance: how many are up, and if none
-    /// are, when that changes.
+    /// A level box you type into rather than drag. Step 0 suppresses the -/+
+    /// buttons, which would otherwise eat most of the width.
+    ///
+    /// The value is clamped when you finish editing, not on every keystroke:
+    /// clamping live means backspacing the field to empty snaps it to 1, and
+    /// the next two digits you type land on the wrong side of the limit.
+    /// Filtering reads the clamped view of these in the meantime, so a
+    /// half-typed number never blanks the list.
     /// </summary>
-    /// <summary>
-    /// The one line worth reading at a glance. "Up now" counts only timed
-    /// nodes - always-up ones would inflate it into a number that never
-    /// changes and never means anything.
-    /// </summary>
-    private static void DrawSummary(IReadOnlyList<PriorityResult> results, int trackedCount)
+    private static void DrawLevelBox(string id, ref int level, string tooltip)
     {
-        var timedUp = results.Count(r => r.IsActive && !r.IsAlwaysAvailable);
-        var always = results.Count(r => r.IsAlwaysAvailable);
+        ImGui.SetNextItemWidth(44f * ImGuiHelpers.GlobalScale);
+        ImGui.InputInt(id, ref level, 0, 0);
+        UiShared.Tooltip(tooltip);
 
-        if (timedUp > 0)
-        {
-            ImGui.TextColored(UiShared.ActiveColor, $"{timedUp} up now");
-        }
-        else
-        {
-            var next = results
-                .Where(r => r.TimeUntilActive is not null)
-                .MinBy(r => r.TimeUntilActive!.Value);
-
-            if (next?.TimeUntilActive is { } until)
-                ImGui.TextColored(UiShared.SoonColor,
-                    $"Next: {next.Node.ItemName} in {UiShared.FormatDuration(until)}");
-            else
-                ImGui.TextDisabled("Nothing timed to wait for");
-        }
-
-        ImGui.SameLine();
-        ImGui.TextDisabled(always > 0
-            ? $"  -  {always} always up  -  {results.Count} node(s) from {trackedCount} tracked item(s)"
-            : $"  -  {results.Count} node(s) from {trackedCount} tracked item(s)");
+        if (ImGui.IsItemDeactivatedAfterEdit())
+            level = Math.Clamp(level, NodeFilter.MinGatheringLevel, NodeFilter.MaxGatheringLevel);
     }
 
-    private void DrawTable(IReadOnlyList<PriorityResult> results)
+    private void DrawPickerTable(JobTab tab, JobFilter jobs)
     {
-        var height = ImGui.GetContentRegionAvail().Y;
+        var shown = tab.Visible;
+
+        // Leave the footer a line of its own; the table takes what's left.
+        var height = ImGui.GetContentRegionAvail().Y - ImGui.GetFrameHeightWithSpacing();
         if (height <= 0)
             return;
 
-        if (!ImGui.BeginTable("##veinandvine_nodes", 7, TableFlags, new Vector2(0, height)))
+        if (shown.Count == 0)
+        {
+            var noun = jobs switch
+            {
+                JobFilter.Miner => "mining items",
+                JobFilter.Botanist => "botany items",
+                _ => "items",
+            };
+
+            ImGui.TextDisabled(trackedOnly
+                ? $"No tracked {noun} match these filters."
+                : $"No {noun} match these filters.");
+            return;
+        }
+
+        // The table id carries the job, so ImGui keeps each tab's column
+        // widths and sort direction apart in its own ini.
+        if (!ImGui.BeginTable($"##veinandvine_picker_{jobs}", 5, TableFlags, new Vector2(0, height)))
             return;
 
         var scale = ImGuiHelpers.GlobalScale;
 
-        // Item first because its Selectable spans the row: ImGui anchors a
-        // span-all-columns item at the column it's submitted in, so putting it
-        // anywhere else would leave the columns before it out of the hit box.
         ImGui.TableSetupColumn("Item",
-            ImGuiTableColumnFlags.WidthStretch | ImGuiTableColumnFlags.NoHide, 3f, UiShared.SortId(NodeSort.ItemName));
+            ImGuiTableColumnFlags.WidthStretch | ImGuiTableColumnFlags.NoHide | ImGuiTableColumnFlags.DefaultSort,
+            3f, UiShared.SortId(NodeSort.ItemName));
+
+        // A single-job tab already answers "which job", so the column only
+        // earns its width on the All tab.
         ImGui.TableSetupColumn("Job",
-            ImGuiTableColumnFlags.WidthFixed, 38f * scale, UiShared.SortId(NodeSort.Job));
+            ImGuiTableColumnFlags.WidthFixed |
+            (jobs == JobFilter.All ? ImGuiTableColumnFlags.None : ImGuiTableColumnFlags.DefaultHide),
+            38f * scale, UiShared.SortId(NodeSort.Job));
         ImGui.TableSetupColumn("Lv",
             ImGuiTableColumnFlags.WidthFixed, 28f * scale, UiShared.SortId(NodeSort.Level));
         ImGui.TableSetupColumn("Zone",
             ImGuiTableColumnFlags.WidthStretch, 2f, UiShared.SortId(NodeSort.Zone));
-        ImGui.TableSetupColumn("Status",
-            ImGuiTableColumnFlags.WidthFixed | ImGuiTableColumnFlags.DefaultSort,
-            110f * scale, UiShared.SortId(NodeSort.Priority));
-        ImGui.TableSetupColumn("Dist",
-            ImGuiTableColumnFlags.WidthFixed, 46f * scale, UiShared.SortId(NodeSort.Distance));
-        // Frame height is the icon button's own size; the cell padding keeps
-        // the column border off it rather than clipping its right edge.
-        ImGui.TableSetupColumn("##flag",
-            ImGuiTableColumnFlags.WidthFixed | ImGuiTableColumnFlags.NoSort | ImGuiTableColumnFlags.NoHeaderLabel,
-            ImGui.GetFrameHeight() + (ImGui.GetStyle().CellPadding.X * 2f));
+        ImGui.TableSetupColumn("Windows (ET)",
+            ImGuiTableColumnFlags.WidthFixed | ImGuiTableColumnFlags.NoSort, 130f * scale);
 
         ImGui.TableSetupScrollFreeze(0, 1);
         ImGui.TableHeadersRow();
 
-        UiShared.ReadSortSpecs(ref sort, ref sortDescending);
+        UiShared.ReadSortSpecs(ref tab.Sort, ref tab.Descending);
 
-        // EndTable in a finally so a throw from a single row cannot unwind past
-        // it. Dalamud would log the exception either way, but leaving ImGui's
-        // begin/end stack unbalanced mid-frame takes the game client down with
-        // it - a bad row should cost a log line, not the session.
+        // The unfiltered index is over a thousand rows. Every row is the same
+        // height, so the clipper can skip straight to the visible slice instead
+        // of submitting widgets that get scissored away.
+        //
+        // Both the clipper and the table are released in finally blocks: the
+        // clipper is a native allocation that would otherwise leak once per
+        // frame, and skipping EndTable would leave ImGui's begin/end stack
+        // unbalanced mid-frame, which takes the game client down rather than
+        // just logging.
         try
         {
-            foreach (var result in PriorityEngine.Sort(results, sort, sortDescending))
-                DrawRow(result);
+            var clipper = ImGui.ImGuiListClipper();
+            try
+            {
+                clipper.Begin(shown.Count);
+                while (clipper.Step())
+                {
+                    for (var i = clipper.DisplayStart; i < clipper.DisplayEnd; i++)
+                        DrawPickerRow(shown[i]);
+                }
+            }
+            finally
+            {
+                clipper.Destroy();
+            }
         }
         finally
         {
@@ -265,213 +375,142 @@ public sealed class MainWindow : Window, IDisposable
         }
     }
 
-    private void DrawRow(PriorityResult result)
+    private void DrawPickerRow(GatherItem item)
     {
-        var node = result.Node;
-
         ImGui.TableNextRow();
+        ImGui.PushID((int)item.ItemId);
 
-        // Keyed on the node, not the item: the same item is gatherable from
-        // several nodes, and an ItemId-only key would give two rows the same
-        // ImGui id, so clicking one row's button would act on the other.
-        ImGui.PushID($"{node.GatheringPointBaseId}:{node.ItemId}");
+        ImGui.TableNextColumn();
+        var isTracked = plugin.IsTracked(item.ItemId);
+        if (ImGui.Checkbox("##track", ref isTracked))
+            plugin.SetTracked(item.ItemId, item.ItemName, isTracked);
 
-        // Null means "leave the text its ordinary colour": an always-up node is
-        // gatherable but not urgent, and painting it the same green as a node
-        // that expires in four minutes would drown out the ones that matter.
-        var color = result switch
+        // Icon sized to the checkbox rather than the text, so the row reads as
+        // one horizontal band instead of three things at three heights.
+        ImGui.SameLine(0, ImGui.GetStyle().ItemInnerSpacing.X);
+        UiShared.DrawItemIcon(plugin, item.IconId, ImGui.GetFrameHeight());
+
+        ImGui.AlignTextToFramePadding();
+        ImGui.TextUnformatted(item.ItemName);
+
+        if (ImGui.IsItemHovered())
         {
-            { IsAlwaysAvailable: true } => (Vector4?)null,
-            { IsActive: true } => UiShared.ActiveColor,
-            { TimeUntilActive: { } until } when until <= UiShared.SoonThreshold => UiShared.SoonColor,
-            _ => UiShared.InactiveColor,
-        };
+            ImGui.BeginTooltip();
+            UiShared.DrawItemTooltipHeader(plugin, item.ItemId, item.IconId, item.ItemName);
+            ImGui.Separator();
+            ImGui.TextDisabled($"{UiShared.JobLabel(item.Jobs)}  Lv{item.JobLevelRequired}");
+            ImGui.TextDisabled($"Windows: {item.WindowSummary}");
+            UiShared.DrawGatheringRequirements(item.PerceptionRequired, item.Stars);
+            ImGui.EndTooltip();
+        }
 
         ImGui.TableNextColumn();
-
-        // The row-spanning Selectable is submitted first and the icon and name
-        // drawn back over it. Its hover highlight is a filled rect added to the
-        // draw list at the point of submission, so an icon drawn beforehand
-        // would sit underneath it and wash out blue exactly when you are
-        // looking at it.
-        var rowStart = ImGui.GetCursorPos();
-
-        ImGui.Selectable("##row", false,
-            ImGuiSelectableFlags.SpanAllColumns |
-            ImGuiSelectableFlags.AllowItemOverlap |
-            ImGuiSelectableFlags.AllowDoubleClick);
-
-        var rowHovered = ImGui.IsItemHovered();
-        if (rowHovered && ImGui.IsMouseDoubleClicked(ImGuiMouseButton.Left))
-            SetMapFlag(node);
-
-        // Has to sit immediately after the Selectable: the popup opens off
-        // whichever item was submitted last.
-        DrawRowContextMenu(result);
-
-        ImGui.SetCursorPos(rowStart);
-        UiShared.DrawItemIcon(plugin, node.IconId, ImGui.GetTextLineHeight());
-
-        if (color is { } textColor)
-            ImGui.PushStyleColor(ImGuiCol.Text, textColor);
-
-        ImGui.TextUnformatted(node.ItemName);
-
-        if (color is not null)
-            ImGui.PopStyleColor();
-
-        if (rowHovered)
-            DrawRowTooltip(result);
+        ImGui.TextDisabled(UiShared.JobLabel(item.Jobs));
 
         ImGui.TableNextColumn();
-        ImGui.TextDisabled(UiShared.JobLabel(node.Type));
+        ImGui.TextDisabled($"{item.JobLevelRequired}");
 
         ImGui.TableNextColumn();
-        ImGui.TextDisabled($"{node.JobLevelRequired}");
+        ImGui.TextUnformatted(item.ZoneSummary);
+        if (item.Zones.Count > 1)
+            UiShared.Tooltip(string.Join("\n", item.Zones));
 
         ImGui.TableNextColumn();
-        ImGui.TextUnformatted(node.ZoneName);
-
-        ImGui.TableNextColumn();
-        DrawStatusCell(result, color);
-
-        ImGui.TableNextColumn();
-        ImGui.TextDisabled(result.DistanceFromPlayer is { } dist ? $"{dist:F0}y" : "-");
-
-        ImGui.TableNextColumn();
-        if (ImGuiComponents.IconButton("##flag", FontAwesomeIcon.MapMarkerAlt))
-            SetMapFlag(node);
-
-        UiShared.Tooltip("Put a flag on the map here");
+        ImGui.TextDisabled(item.WindowSummary);
 
         ImGui.PopID();
     }
 
-    private static void DrawStatusCell(PriorityResult result, Vector4? color)
+    private void DrawPickerFooter(IReadOnlyList<GatherItem> shown, JobFilter jobs, int trackedCount)
     {
-        if (result.IsAlwaysAvailable)
-        {
-            ImGui.TextDisabled("Always");
-            return;
-        }
+        // Counted against this tab's own population, not the whole dataset -
+        // "492 of 1050" on the Miner tab would be comparing to a total that
+        // tab can never reach.
+        var available = items.Count(i => (jobs & i.Type.ToJobFilter()) != 0);
 
-        if (result.IsActive)
-        {
-            ImGui.TextColored(color ?? UiShared.ActiveColor, result.TimeRemaining is { } remaining
-                ? $"{UiShared.FormatDuration(remaining)} left"
-                : "Up now");
-            return;
-        }
+        ImGui.TextDisabled($"{shown.Count} of {available} shown  -  {trackedCount} tracked overall");
 
-        if (result.TimeUntilActive is { } until)
-        {
-            ImGui.TextColored(color ?? UiShared.InactiveColor, $"in {UiShared.FormatDuration(until)}");
-            return;
-        }
+        ImGui.SameLine();
+        ImGui.BeginDisabled(shown.Count == 0);
+        if (ImGui.SmallButton("Track all shown"))
+            SetTrackedForAll(shown, tracked: true);
 
-        // No countdown: the node is weather-gated, and forecasting that isn't
-        // wired up yet, so say what it's waiting on instead of guessing when.
-        ImGui.TextDisabled(result.BlockedReason ?? "Not up");
+        UiShared.Tooltip($"Track the {shown.Count} item(s) the filters left.");
+
+        ImGui.SameLine();
+        if (ImGui.SmallButton("Untrack all shown"))
+            SetTrackedForAll(shown, tracked: false);
+
+        ImGui.EndDisabled();
+
+        ImGui.SameLine();
+        ImGui.BeginDisabled(trackedCount == 0);
+        if (ImGui.SmallButton("Clear all"))
+            plugin.ClearWishlist();
+
+        ImGui.EndDisabled();
     }
 
-    private void DrawRowTooltip(PriorityResult result)
+    private void SetTrackedForAll(IReadOnlyList<GatherItem> shown, bool tracked)
     {
-        var node = result.Node;
+        // One save for the batch, not one per item - this can be a thousand
+        // items, and each save serialises the whole config to disk.
+        foreach (var item in shown)
+            plugin.SetTracked(item.ItemId, item.ItemName, tracked, save: false);
 
-        ImGui.BeginTooltip();
+        plugin.SaveWishlist();
+    }
 
-        UiShared.DrawItemTooltipHeader(plugin, node.ItemId, node.IconId, node.ItemName);
+    private void DrawDisplayTab()
+    {
+        var showInactive = configuration.ShowInactiveNodes;
+        if (ImGui.Checkbox("Show nodes waiting on weather or time", ref showInactive))
+        {
+            configuration.ShowInactiveNodes = showInactive;
+            configuration.Save();
+        }
+
+        var openOnStartup = configuration.OpenMainWindowOnStartup;
+        if (ImGui.Checkbox("Open main window on startup", ref openOnStartup))
+        {
+            configuration.OpenMainWindowOnStartup = openOnStartup;
+            configuration.Save();
+        }
 
         ImGui.Separator();
-        ImGui.TextDisabled($"{node.Type}  Lv{node.JobLevelRequired}");
-        ImGui.TextDisabled($"{node.ZoneName}  ({node.MapX:F1}, {node.MapY:F1})");
-        ImGui.TextDisabled($"Windows: {NodeQuery.DescribeWindows(node.TimeWindows)} ET");
-        UiShared.DrawGatheringRequirements(node.PerceptionRequired, node.Stars);
+        ImGui.TextDisabled("These mirror the toggles on the main window's toolbar.");
 
-        if (node.RequiredWeather.Count > 0)
-            ImGui.TextDisabled($"Weather: {string.Join(" / ", node.RequiredWeather)}");
+        var mining = configuration.ShowMiningNodes;
+        if (ImGui.Checkbox("List mining nodes", ref mining))
+        {
+            configuration.ShowMiningNodes = mining;
+            configuration.Save();
+        }
 
-        if (!result.IsActive && result.BlockedReason is { } reason)
-            ImGui.TextDisabled(reason);
+        var botany = configuration.ShowBotanyNodes;
+        if (ImGui.Checkbox("List botany nodes", ref botany))
+        {
+            configuration.ShowBotanyNodes = botany;
+            configuration.Save();
+        }
+
+        var zoneOnly = configuration.CurrentZoneOnly;
+        if (ImGui.Checkbox("Only the zone I'm standing in", ref zoneOnly))
+        {
+            configuration.CurrentZoneOnly = zoneOnly;
+            configuration.Save();
+        }
 
         ImGui.Separator();
-        ImGui.TextDisabled("Double-click to flag it on the map.");
-        ImGui.EndTooltip();
-    }
 
-    private void DrawRowContextMenu(PriorityResult result)
-    {
-        if (!ImGui.BeginPopupContextItem("##row_menu"))
-            return;
+        var hour = plugin.WeatherService.CurrentEorzeaHour;
+        ImGui.TextDisabled($"Eorzea time: {hour:00}:xx");
 
-        ImGui.TextDisabled(result.Node.ItemName);
-        ImGui.Separator();
-
-        if (ImGui.MenuItem("Set map flag"))
-            SetMapFlag(result.Node);
-
-        if (ImGui.MenuItem("Stop tracking this item"))
-            plugin.SetTracked(result.Node.ItemId, result.Node.ItemName, tracked: false);
-
-        ImGui.EndPopup();
-    }
-
-    /// <summary>
-    /// Placed the filter this window is showing. Zone is matched by territory
-    /// id rather than name because that's what the player's position gives us,
-    /// and it's the same id the map flag needs.
-    /// </summary>
-    private NodeFilter BuildFilter((float X, float Y, uint TerritoryTypeId)? player)
-    {
-        var config = plugin.Configuration;
-
-        return new NodeFilter
+        var territory = Service.ClientState.TerritoryType;
+        if (territory != 0)
         {
-            Jobs = config.GetJobFilter(),
-            TerritoryTypeId = config.CurrentZoneOnly ? player?.TerritoryTypeId : null,
-            TimedOnly = config.TimedNodesOnly,
-        };
-    }
-
-    /// <summary>
-    /// Places a marker on the player's map. This is the plugin's only
-    /// game-state-changing action - it does not move the player.
-    /// </summary>
-    private void SetMapFlag(GatherNode node)
-    {
-        try
-        {
-            var payload = new MapLinkPayload(
-                node.TerritoryTypeId,
-                node.MapId,
-                node.MapX,
-                node.MapY);
-
-            Service.GameGui.OpenMapWithMapLink(payload);
+            var weather = plugin.WeatherService.GetCurrentWeather(territory) ?? "unknown";
+            ImGui.TextDisabled($"Weather here: {weather}");
         }
-        catch (Exception ex)
-        {
-            Service.Log.Error(ex, $"Failed to set map flag for {node.ItemName}.");
-        }
-    }
-
-    /// <summary>
-    /// Player position in map coordinates, so it can be compared against node
-    /// data. Null when not logged in or the map can't be resolved.
-    /// </summary>
-    private static (float X, float Y, uint TerritoryTypeId)? GetPlayerPosition()
-    {
-        var player = Service.ObjectTable.LocalPlayer;
-        if (player is null)
-            return null;
-
-        var territoryId = Service.ClientState.TerritoryType;
-        var mapId = Service.ClientState.MapId;
-
-        var mapCoords = MapUtil.WorldToMap(player.Position, mapId);
-        if (mapCoords is null)
-            return null;
-
-        return (mapCoords.Value.X, mapCoords.Value.Y, territoryId);
     }
 }
