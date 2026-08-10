@@ -13,7 +13,7 @@ a week later. At release, rename that section to `## [x.y.z.w] - YYYY-MM-DD`
 and leave a fresh empty one behind. See [Releasing](README.md#releasing) for the
 rest of the steps.
 
-## [Unreleased]
+## [0.0.0.2]
 
 ### Added
 
@@ -36,6 +36,10 @@ rest of the steps.
 - `CHANGELOG.md`, and a Release-build guard that fails the build if `repo.json`
   and the csproj disagree on the version — the drift that otherwise makes the
   in-game installer silently refuse to offer an update.
+- The build copies the current version's changelog section into the `Changelog`
+  field of both plugin manifests, so release notes show up in the in-game
+  installer without being maintained in three places. Markdown is flattened,
+  since none of it renders there.
 
 ### Changed
 

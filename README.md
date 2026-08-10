@@ -206,13 +206,11 @@ Release steps:
 2. Set the same version in **both** places:
    - `<Version>` in [`VeinAndVine.csproj`](VeinAndVine/VeinAndVine.csproj)
    - `"AssemblyVersion"` in [`repo.json`](repo.json)
-3. Optionally paste the release notes as plain text into the `"Changelog"`
-   field of `repo.json` and [`VeinAndVine.json`](VeinAndVine/VeinAndVine.json)
-   — that's what the in-game installer shows. Markdown isn't rendered there, so
-   flatten it.
-4. `dotnet build -c Release` — the guard runs, and you get
+3. `dotnet build -c Release` — the guard runs, the release notes are copied
+   into both manifests (see below), and you get
    `VeinAndVine\bin\x64\Release\VeinAndVine\latest.zip`.
-5. Commit, `git tag -a vX -m "..."`, push both, and attach `latest.zip` to the
+4. Commit — including the two manifests, which the build will have updated —
+   then `git tag -a vX -m "..."`, push both, and attach `latest.zip` to the
    GitHub release so `repo.json`'s download links resolve.
 
 Note that **version bumps belong to releases, not commits.** Dalamud only
@@ -225,6 +223,34 @@ per commit burns numbers on work nobody can install.
 in [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) format. Write
 entries into `## [Unreleased]` as you go rather than reconstructing them from a
 diff at release time — they're far more accurate written next to the change.
+
+**It reaches the in-game installer on its own.** Every build, the
+`SyncChangelogToManifests` target reads the `## [<current version>]` section
+out of `CHANGELOG.md` and writes it into the `"Changelog"` field of both
+manifests:
+
+| Manifest | What reads it |
+|---|---|
+| [`VeinAndVine.json`](VeinAndVine/VeinAndVine.json) | copied into `latest.zip`; the installed plugin's own notes |
+| [`repo.json`](repo.json) | the installer, deciding an update exists — the copy a user sees *before* updating |
+
+Markdown is flattened on the way, because none of it renders there: `### Added`
+becomes `Added:`, hard-wrapped bullets are rejoined so they don't wrap twice in
+a narrow panel, and emphasis and code spans are stripped.
+
+Three things keep this from being annoying. It only rewrites a file when the
+text actually differs, so it's inert once the changelog settles. It **skips a
+manifest that declares a different version** rather than filling it with the
+wrong release's notes — Debug builds don't run the version guard, so without
+that a mismatch would be papered over silently. And a missing section is a
+warning, not an error, so bumping `<Version>` before writing the notes doesn't
+block the build.
+
+Worth knowing: DalamudPackager does expose a `Changelog` MSBuild property, but
+it's only a fallback for projects with no manifest file. When
+`VeinAndVine.json` exists it wins outright and the properties are ignored, so
+the field has to be correct in the file before the packager reads it. Hence
+writing the manifests rather than passing a property.
 
 ## Still stubbed
 

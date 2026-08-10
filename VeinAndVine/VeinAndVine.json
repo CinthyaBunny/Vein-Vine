@@ -22,5 +22,5 @@
     "jobs"
   ],
   "IconUrl": "",
-  "Changelog": ""
+  "Changelog": "Initial version.\n\nAdded:\n- Dalamud plugin scaffold targeting API level 15 on net10.0-windows, with /veinvine and /vnv commands, a main window and a settings window.\n- Services/EorzeaTime.cs, a pure Eorzea clock and the weather seed roll.\n- Services/WeatherService.cs, resolving a territory's current weather through the WeatherRate cumulative distribution table.\n- Services/PriorityEngine.cs, combining the dataset, the clock and the wishlist into one sorted list, gated behind IWeatherProvider so it can be tested against a fake clock.\n- Services/MapUtil.cs and a native map flag as the plugin's only game-state-changing action.\n- tools/NodeGen, regenerating Data/nodes.json from the game's own Excel sheets, including the packed-decimal spawn windows in GatheringRarePopTimeTable, and verifying its output through the plugin's own parser.\n- Data/nodes.json with 419 timed nodes — 333 items across 46 zones — plus a schema document.\n- repo.json, the third-party repository manifest.\n- .gitattributes pinning the tree to LF."
 }

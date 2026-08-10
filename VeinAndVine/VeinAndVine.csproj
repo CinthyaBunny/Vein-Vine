@@ -3,7 +3,7 @@
   <PropertyGroup>
     <!-- Dalamud reads this as AssemblyVersion; it must be a 4-part version and
          must match the "AssemblyVersion" in repo.json for repo installs. -->
-    <Version>0.0.0.1</Version>
+    <Version>0.0.0.2</Version>
     <Authors>CinthyaBunny</Authors>
     <Company></Company>
     <Description>Priority-sorted gathering node tracker. No automation.</Description>
@@ -108,11 +108,17 @@
     anchored to the key, so the value is read from the right field and not from
     the first version-shaped string that happens to appear in the file.
   -->
-  <Target Name="VerifyRepoManifestVersion" BeforeTargets="BeforeBuild" Condition="'$(Configuration)' == 'Release'">
-    <PropertyGroup>
-      <RepoManifestPath>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\repo.json'))</RepoManifestPath>
-    </PropertyGroup>
+  <!--
+    Shared by the version guard and the changelog sync below. Overridable so
+    both can be pointed at a scratch copy when testing them.
+  -->
+  <PropertyGroup>
+    <RepoManifestPath Condition="'$(RepoManifestPath)' == ''">$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\repo.json'))</RepoManifestPath>
+    <PluginManifestPath Condition="'$(PluginManifestPath)' == ''">$(MSBuildThisFileDirectory)$(AssemblyName).json</PluginManifestPath>
+    <ChangelogPath Condition="'$(ChangelogPath)' == ''">$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\CHANGELOG.md'))</ChangelogPath>
+  </PropertyGroup>
 
+  <Target Name="VerifyRepoManifestVersion" BeforeTargets="BeforeBuild" Condition="'$(Configuration)' == 'Release'">
     <Error Condition="!Exists('$(RepoManifestPath)')"
            Text="repo.json not found at '$(RepoManifestPath)'. It is the repository manifest the in-game installer reads; restore it before building a release." />
 
@@ -127,6 +133,182 @@
            Text="Version mismatch: the csproj says $(Version) but repo.json says $(RepoManifestVersion). The zip and the repository manifest must agree, or the in-game installer will not offer the update. Set both to the same value: &lt;Version&gt; in VeinAndVine.csproj and &quot;AssemblyVersion&quot; in repo.json." />
 
     <Message Importance="normal" Text="Version check: csproj and repo.json both at $(Version)." />
+  </Target>
+
+  <!--
+    Copies the release notes for the current version out of CHANGELOG.md and
+    into the "Changelog" field of both manifests, so what shows up in the
+    in-game installer is the same text that is in the repository.
+
+    Why write the files rather than pass a property: DalamudPackager exposes a
+    Changelog parameter, but it is only a fallback for projects with no
+    manifest file at all. When VeinAndVine.json exists it wins outright and the
+    MSBuild properties are ignored entirely - verified, not assumed. So the
+    field has to be correct in the file before the packager reads it.
+
+    Both manifests need it, and for different reasons. The one in the zip
+    becomes the installed plugin's manifest; repo.json is what the installer
+    reads to decide an update is available, so it is the copy a user actually
+    sees *before* updating.
+
+    Files are only rewritten when the text genuinely differs, so this is inert
+    on every build after the changelog stops changing.
+  -->
+  <UsingTask TaskName="SyncChangelog"
+             TaskFactory="RoslynCodeTaskFactory"
+             AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+    <ParameterGroup>
+      <ChangelogFile ParameterType="System.String" Required="true" />
+      <ReleaseVersion ParameterType="System.String" Required="true" />
+      <ManifestFiles ParameterType="System.String[]" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Using Namespace="System" />
+      <Using Namespace="System.Collections.Generic" />
+      <Using Namespace="System.IO" />
+      <Using Namespace="System.Text" />
+      <Using Namespace="System.Text.RegularExpressions" />
+      <Code Type="Fragment" Language="cs"><![CDATA[
+        // Matches the value of a "Changelog" field, however it is escaped.
+        const string FieldPattern = "(?<=\"Changelog\"\\s*:\\s*\")(?:[^\"\\\\]|\\\\.)*(?=\")";
+
+        if (!File.Exists(ChangelogFile))
+        {
+            Log.LogWarning("No changelog at " + ChangelogFile + "; manifests left as they are.");
+        }
+        else
+        {
+            var markdown = File.ReadAllText(ChangelogFile);
+
+            // The section for this version, up to the next "## " heading.
+            var section = Regex.Match(
+                markdown,
+                @"(?m)^##\s*\[" + Regex.Escape(ReleaseVersion) + @"\][^\n]*\n(?<body>.*?)(?=^##\s|\z)",
+                RegexOptions.Singleline | RegexOptions.Multiline);
+
+            if (!section.Success)
+            {
+                Log.LogWarning(
+                    "No '## [" + ReleaseVersion + "]' section in " + Path.GetFileName(ChangelogFile) +
+                    ", so this build ships with no release notes. Rename [Unreleased] to [" +
+                    ReleaseVersion + "] when you release it.");
+            }
+            else
+            {
+                // Flatten markdown to the plain text the installer renders:
+                // "### Added" becomes "Added:", and hard-wrapped bullets are
+                // rejoined so they do not wrap twice in a narrow panel.
+                var lines = new List<string>();
+                foreach (var rawLine in section.Groups["body"].Value.Replace("\r\n", "\n").Split('\n'))
+                {
+                    var line = rawLine.TrimEnd();
+                    if (line.Length == 0) continue;
+
+                    var heading = Regex.Match(line, @"^#{2,}\s*(.+)$");
+                    if (heading.Success)
+                    {
+                        if (lines.Count > 0) lines.Add("");
+                        lines.Add(heading.Groups[1].Value.Trim() + ":");
+                        continue;
+                    }
+
+                    var bullet = Regex.Match(line, @"^\s*[-*]\s+(.*)$");
+                    if (bullet.Success)
+                    {
+                        lines.Add("- " + bullet.Groups[1].Value.Trim());
+                        continue;
+                    }
+
+                    // A wrapped continuation of the bullet above.
+                    if (lines.Count > 0 && lines[lines.Count - 1].Length > 0)
+                        lines[lines.Count - 1] += " " + line.Trim();
+                    else
+                        lines.Add(line.Trim());
+                }
+
+                var notes = string.Join("\n", lines).Trim();
+
+                // Emphasis and code spans, bold first so the single-asterisk
+                // pass does not chew through half of it. Nothing renders them.
+                notes = Regex.Replace(notes, @"\*\*([^*]+)\*\*", "$1");
+                notes = Regex.Replace(notes, @"\*([^*\n]+)\*", "$1");
+                notes = Regex.Replace(notes, @"`([^`\n]+)`", "$1");
+
+                var escaped = notes
+                    .Replace("\\", "\\\\")
+                    .Replace("\"", "\\\"")
+                    .Replace("\r", string.Empty)
+                    .Replace("\n", "\\n")
+                    .Replace("\t", "\\t");
+
+                // Regex.Replace reads $ in a replacement as a group reference.
+                var replacement = escaped.Replace("$", "$$");
+
+                foreach (var manifestFile in ManifestFiles)
+                {
+                    if (!File.Exists(manifestFile))
+                    {
+                        Log.LogWarning("Manifest not found, skipped: " + manifestFile);
+                        continue;
+                    }
+
+                    var json = File.ReadAllText(manifestFile);
+
+                    // Never write notes for one version into a manifest that
+                    // claims another. Debug builds skip the version guard, so
+                    // without this a mismatch would be papered over silently.
+                    // Only repo.json declares a version; the plugin manifest
+                    // has the packager stamp it from the assembly.
+                    var declared = Regex.Match(
+                        json, "(?<=\"AssemblyVersion\"\\s*:\\s*\")[^\"]*(?=\")");
+
+                    if (declared.Success && declared.Value != ReleaseVersion)
+                    {
+                        Log.LogWarning(
+                            Path.GetFileName(manifestFile) + " declares version " + declared.Value +
+                            " but this build is " + ReleaseVersion +
+                            "; its changelog was left alone rather than filled with another version's notes.");
+                        continue;
+                    }
+
+                    var found = Regex.Matches(json, FieldPattern);
+
+                    if (found.Count != 1)
+                    {
+                        Log.LogWarning(
+                            "Expected exactly one \"Changelog\" field in " + Path.GetFileName(manifestFile) +
+                            ", found " + found.Count + "; left it alone.");
+                        continue;
+                    }
+
+                    // Already current - do not churn a tracked file for nothing.
+                    if (found[0].Value == escaped) continue;
+
+                    File.WriteAllText(
+                        manifestFile,
+                        Regex.Replace(json, FieldPattern, replacement),
+                        new UTF8Encoding(false));
+
+                    Log.LogMessage(
+                        MessageImportance.High,
+                        "Changelog for " + ReleaseVersion + " written into " + Path.GetFileName(manifestFile) + ".");
+                }
+            }
+        }
+      ]]></Code>
+    </Task>
+  </UsingTask>
+
+  <!--
+    Must run before the packager, which reads the manifest off disk. The
+    packager's own targets hang off AfterTargets="Build", so this hooks in
+    ahead of both of them.
+  -->
+  <Target Name="SyncChangelogToManifests"
+          BeforeTargets="DefaultDalamudPackagerDebug;DefaultDalamudPackagerRelease">
+    <SyncChangelog ChangelogFile="$(ChangelogPath)"
+                   ReleaseVersion="$(Version)"
+                   ManifestFiles="$(PluginManifestPath);$(RepoManifestPath)" />
   </Target>
 
 </Project>
