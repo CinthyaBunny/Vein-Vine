@@ -30,6 +30,20 @@ rest of the steps.
 
 ### Changed
 
+- **`Colours` now offers all six of the game's UI themes** — Dark, Light,
+  Classic FF, Clear Blue, Clear White and Clear Green — named as the game names
+  them in System Configuration, in its dropdown order, and coloured from the
+  same `UIColor` sheet the game tints its own interface with. (Clear Grey and
+  Clear Pink appear in the game's list but the sheet has no column for them, so
+  there is nothing to read.)
+
+  Each palette is derived from four anchors out of the sheet rather than
+  hand-written per theme, so the six stay consistent with one another. Two
+  details the data forced: the accent comes from row 22 rather than the paler
+  row 8, which is pure white under Classic FF and would sink every border into
+  the text; and Clear Blue and Clear Green get a hand-picked ground, because
+  neither has a blue or green entry anywhere in the sheet — the game tints its
+  window textures for that instead of storing a colour.
 - The Appearance settings are dropdowns rather than rows of radio buttons.
   Radios spread sideways until they wrap; a combo costs the same width at two
   options as at ten, which is what these lists need as more fonts and palettes

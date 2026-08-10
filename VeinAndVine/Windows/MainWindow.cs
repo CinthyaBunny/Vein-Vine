@@ -206,9 +206,29 @@ public sealed class MainWindow : Window, IDisposable
 
         var theme = configuration.Theme;
         if (DrawChoice("Colours", ref theme,
-                [UiThemeChoice.Dalamud, UiThemeChoice.GameDark],
-                ["Dalamud default", "Game dark"],
-                "The game's dark blue panels, warm off-white text and muted gold borders.\n" +
+                [
+                    UiThemeChoice.Dalamud,
+                    UiThemeChoice.Dark,
+                    UiThemeChoice.Light,
+                    UiThemeChoice.ClassicFF,
+                    UiThemeChoice.ClearBlue,
+                    UiThemeChoice.ClearWhite,
+                    UiThemeChoice.ClearGreen,
+                ],
+                [
+                    "Dalamud default",
+                    "Dark",
+                    "Light",
+                    "Classic FF",
+                    "Clear Blue",
+                    "Clear White",
+                    "Clear Green",
+                ],
+                "The game's own UI themes, named as it names them in System\n" +
+                "Configuration, and coloured from the same UIColor sheet the game\n" +
+                "tints its interface with.\n\n" +
+                "Clear Grey and Clear Pink are missing because the sheet has no column\n" +
+                "for them - there is nothing to read their colours from.\n\n" +
                 "Leave this on Dalamud default if you have themed Dalamud yourself."))
         {
             configuration.Theme = theme;

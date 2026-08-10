@@ -2,6 +2,7 @@ using System.Numerics;
 using Dalamud.Bindings.ImGui;
 using Dalamud.Interface.GameFonts;
 using Dalamud.Interface.ManagedFontAtlas;
+using Lumina.Excel.Sheets;
 
 namespace VeinAndVine.Services;
 
@@ -15,14 +16,30 @@ public enum UiFontChoice
     GameAxis,
 }
 
-/// <summary>Which colour and metric set the plugin's windows use.</summary>
+/// <summary>
+/// Which colour set the plugin's windows use.
+///
+/// Everything below <see cref="Dalamud"/> is one of the game's own UI themes,
+/// named as the game names it in System Configuration - including
+/// <see cref="ClassicFF"/>, which really is "Classic FF" and not "Classic
+/// FFXIV". The order matches the game's dropdown.
+///
+/// These six are exactly the themes the <c>UIColor</c> sheet carries a column
+/// for. The game's options screen also lists Clear Grey and Clear Pink, but
+/// the sheet has no column for either, so there is nothing to read their
+/// colours from.
+/// </summary>
 public enum UiThemeChoice
 {
     /// <summary>Whatever the user configured Dalamud to use.</summary>
     Dalamud,
 
-    /// <summary>Hand-matched to the game's dark blue panels and warm off-white text.</summary>
-    GameDark,
+    Dark,
+    Light,
+    ClassicFF,
+    ClearBlue,
+    ClearWhite,
+    ClearGreen,
 }
 
 /// <summary>Where the node list lives.</summary>
@@ -131,58 +148,64 @@ public sealed class UiStyle : IDisposable
 
     private void PushTheme()
     {
-        if (configuration.Theme != UiThemeChoice.GameDark)
+        if (GetPalette(configuration.Theme) is not { } p)
             return;
 
-        // Sampled from the game's own panels: near-black blue, warm off-white
-        // text, and the muted gold the UI uses for borders and highlights.
-        Color(ImGuiCol.WindowBg, new Vector4(0.043f, 0.055f, 0.078f, 0.94f));
-        Color(ImGuiCol.ChildBg, new Vector4(0.000f, 0.000f, 0.000f, 0.00f));
-        Color(ImGuiCol.PopupBg, new Vector4(0.055f, 0.067f, 0.094f, 0.98f));
-        Color(ImGuiCol.Border, new Vector4(0.435f, 0.392f, 0.290f, 0.65f));
-        Color(ImGuiCol.BorderShadow, new Vector4(0.000f, 0.000f, 0.000f, 0.40f));
+        // Everything is derived from four anchors rather than written out per
+        // theme. Six hand-tuned tables would be six things to keep in step, and
+        // five of them would be guesses - the sheet only tells us what the text
+        // and accent should be, so the rest is blended from those.
+        var ground = p.Background;
+        var text = p.Text;
+        var accent = p.Accent;
 
-        Color(ImGuiCol.Text, new Vector4(0.937f, 0.925f, 0.878f, 1.00f));
-        Color(ImGuiCol.TextDisabled, new Vector4(0.596f, 0.580f, 0.522f, 1.00f));
+        Color(ImGuiCol.WindowBg, Alpha(ground, 0.94f));
+        Color(ImGuiCol.ChildBg, Alpha(ground, 0f));
+        Color(ImGuiCol.PopupBg, Alpha(ground, 0.98f));
+        Color(ImGuiCol.Border, Alpha(accent, 0.65f));
+        Color(ImGuiCol.BorderShadow, new Vector4(0f, 0f, 0f, 0.40f));
 
-        Color(ImGuiCol.FrameBg, new Vector4(0.102f, 0.114f, 0.145f, 0.90f));
-        Color(ImGuiCol.FrameBgHovered, new Vector4(0.169f, 0.184f, 0.220f, 0.95f));
-        Color(ImGuiCol.FrameBgActive, new Vector4(0.216f, 0.231f, 0.271f, 1.00f));
+        Color(ImGuiCol.Text, text);
+        Color(ImGuiCol.TextDisabled, p.TextDim);
 
-        Color(ImGuiCol.TitleBg, new Vector4(0.055f, 0.067f, 0.094f, 1.00f));
-        Color(ImGuiCol.TitleBgActive, new Vector4(0.086f, 0.102f, 0.145f, 1.00f));
-        Color(ImGuiCol.TitleBgCollapsed, new Vector4(0.043f, 0.055f, 0.078f, 0.80f));
+        Color(ImGuiCol.FrameBg, Alpha(Mix(ground, text, 0.08f), 0.90f));
+        Color(ImGuiCol.FrameBgHovered, Alpha(Mix(ground, text, 0.16f), 0.95f));
+        Color(ImGuiCol.FrameBgActive, Mix(ground, text, 0.22f));
 
-        Color(ImGuiCol.Header, new Vector4(0.196f, 0.231f, 0.310f, 0.75f));
-        Color(ImGuiCol.HeaderHovered, new Vector4(0.259f, 0.310f, 0.416f, 0.85f));
-        Color(ImGuiCol.HeaderActive, new Vector4(0.310f, 0.373f, 0.494f, 0.95f));
+        Color(ImGuiCol.TitleBg, Mix(ground, text, 0.05f));
+        Color(ImGuiCol.TitleBgActive, Mix(ground, accent, 0.18f));
+        Color(ImGuiCol.TitleBgCollapsed, Alpha(ground, 0.80f));
 
-        Color(ImGuiCol.Button, new Vector4(0.137f, 0.157f, 0.204f, 0.95f));
-        Color(ImGuiCol.ButtonHovered, new Vector4(0.220f, 0.251f, 0.318f, 1.00f));
-        Color(ImGuiCol.ButtonActive, new Vector4(0.290f, 0.325f, 0.404f, 1.00f));
+        Color(ImGuiCol.Header, Alpha(Mix(ground, accent, 0.25f), 0.75f));
+        Color(ImGuiCol.HeaderHovered, Alpha(Mix(ground, accent, 0.35f), 0.85f));
+        Color(ImGuiCol.HeaderActive, Alpha(Mix(ground, accent, 0.45f), 0.95f));
 
-        Color(ImGuiCol.Tab, new Vector4(0.086f, 0.098f, 0.129f, 1.00f));
-        Color(ImGuiCol.TabHovered, new Vector4(0.259f, 0.310f, 0.416f, 1.00f));
-        Color(ImGuiCol.TabActive, new Vector4(0.165f, 0.192f, 0.251f, 1.00f));
-        Color(ImGuiCol.TabUnfocused, new Vector4(0.071f, 0.082f, 0.110f, 1.00f));
-        Color(ImGuiCol.TabUnfocusedActive, new Vector4(0.126f, 0.145f, 0.188f, 1.00f));
+        Color(ImGuiCol.Button, Alpha(Mix(ground, text, 0.12f), 0.95f));
+        Color(ImGuiCol.ButtonHovered, Mix(ground, text, 0.20f));
+        Color(ImGuiCol.ButtonActive, Mix(ground, text, 0.28f));
 
-        Color(ImGuiCol.TableHeaderBg, new Vector4(0.114f, 0.129f, 0.169f, 1.00f));
-        Color(ImGuiCol.TableBorderStrong, new Vector4(0.353f, 0.322f, 0.243f, 0.70f));
-        Color(ImGuiCol.TableBorderLight, new Vector4(0.235f, 0.220f, 0.176f, 0.50f));
-        Color(ImGuiCol.TableRowBg, new Vector4(0.000f, 0.000f, 0.000f, 0.00f));
-        Color(ImGuiCol.TableRowBgAlt, new Vector4(1.000f, 1.000f, 1.000f, 0.03f));
+        Color(ImGuiCol.Tab, Mix(ground, text, 0.06f));
+        Color(ImGuiCol.TabHovered, Mix(ground, accent, 0.35f));
+        Color(ImGuiCol.TabActive, Mix(ground, accent, 0.22f));
+        Color(ImGuiCol.TabUnfocused, Mix(ground, text, 0.03f));
+        Color(ImGuiCol.TabUnfocusedActive, Mix(ground, accent, 0.12f));
 
-        Color(ImGuiCol.ScrollbarBg, new Vector4(0.031f, 0.039f, 0.055f, 0.60f));
-        Color(ImGuiCol.ScrollbarGrab, new Vector4(0.243f, 0.259f, 0.310f, 1.00f));
-        Color(ImGuiCol.ScrollbarGrabHovered, new Vector4(0.318f, 0.337f, 0.396f, 1.00f));
-        Color(ImGuiCol.ScrollbarGrabActive, new Vector4(0.388f, 0.408f, 0.475f, 1.00f));
+        Color(ImGuiCol.TableHeaderBg, Mix(ground, text, 0.10f));
+        Color(ImGuiCol.TableBorderStrong, Alpha(accent, 0.70f));
+        Color(ImGuiCol.TableBorderLight, Alpha(accent, 0.40f));
+        Color(ImGuiCol.TableRowBg, Alpha(ground, 0f));
+        Color(ImGuiCol.TableRowBgAlt, Alpha(text, 0.04f));
 
-        Color(ImGuiCol.CheckMark, new Vector4(0.847f, 0.741f, 0.463f, 1.00f));
-        Color(ImGuiCol.Separator, new Vector4(0.353f, 0.322f, 0.243f, 0.55f));
-        Color(ImGuiCol.ResizeGrip, new Vector4(0.435f, 0.392f, 0.290f, 0.35f));
-        Color(ImGuiCol.ResizeGripHovered, new Vector4(0.545f, 0.490f, 0.361f, 0.65f));
-        Color(ImGuiCol.ResizeGripActive, new Vector4(0.647f, 0.584f, 0.435f, 0.85f));
+        Color(ImGuiCol.ScrollbarBg, Alpha(Mix(ground, text, 0.02f), 0.60f));
+        Color(ImGuiCol.ScrollbarGrab, Mix(ground, text, 0.22f));
+        Color(ImGuiCol.ScrollbarGrabHovered, Mix(ground, text, 0.30f));
+        Color(ImGuiCol.ScrollbarGrabActive, Mix(ground, text, 0.38f));
+
+        Color(ImGuiCol.CheckMark, accent);
+        Color(ImGuiCol.Separator, Alpha(accent, 0.55f));
+        Color(ImGuiCol.ResizeGrip, Alpha(accent, 0.35f));
+        Color(ImGuiCol.ResizeGripHovered, Alpha(accent, 0.65f));
+        Color(ImGuiCol.ResizeGripActive, Alpha(accent, 0.85f));
 
         // Game panels are square-cornered with a thin single border.
         Var(ImGuiStyleVar.WindowRounding, 2f);
@@ -218,6 +241,111 @@ public sealed class UiStyle : IDisposable
         pushedColors = 0;
         pushedVars = 0;
     }
+
+    /// <summary>
+    /// The four anchors a theme is built from. Three come straight out of the
+    /// game's <c>UIColor</c> sheet; see <see cref="BuildPalette"/> for why the
+    /// background does not.
+    /// </summary>
+    private sealed record Palette(Vector4 Background, Vector4 Text, Vector4 TextDim, Vector4 Accent);
+
+    private readonly Dictionary<UiThemeChoice, Palette?> palettes = [];
+
+    /// <summary>
+    /// The palette for a theme, or null for <see cref="UiThemeChoice.Dalamud"/>
+    /// and for anything that could not be read. Cached - the sheet does not
+    /// change, and this is asked once per window per frame.
+    /// </summary>
+    private Palette? GetPalette(UiThemeChoice theme)
+    {
+        if (theme == UiThemeChoice.Dalamud)
+            return null;
+
+        if (palettes.TryGetValue(theme, out var cached))
+            return cached;
+
+        var built = BuildPalette(theme);
+        palettes[theme] = built;
+        return built;
+    }
+
+    /// <summary>
+    /// Reads a theme's anchors out of the game's <c>UIColor</c> sheet, which
+    /// carries one column per theme.
+    ///
+    /// Rows 1 and 3 are text and dimmed text - readable straight off the sheet,
+    /// because they invert exactly as you would expect between Dark and Light
+    /// (white text becomes brown, and so on).
+    ///
+    /// Row 22 is the accent, in preference to the paler row 8: row 8 is pure
+    /// white under Classic FF, which would make every border and checkmark
+    /// vanish into the text. Row 22 stays distinct from the text in all six,
+    /// and gives Classic FF the pale blue it is known for.
+    ///
+    /// The background does not come from the sheet. Clear Blue and Clear Green
+    /// have no blue or green row anywhere in all 204 of them - the game tints
+    /// its window textures for that, rather than storing a colour - so those
+    /// two get a hand-picked ground and the rest use row 7, which is the tone
+    /// the game itself grounds each theme on.
+    /// </summary>
+    private static Palette? BuildPalette(UiThemeChoice theme)
+    {
+        try
+        {
+            var sheet = Service.DataManager.GetExcelSheet<UIColor>();
+
+            if (!sheet.TryGetRow(1, out var textRow) ||
+                !sheet.TryGetRow(3, out var dimRow) ||
+                !sheet.TryGetRow(7, out var groundRow) ||
+                !sheet.TryGetRow(22, out var accentRow))
+                return null;
+
+            var ground = theme switch
+            {
+                UiThemeChoice.ClearBlue => new Vector4(0.055f, 0.090f, 0.165f, 1f),
+                UiThemeChoice.ClearGreen => new Vector4(0.047f, 0.114f, 0.075f, 1f),
+                _ => Rgba(Column(groundRow, theme)),
+            };
+
+            return new Palette(
+                ground,
+                Rgba(Column(textRow, theme)),
+                Rgba(Column(dimRow, theme)),
+                Rgba(Column(accentRow, theme)));
+        }
+        catch (Exception ex)
+        {
+            Service.Log.Error(ex, $"Could not read the {theme} theme from the UIColor sheet.");
+            return null;
+        }
+    }
+
+    private static uint Column(UIColor row, UiThemeChoice theme) => theme switch
+    {
+        UiThemeChoice.Light => row.Light,
+        UiThemeChoice.ClassicFF => row.ClassicFF,
+        UiThemeChoice.ClearBlue => row.ClearBlue,
+        UiThemeChoice.ClearWhite => row.ClearWhite,
+        UiThemeChoice.ClearGreen => row.ClearGreen,
+        _ => row.Dark,
+    };
+
+    /// <summary>UIColor packs its entries as RRGGBBAA, not the usual ARGB.</summary>
+    private static Vector4 Rgba(uint packed) => new(
+        ((packed >> 24) & 0xFF) / 255f,
+        ((packed >> 16) & 0xFF) / 255f,
+        ((packed >> 8) & 0xFF) / 255f,
+        (packed & 0xFF) / 255f);
+
+    /// <summary>Blends RGB towards <paramref name="towards"/>, keeping a's alpha.</summary>
+    private static Vector4 Mix(Vector4 a, Vector4 towards, float amount) => new(
+        a.X + ((towards.X - a.X) * amount),
+        a.Y + ((towards.Y - a.Y) * amount),
+        a.Z + ((towards.Z - a.Z) * amount),
+        a.W);
+
+    private static Vector4 Alpha(Vector4 colour, float alpha) =>
+        new(colour.X, colour.Y, colour.Z, alpha);
 
     /// <summary>
     /// Scopes the chosen font. Returns null when the default font is wanted, or

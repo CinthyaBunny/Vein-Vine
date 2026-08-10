@@ -176,8 +176,33 @@ client rather than from bundled assets:
 | Switch | What it uses |
 |---|---|
 | Font | **Axis**, via `FontAtlas.NewGameFontHandle` — the typeface the game's own UI draws with, and the single biggest contributor to looking native |
-| Colours | A hand-matched palette: near-black blue panels, warm off-white text, muted gold borders |
+| Colours | The game's six UI themes, read from its own `UIColor` sheet |
 | Window frame | `ui/uld/WindowA_BgNormal_{Corner,H,V,HV}.tex`, drawn as a nine-slice |
+
+The colour themes are **Dark, Light, Classic FF, Clear Blue, Clear White and
+Clear Green** — named as the game names them in System Configuration (it really
+is "Classic FF"), in the game's own dropdown order. Those six are exactly the
+ones the `UIColor` sheet has a column for; the options screen also lists Clear
+Grey and Clear Pink, but the sheet carries no colours for them.
+
+Each palette is derived from four anchors rather than hand-written, so there is
+one code path instead of six tables to keep in step:
+
+| Anchor | Source |
+|---|---|
+| Text | `UIColor` row 1 — inverts correctly, white on Dark, brown on Light |
+| Dimmed text | row 3 |
+| Accent | row 22 |
+| Ground | row 7, except Clear Blue and Clear Green |
+
+Row 22 rather than the paler row 8 for the accent: row 8 is pure white under
+Classic FF, which would sink every border and checkmark into the text. Row 22
+stays distinct in all six and gives Classic FF its pale blue.
+
+The ground is the one anchor that isn't always the sheet's. Clear Blue and
+Clear Green have no blue or green entry anywhere in all 204 rows — the game
+tints its window *textures* for that rather than storing a colour — so those
+two get a hand-picked ground and the rest use row 7.
 
 The frame textures are loaded whole with hand-computed UVs rather than through
 `UldWrapper`'s part indices. The part tables are undocumented and shift between

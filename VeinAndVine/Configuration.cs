@@ -45,7 +45,7 @@ public class Configuration : IPluginConfiguration
     // the config file, so an explicit choice outranks a changed default. Only
     // a config that predates these settings picks the new one up.
     public UiFontChoice Font { get; set; } = UiFontChoice.GameAxis;
-    public UiThemeChoice Theme { get; set; } = UiThemeChoice.GameDark;
+    public UiThemeChoice Theme { get; set; } = UiThemeChoice.Dark;
     public UiChromeChoice Chrome { get; set; } = UiChromeChoice.GameFrame;
 
     /// <summary>Whether the node list is a tab or its own docked panel.</summary>
