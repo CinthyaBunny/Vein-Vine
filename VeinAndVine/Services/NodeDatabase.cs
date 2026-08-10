@@ -16,13 +16,26 @@ public static class NodeDatabase
 {
     public const string DataFileName = "nodes.json";
 
-    private static readonly JsonSerializerOptions Options = new()
+    /// <summary>
+    /// Public so the dataset generator in <c>tools/NodeGen</c> can verify its
+    /// output against the exact options the plugin parses with, rather than a
+    /// second copy of them that could drift.
+    /// </summary>
+    public static readonly JsonSerializerOptions Options = new()
     {
         PropertyNameCaseInsensitive = true,
         ReadCommentHandling = JsonCommentHandling.Skip,
         AllowTrailingCommas = true,
         Converters = { new JsonStringEnumConverter() },
     };
+
+    /// <summary>
+    /// Parses the dataset. Pure: no Dalamud, no logging, no filesystem - it
+    /// throws on malformed input and leaves the policy decision about what to
+    /// do with that to <see cref="Load"/>.
+    /// </summary>
+    public static List<GatherNode> Parse(Stream json) =>
+        JsonSerializer.Deserialize<List<GatherNode>>(json, Options) ?? [];
 
     public static string DataFilePath
     {
@@ -52,7 +65,7 @@ public static class NodeDatabase
         try
         {
             using var stream = File.OpenRead(path);
-            var nodes = JsonSerializer.Deserialize<List<GatherNode>>(stream, Options) ?? [];
+            var nodes = Parse(stream);
             Service.Log.Information($"Loaded {nodes.Count} gathering node(s) from {DataFileName}.");
             return nodes;
         }

@@ -61,8 +61,8 @@ public sealed class PriorityEngine(IWeatherProvider weather)
             {
                 Node = node,
                 IsActive = isActive,
-                TimeRemaining = isActive ? EstimateTimeRemaining(node, now) : null,
-                TimeUntilActive = isActive ? null : EstimateTimeUntilActive(node, now),
+                TimeRemaining = isActive ? EstimateTimeRemaining(node, now, hour) : null,
+                TimeUntilActive = isActive ? null : EstimateTimeUntilActive(node, now, hour),
                 DistanceFromPlayer = distance,
                 BlockedReason = blockedReason,
             });
@@ -82,8 +82,11 @@ public sealed class PriorityEngine(IWeatherProvider weather)
     /// <summary>Null when the node is available; otherwise a short explanation.</summary>
     private string? GetBlockedReason(GatherNode node, int eorzeaHour)
     {
-        if (node.TimeWindow is { } window && !window.Contains(eorzeaHour))
-            return $"Opens at {window.StartHour:00}:00 ET";
+        if (node.TimeWindows.Count > 0 && node.ActiveWindowAt(eorzeaHour) is null)
+        {
+            var next = NextWindowStart(node, eorzeaHour);
+            return $"Opens at {next:00}:00 ET";
+        }
 
         if (node.RequiredWeather.Count > 0)
         {
@@ -97,14 +100,16 @@ public sealed class PriorityEngine(IWeatherProvider weather)
 
     /// <summary>
     /// Real time left before the node's conditions stop holding: whichever of
-    /// the time window or the weather window closes first, capped by the
-    /// node's own spawn duration.
+    /// the currently-open time window or the weather window closes first,
+    /// capped by the node's own spawn duration.
     /// </summary>
-    private static TimeSpan? EstimateTimeRemaining(GatherNode node, long now)
+    private static TimeSpan? EstimateTimeRemaining(GatherNode node, long now, int eorzeaHour)
     {
         var limits = new List<long>();
 
-        if (node.TimeWindow is { } window)
+        // Only the window we are actually inside bounds the remaining time;
+        // the node's other windows are later today and say nothing about now.
+        if (node.ActiveWindowAt(eorzeaHour) is { } window)
             limits.Add(EorzeaTime.RealSecondsUntilEorzeaHour(now, window.EndHour));
 
         if (node.RequiredWeather.Count > 0)
@@ -118,16 +123,50 @@ public sealed class PriorityEngine(IWeatherProvider weather)
     }
 
     /// <summary>
-    /// Real time until a time-gated node opens. Weather-gated nodes return
-    /// null here - forecasting those needs the sheet-backed
+    /// Real time until a time-gated node next opens, using whichever of its
+    /// windows comes round first. Weather-gated nodes return null here -
+    /// forecasting those needs the sheet-backed
     /// <see cref="WeatherService.FindNextWeatherWindow"/>, which the engine
     /// deliberately does not depend on.
     /// </summary>
-    private static TimeSpan? EstimateTimeUntilActive(GatherNode node, long now)
+    private static TimeSpan? EstimateTimeUntilActive(GatherNode node, long now, int eorzeaHour)
     {
-        if (node.TimeWindow is { } window)
-            return TimeSpan.FromSeconds(EorzeaTime.RealSecondsUntilEorzeaHour(now, window.StartHour));
+        if (node.TimeWindows.Count == 0)
+            return null;
 
-        return null;
+        // A window is already open, so whatever is blocking the node is the
+        // weather, not the clock. Reporting the time to the *next* window here
+        // would claim it opens in nearly a full day when it may clear on the
+        // next weather roll.
+        if (node.ActiveWindowAt(eorzeaHour) is not null)
+            return null;
+
+        var start = NextWindowStart(node, eorzeaHour);
+        return TimeSpan.FromSeconds(EorzeaTime.RealSecondsUntilEorzeaHour(now, start));
+    }
+
+    /// <summary>
+    /// Start hour of the node's soonest upcoming window, measured forward from
+    /// <paramref name="eorzeaHour"/> and wrapping past midnight.
+    ///
+    /// Only meaningful when the node is closed - if a window were open, the
+    /// distance to its own start would be 0 and it would win trivially.
+    /// </summary>
+    private static int NextWindowStart(GatherNode node, int eorzeaHour)
+    {
+        var best = node.TimeWindows[0].StartHour;
+        var bestDistance = int.MaxValue;
+
+        foreach (var window in node.TimeWindows)
+        {
+            var distance = (window.StartHour - eorzeaHour + 24) % 24;
+            if (distance < bestDistance)
+            {
+                bestDistance = distance;
+                best = window.StartHour;
+            }
+        }
+
+        return best;
     }
 }

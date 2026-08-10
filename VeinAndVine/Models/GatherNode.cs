@@ -36,6 +36,15 @@ public sealed class GatherNode
     public required string ZoneName { get; init; }
 
     /// <summary>
+    /// GatheringPointBase row id the node was generated from. Not used for any
+    /// game lookup - it exists so a row can be traced back to the sheet it came
+    /// from, and because (GatheringPointBaseId, ItemId) is the only unique key
+    /// for a node: the same item appears on several nodes, and one node yields
+    /// several items.
+    /// </summary>
+    public uint GatheringPointBaseId { get; init; }
+
+    /// <summary>
     /// TerritoryType row id. Drives both the weather lookup and the map flag,
     /// so a node without it can do neither.
     /// </summary>
@@ -50,8 +59,17 @@ public sealed class GatherNode
 
     public required int JobLevelRequired { get; init; }
 
-    /// <summary>Null means the node has no time restriction.</summary>
-    public EorzeaHourWindow? TimeWindow { get; init; }
+    /// <summary>
+    /// Eorzea-hour windows during which the node is up. Empty means no time
+    /// restriction.
+    ///
+    /// This is a list rather than a single window because most timed nodes in
+    /// the game spawn two or three times per Eorzea day - the game's
+    /// GatheringRarePopTimeTable holds up to several start times per node, and
+    /// collapsing them to one would report the node as unavailable for most of
+    /// the day.
+    /// </summary>
+    public IReadOnlyList<EorzeaHourWindow> TimeWindows { get; init; } = [];
 
     /// <summary>
     /// Weather names that must be active for the node to appear, matched
@@ -61,4 +79,20 @@ public sealed class GatherNode
 
     /// <summary>How long the node stays up once its conditions are met.</summary>
     public int SpawnDurationMinutes { get; init; } = 60;
+
+    /// <summary>
+    /// The window currently holding <paramref name="eorzeaHour"/>, or null if
+    /// none does. A node with no windows is always open and returns null too,
+    /// so callers must check <see cref="TimeWindows"/> being empty separately.
+    /// </summary>
+    public EorzeaHourWindow? ActiveWindowAt(int eorzeaHour)
+    {
+        foreach (var window in TimeWindows)
+        {
+            if (window.Contains(eorzeaHour))
+                return window;
+        }
+
+        return null;
+    }
 }

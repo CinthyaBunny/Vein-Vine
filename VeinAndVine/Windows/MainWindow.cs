@@ -57,7 +57,11 @@ public sealed class MainWindow : Window, IDisposable
             if (!result.IsActive && !plugin.Configuration.ShowInactiveNodes)
                 continue;
 
-            ImGui.PushID((int)result.Node.ItemId);
+            // Keyed on the node, not the item: the same item is gatherable
+            // from several nodes, and an ItemId-only key would give two rows
+            // the same ImGui id, so clicking one row's button would act on the
+            // other.
+            ImGui.PushID($"{result.Node.GatheringPointBaseId}:{result.Node.ItemId}");
 
             ImGui.TextColored(result.IsActive ? ActiveColor : InactiveColor, result.Node.ItemName);
             ImGui.SameLine();

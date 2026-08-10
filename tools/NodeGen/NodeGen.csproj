@@ -1,0 +1,58 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <!--
+      Platform, not just Platforms. The plugin builds to bin\x64\<cfg> and
+      without this the project reference below would build a *second*, AnyCPU
+      copy of it into bin\<cfg> - including a second latest.zip, which is an
+      easy way to ship the wrong artifact.
+    -->
+    <Platform>x64</Platform>
+    <Platforms>x64</Platforms>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>true</ImplicitUsings>
+    <AssemblyName>NodeGen</AssemblyName>
+    <RootNamespace>NodeGen</RootNamespace>
+    <!-- Build-time tool, never shipped; no lock file to keep in sync. -->
+    <RestorePackagesWithLockFile>false</RestorePackagesWithLockFile>
+  </PropertyGroup>
+
+  <!--
+    References the plugin so it emits the real VeinAndVine.Models.GatherNode
+    and reuses MapUtil's coordinate formula. If the model changes, this stops
+    compiling - which is the point: the dataset cannot silently drift from the
+    type that parses it.
+
+    Only the Dalamud-free parts of the plugin are touched at runtime (Models,
+    and the pure MapUtil.WorldToMap overload), so Dalamud.dll is never loaded.
+  -->
+  <ItemGroup>
+    <!--
+      SetPlatform is required: the project's own <Platform> does not flow
+      across a reference, so without it the plugin gets built a second time as
+      AnyCPU into its bin\<cfg> folder, packager and all.
+    -->
+    <ProjectReference Include="..\..\VeinAndVine\VeinAndVine.csproj" SetPlatform="Platform=x64" />
+  </ItemGroup>
+
+  <!--
+    Lumina reads the game's Excel sheets straight out of sqpack. Private=true
+    here (unlike in the plugin) because this is a standalone exe with no
+    Dalamud host to provide them.
+  -->
+  <ItemGroup>
+    <Reference Include="Lumina">
+      <HintPath>$(DalamudLibPath)Lumina.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="Lumina.Excel">
+      <HintPath>$(DalamudLibPath)Lumina.Excel.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+  </ItemGroup>
+
+</Project>

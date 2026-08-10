@@ -1,1 +1,9378 @@
-[]
+[
+  {
+    "itemId": 29976,
+    "itemName": "Ashen Alumen",
+    "type": "Mining",
+    "zoneName": "Amh Araeng",
+    "gatheringPointBaseId": 713,
+    "territoryTypeId": 815,
+    "mapId": 493,
+    "mapX": 20.2,
+    "mapY": 8.6,
+    "jobLevelRequired": 80,
+    "timeWindows": [
+      {
+        "startHour": 10,
+        "endHour": 12
+      },
+      {
+        "startHour": 22,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 29974,
+    "itemName": "Duskblooms",
+    "type": "Botany",
+    "zoneName": "Amh Araeng",
+    "gatheringPointBaseId": 714,
+    "territoryTypeId": 815,
+    "mapId": 493,
+    "mapX": 32.3,
+    "mapY": 33.6,
+    "jobLevelRequired": 80,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 6
+      },
+      {
+        "startHour": 16,
+        "endHour": 18
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 33007,
+    "itemName": "Rarefied Amber Cloves",
+    "type": "Botany",
+    "zoneName": "Amh Araeng",
+    "gatheringPointBaseId": 775,
+    "territoryTypeId": 815,
+    "mapId": 493,
+    "mapX": 18.6,
+    "mapY": 20.5,
+    "jobLevelRequired": 80,
+    "timeWindows": [
+      {
+        "startHour": 2,
+        "endHour": 4
+      },
+      {
+        "startHour": 14,
+        "endHour": 16
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 33005,
+    "itemName": "Rarefied Sandteak Log",
+    "type": "Botany",
+    "zoneName": "Amh Araeng",
+    "gatheringPointBaseId": 775,
+    "territoryTypeId": 815,
+    "mapId": 493,
+    "mapX": 18.6,
+    "mapY": 20.5,
+    "jobLevelRequired": 80,
+    "timeWindows": [
+      {
+        "startHour": 2,
+        "endHour": 4
+      },
+      {
+        "startHour": 14,
+        "endHour": 16
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 27729,
+    "itemName": "Raw Triplite",
+    "type": "Mining",
+    "zoneName": "Amh Araeng",
+    "gatheringPointBaseId": 606,
+    "territoryTypeId": 815,
+    "mapId": 493,
+    "mapX": 20,
+    "mapY": 29,
+    "jobLevelRequired": 80,
+    "timeWindows": [
+      {
+        "startHour": 0,
+        "endHour": 2
+      },
+      {
+        "startHour": 12,
+        "endHour": 14
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 27822,
+    "itemName": "Russet Popoto",
+    "type": "Botany",
+    "zoneName": "Amh Araeng",
+    "gatheringPointBaseId": 630,
+    "territoryTypeId": 815,
+    "mapId": 493,
+    "mapX": 19.3,
+    "mapY": 16.9,
+    "jobLevelRequired": 80,
+    "timeWindows": [
+      {
+        "startHour": 8,
+        "endHour": 10
+      },
+      {
+        "startHour": 20,
+        "endHour": 22
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 32950,
+    "itemName": "Silver Beech Log",
+    "type": "Botany",
+    "zoneName": "Amh Araeng",
+    "gatheringPointBaseId": 762,
+    "territoryTypeId": 815,
+    "mapId": 493,
+    "mapX": 16.1,
+    "mapY": 11,
+    "jobLevelRequired": 80,
+    "timeWindows": [
+      {
+        "startHour": 6,
+        "endHour": 8
+      },
+      {
+        "startHour": 18,
+        "endHour": 20
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 12538,
+    "itemName": "Adamantite Ore",
+    "type": "Mining",
+    "zoneName": "Azys Lla",
+    "gatheringPointBaseId": 320,
+    "territoryTypeId": 402,
+    "mapId": 216,
+    "mapX": 23.8,
+    "mapY": 5.9,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 0,
+        "endHour": 2
+      },
+      {
+        "startHour": 12,
+        "endHour": 14
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 16725,
+    "itemName": "Luminium Ore",
+    "type": "Mining",
+    "zoneName": "Azys Lla",
+    "gatheringPointBaseId": 291,
+    "territoryTypeId": 402,
+    "mapId": 216,
+    "mapX": 5.5,
+    "mapY": 16.4,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 6,
+        "endHour": 8
+      },
+      {
+        "startHour": 18,
+        "endHour": 20
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 12945,
+    "itemName": "Red Alumen",
+    "type": "Mining",
+    "zoneName": "Azys Lla",
+    "gatheringPointBaseId": 326,
+    "territoryTypeId": 402,
+    "mapId": 216,
+    "mapX": 36.1,
+    "mapY": 15.4,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 10,
+        "endHour": 12
+      },
+      {
+        "startHour": 22,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 16721,
+    "itemName": "Star Cotton Boll",
+    "type": "Botany",
+    "zoneName": "Azys Lla",
+    "gatheringPointBaseId": 293,
+    "territoryTypeId": 402,
+    "mapId": 216,
+    "mapX": 8,
+    "mapY": 30.2,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 6
+      },
+      {
+        "startHour": 16,
+        "endHour": 18
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 12587,
+    "itemName": "Wattle Bark",
+    "type": "Botany",
+    "zoneName": "Azys Lla",
+    "gatheringPointBaseId": 350,
+    "territoryTypeId": 402,
+    "mapId": 216,
+    "mapX": 23,
+    "mapY": 9.2,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 2,
+        "endHour": 4
+      },
+      {
+        "startHour": 14,
+        "endHour": 16
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 9518,
+    "itemName": "Cypress Log",
+    "type": "Botany",
+    "zoneName": "Central Shroud",
+    "gatheringPointBaseId": 249,
+    "territoryTypeId": 148,
+    "mapId": 4,
+    "mapX": 24.8,
+    "mapY": 29.6,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 10,
+        "endHour": 13
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 10098,
+    "itemName": "Mazlaya Greens",
+    "type": "Botany",
+    "zoneName": "Central Shroud",
+    "gatheringPointBaseId": 233,
+    "territoryTypeId": 148,
+    "mapId": 4,
+    "mapX": 15.9,
+    "mapY": 20.5,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 2,
+        "endHour": 5
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 8031,
+    "itemName": "Redolent Log",
+    "type": "Botany",
+    "zoneName": "Central Shroud",
+    "gatheringPointBaseId": 245,
+    "territoryTypeId": 148,
+    "mapId": 4,
+    "mapX": 30.6,
+    "mapY": 20.2,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 6,
+        "endHour": 9
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 7591,
+    "itemName": "Shroud Tea Leaves",
+    "type": "Botany",
+    "zoneName": "Central Shroud",
+    "gatheringPointBaseId": 233,
+    "territoryTypeId": 148,
+    "mapId": 4,
+    "mapX": 15.9,
+    "mapY": 20.5,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 2,
+        "endHour": 5
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 10095,
+    "itemName": "Gregarious Worm",
+    "type": "Mining",
+    "zoneName": "Central Thanalan",
+    "gatheringPointBaseId": 237,
+    "territoryTypeId": 141,
+    "mapId": 21,
+    "mapX": 25.2,
+    "mapY": 15.9,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 7
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 7589,
+    "itemName": "Native Gold",
+    "type": "Mining",
+    "zoneName": "Central Thanalan",
+    "gatheringPointBaseId": 237,
+    "territoryTypeId": 141,
+    "mapId": 21,
+    "mapX": 25.2,
+    "mapY": 15.9,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 7
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 5147,
+    "itemName": "Raw Diamond",
+    "type": "Mining",
+    "zoneName": "Central Thanalan",
+    "gatheringPointBaseId": 237,
+    "territoryTypeId": 141,
+    "mapId": 21,
+    "mapX": 25.2,
+    "mapY": 15.9,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 7
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 5148,
+    "itemName": "Raw Emerald",
+    "type": "Mining",
+    "zoneName": "Central Thanalan",
+    "gatheringPointBaseId": 237,
+    "territoryTypeId": 141,
+    "mapId": 21,
+    "mapX": 25.2,
+    "mapY": 15.9,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 7
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 5158,
+    "itemName": "Astral Rock",
+    "type": "Mining",
+    "zoneName": "Coerthas Central Highlands",
+    "gatheringPointBaseId": 225,
+    "territoryTypeId": 155,
+    "mapId": 53,
+    "mapX": 23.4,
+    "mapY": 24.7,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 21,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 5121,
+    "itemName": "Darksteel Ore",
+    "type": "Mining",
+    "zoneName": "Coerthas Central Highlands",
+    "gatheringPointBaseId": 222,
+    "territoryTypeId": 155,
+    "mapId": 53,
+    "mapX": 27.6,
+    "mapY": 19.9,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 1,
+        "endHour": 4
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 10095,
+    "itemName": "Gregarious Worm",
+    "type": "Mining",
+    "zoneName": "Coerthas Central Highlands",
+    "gatheringPointBaseId": 222,
+    "territoryTypeId": 155,
+    "mapId": 53,
+    "mapX": 27.6,
+    "mapY": 19.9,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 1,
+        "endHour": 4
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 5395,
+    "itemName": "Spruce Log",
+    "type": "Botany",
+    "zoneName": "Coerthas Central Highlands",
+    "gatheringPointBaseId": 211,
+    "territoryTypeId": 155,
+    "mapId": 53,
+    "mapX": 29.2,
+    "mapY": 12.8,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 9,
+        "endHour": 12
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 5537,
+    "itemName": "Thavnairian Mistletoe",
+    "type": "Botany",
+    "zoneName": "Coerthas Central Highlands",
+    "gatheringPointBaseId": 213,
+    "territoryTypeId": 155,
+    "mapId": 53,
+    "mapX": 8.5,
+    "mapY": 13.4,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 17,
+        "endHour": 20
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 5547,
+    "itemName": "Vampire Plant",
+    "type": "Botany",
+    "zoneName": "Coerthas Central Highlands",
+    "gatheringPointBaseId": 212,
+    "territoryTypeId": 155,
+    "mapId": 53,
+    "mapX": 26.6,
+    "mapY": 24.4,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 13,
+        "endHour": 16
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 12884,
+    "itemName": "Chives",
+    "type": "Botany",
+    "zoneName": "Coerthas Western Highlands",
+    "gatheringPointBaseId": 339,
+    "territoryTypeId": 397,
+    "mapId": 211,
+    "mapX": 31.2,
+    "mapY": 19,
+    "jobLevelRequired": 55,
+    "timeWindows": [
+      {
+        "startHour": 10,
+        "endHour": 12
+      },
+      {
+        "startHour": 22,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 12882,
+    "itemName": "Coerthan Tea Leaves",
+    "type": "Botany",
+    "zoneName": "Coerthas Western Highlands",
+    "gatheringPointBaseId": 339,
+    "territoryTypeId": 397,
+    "mapId": 211,
+    "mapX": 31.2,
+    "mapY": 19,
+    "jobLevelRequired": 55,
+    "timeWindows": [
+      {
+        "startHour": 10,
+        "endHour": 12
+      },
+      {
+        "startHour": 22,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 13768,
+    "itemName": "Coerthan Tea Seeds",
+    "type": "Botany",
+    "zoneName": "Coerthas Western Highlands",
+    "gatheringPointBaseId": 339,
+    "territoryTypeId": 397,
+    "mapId": 211,
+    "mapX": 31.2,
+    "mapY": 19,
+    "jobLevelRequired": 55,
+    "timeWindows": [
+      {
+        "startHour": 10,
+        "endHour": 12
+      },
+      {
+        "startHour": 22,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 13767,
+    "itemName": "Pearl Sprout Seeds",
+    "type": "Botany",
+    "zoneName": "Coerthas Western Highlands",
+    "gatheringPointBaseId": 339,
+    "territoryTypeId": 397,
+    "mapId": 211,
+    "mapX": 31.2,
+    "mapY": 19,
+    "jobLevelRequired": 55,
+    "timeWindows": [
+      {
+        "startHour": 10,
+        "endHour": 12
+      },
+      {
+        "startHour": 22,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 12877,
+    "itemName": "Pearl Sprouts",
+    "type": "Botany",
+    "zoneName": "Coerthas Western Highlands",
+    "gatheringPointBaseId": 339,
+    "territoryTypeId": 397,
+    "mapId": 211,
+    "mapX": 31.2,
+    "mapY": 19,
+    "jobLevelRequired": 55,
+    "timeWindows": [
+      {
+        "startHour": 10,
+        "endHour": 12
+      },
+      {
+        "startHour": 22,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 5226,
+    "itemName": "Astral Moraine",
+    "type": "Mining",
+    "zoneName": "Coerthas Western Highlands",
+    "gatheringPointBaseId": 321,
+    "territoryTypeId": 397,
+    "mapId": 211,
+    "mapX": 37.3,
+    "mapY": 17.6,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 0,
+        "endHour": 2
+      },
+      {
+        "startHour": 12,
+        "endHour": 14
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 12967,
+    "itemName": "Bright Lightning Rock",
+    "type": "Mining",
+    "zoneName": "Coerthas Western Highlands",
+    "gatheringPointBaseId": 305,
+    "territoryTypeId": 397,
+    "mapId": 211,
+    "mapX": 23.5,
+    "mapY": 21.1,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 20,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 12900,
+    "itemName": "Chysahl Greens",
+    "type": "Botany",
+    "zoneName": "Coerthas Western Highlands",
+    "gatheringPointBaseId": 344,
+    "territoryTypeId": 397,
+    "mapId": 211,
+    "mapX": 8.8,
+    "mapY": 10.4,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 8,
+        "endHour": 10
+      },
+      {
+        "startHour": 20,
+        "endHour": 22
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 12973,
+    "itemName": "Clary Sage",
+    "type": "Botany",
+    "zoneName": "Coerthas Western Highlands",
+    "gatheringPointBaseId": 329,
+    "territoryTypeId": 397,
+    "mapId": 211,
+    "mapX": 25.7,
+    "mapY": 29.4,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 0,
+        "endHour": 4
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 12903,
+    "itemName": "Dravanian Paprika",
+    "type": "Botany",
+    "zoneName": "Coerthas Western Highlands",
+    "gatheringPointBaseId": 345,
+    "territoryTypeId": 397,
+    "mapId": 211,
+    "mapX": 22.4,
+    "mapY": 21.5,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 6,
+        "endHour": 8
+      },
+      {
+        "startHour": 18,
+        "endHour": 20
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 14154,
+    "itemName": "Frost Cotton Boll",
+    "type": "Botany",
+    "zoneName": "Coerthas Western Highlands",
+    "gatheringPointBaseId": 345,
+    "territoryTypeId": 397,
+    "mapId": 211,
+    "mapX": 22.4,
+    "mapY": 21.5,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 6,
+        "endHour": 8
+      },
+      {
+        "startHour": 18,
+        "endHour": 20
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 12972,
+    "itemName": "Furymint",
+    "type": "Botany",
+    "zoneName": "Coerthas Western Highlands",
+    "gatheringPointBaseId": 329,
+    "territoryTypeId": 397,
+    "mapId": 211,
+    "mapX": 25.7,
+    "mapY": 29.4,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 0,
+        "endHour": 4
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 12971,
+    "itemName": "Highland Oregano",
+    "type": "Botany",
+    "zoneName": "Coerthas Western Highlands",
+    "gatheringPointBaseId": 329,
+    "territoryTypeId": 397,
+    "mapId": 211,
+    "mapX": 25.7,
+    "mapY": 29.4,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 0,
+        "endHour": 4
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 12,
+    "itemName": "Lightning Crystal",
+    "type": "Mining",
+    "zoneName": "Coerthas Western Highlands",
+    "gatheringPointBaseId": 305,
+    "territoryTypeId": 397,
+    "mapId": 211,
+    "mapX": 23.5,
+    "mapY": 21.1,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 20,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 5218,
+    "itemName": "Lightning Moraine",
+    "type": "Mining",
+    "zoneName": "Coerthas Western Highlands",
+    "gatheringPointBaseId": 305,
+    "territoryTypeId": 397,
+    "mapId": 211,
+    "mapX": 23.5,
+    "mapY": 21.1,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 20,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 15948,
+    "itemName": "Lover\u0027s Laurel",
+    "type": "Botany",
+    "zoneName": "Coerthas Western Highlands",
+    "gatheringPointBaseId": 329,
+    "territoryTypeId": 397,
+    "mapId": 211,
+    "mapX": 25.7,
+    "mapY": 29.4,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 0,
+        "endHour": 4
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 33148,
+    "itemName": "Pot Marjoram",
+    "type": "Botany",
+    "zoneName": "Coerthas Western Highlands",
+    "gatheringPointBaseId": 329,
+    "territoryTypeId": 397,
+    "mapId": 211,
+    "mapX": 25.7,
+    "mapY": 29.4,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 0,
+        "endHour": 4
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 15949,
+    "itemName": "Radiant Astral Moraine",
+    "type": "Mining",
+    "zoneName": "Coerthas Western Highlands",
+    "gatheringPointBaseId": 305,
+    "territoryTypeId": 397,
+    "mapId": 211,
+    "mapX": 23.5,
+    "mapY": 21.1,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 20,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 5224,
+    "itemName": "Radiant Lightning Moraine",
+    "type": "Mining",
+    "zoneName": "Coerthas Western Highlands",
+    "gatheringPointBaseId": 305,
+    "territoryTypeId": 397,
+    "mapId": 211,
+    "mapX": 23.5,
+    "mapY": 21.1,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 20,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 16724,
+    "itemName": "Tungstite",
+    "type": "Mining",
+    "zoneName": "Coerthas Western Highlands",
+    "gatheringPointBaseId": 289,
+    "territoryTypeId": 397,
+    "mapId": 211,
+    "mapX": 10.3,
+    "mapY": 9.5,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 2,
+        "endHour": 4
+      },
+      {
+        "startHour": 14,
+        "endHour": 16
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 4833,
+    "itemName": "Vanilla Beans",
+    "type": "Botany",
+    "zoneName": "Coerthas Western Highlands",
+    "gatheringPointBaseId": 345,
+    "territoryTypeId": 397,
+    "mapId": 211,
+    "mapX": 22.4,
+    "mapY": 21.5,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 6,
+        "endHour": 8
+      },
+      {
+        "startHour": 18,
+        "endHour": 20
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 5163,
+    "itemName": "Violet Quartz",
+    "type": "Mining",
+    "zoneName": "Coerthas Western Highlands",
+    "gatheringPointBaseId": 321,
+    "territoryTypeId": 397,
+    "mapId": 211,
+    "mapX": 37.3,
+    "mapY": 17.6,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 0,
+        "endHour": 2
+      },
+      {
+        "startHour": 12,
+        "endHour": 14
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 33149,
+    "itemName": "Water Mint",
+    "type": "Botany",
+    "zoneName": "Coerthas Western Highlands",
+    "gatheringPointBaseId": 329,
+    "territoryTypeId": 397,
+    "mapId": 211,
+    "mapX": 25.7,
+    "mapY": 29.4,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 0,
+        "endHour": 4
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 33150,
+    "itemName": "Wild Sage",
+    "type": "Botany",
+    "zoneName": "Coerthas Western Highlands",
+    "gatheringPointBaseId": 329,
+    "territoryTypeId": 397,
+    "mapId": 211,
+    "mapX": 25.7,
+    "mapY": 29.4,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 0,
+        "endHour": 4
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 6209,
+    "itemName": "Kidragora",
+    "type": "Botany",
+    "zoneName": "East Shroud",
+    "gatheringPointBaseId": 218,
+    "territoryTypeId": 152,
+    "mapId": 5,
+    "mapX": 13.8,
+    "mapY": 23.8,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 21,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 10098,
+    "itemName": "Mazlaya Greens",
+    "type": "Botany",
+    "zoneName": "East Shroud",
+    "gatheringPointBaseId": 216,
+    "territoryTypeId": 152,
+    "mapId": 5,
+    "mapX": 22,
+    "mapY": 26.5,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 1,
+        "endHour": 4
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 10098,
+    "itemName": "Mazlaya Greens",
+    "type": "Botany",
+    "zoneName": "East Shroud",
+    "gatheringPointBaseId": 217,
+    "territoryTypeId": 152,
+    "mapId": 5,
+    "mapX": 17.7,
+    "mapY": 19.3,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 5,
+        "endHour": 8
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 10098,
+    "itemName": "Mazlaya Greens",
+    "type": "Botany",
+    "zoneName": "East Shroud",
+    "gatheringPointBaseId": 218,
+    "territoryTypeId": 152,
+    "mapId": 5,
+    "mapX": 13.8,
+    "mapY": 23.8,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 21,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 10098,
+    "itemName": "Mazlaya Greens",
+    "type": "Botany",
+    "zoneName": "East Shroud",
+    "gatheringPointBaseId": 251,
+    "territoryTypeId": 152,
+    "mapId": 5,
+    "mapX": 22.7,
+    "mapY": 30.6,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 17,
+        "endHour": 20
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 10096,
+    "itemName": "Rosemary",
+    "type": "Botany",
+    "zoneName": "East Shroud",
+    "gatheringPointBaseId": 251,
+    "territoryTypeId": 152,
+    "mapId": 5,
+    "mapX": 22.7,
+    "mapY": 30.6,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 17,
+        "endHour": 20
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 5350,
+    "itemName": "Silkworm Cocoon",
+    "type": "Botany",
+    "zoneName": "East Shroud",
+    "gatheringPointBaseId": 216,
+    "territoryTypeId": 152,
+    "mapId": 5,
+    "mapX": 22,
+    "mapY": 26.5,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 1,
+        "endHour": 4
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 5545,
+    "itemName": "Trillium",
+    "type": "Botany",
+    "zoneName": "East Shroud",
+    "gatheringPointBaseId": 217,
+    "territoryTypeId": 152,
+    "mapId": 5,
+    "mapX": 17.7,
+    "mapY": 19.3,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 5,
+        "endHour": 8
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 5546,
+    "itemName": "Trillium Bulb",
+    "type": "Botany",
+    "zoneName": "East Shroud",
+    "gatheringPointBaseId": 218,
+    "territoryTypeId": 152,
+    "mapId": 5,
+    "mapX": 13.8,
+    "mapY": 23.8,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 21,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 6148,
+    "itemName": "Dzemael Tomato",
+    "type": "Botany",
+    "zoneName": "Eastern La Noscea",
+    "gatheringPointBaseId": 220,
+    "territoryTypeId": 137,
+    "mapId": 17,
+    "mapX": 17.6,
+    "mapY": 27.6,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 13,
+        "endHour": 16
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 7724,
+    "itemName": "Dzemael Tomato Seeds",
+    "type": "Botany",
+    "zoneName": "Eastern La Noscea",
+    "gatheringPointBaseId": 220,
+    "territoryTypeId": 137,
+    "mapId": 17,
+    "mapX": 17.6,
+    "mapY": 27.6,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 13,
+        "endHour": 16
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 6147,
+    "itemName": "Honey Lemon",
+    "type": "Botany",
+    "zoneName": "Eastern La Noscea",
+    "gatheringPointBaseId": 219,
+    "territoryTypeId": 137,
+    "mapId": 17,
+    "mapX": 27.5,
+    "mapY": 32.8,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 5,
+        "endHour": 8
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 7733,
+    "itemName": "Honey Lemon Seeds",
+    "type": "Botany",
+    "zoneName": "Eastern La Noscea",
+    "gatheringPointBaseId": 219,
+    "territoryTypeId": 137,
+    "mapId": 17,
+    "mapX": 27.5,
+    "mapY": 32.8,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 5,
+        "endHour": 8
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 4816,
+    "itemName": "Prickly Pineapple",
+    "type": "Botany",
+    "zoneName": "Eastern La Noscea",
+    "gatheringPointBaseId": 214,
+    "territoryTypeId": 137,
+    "mapId": 17,
+    "mapX": 30.7,
+    "mapY": 27,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 9,
+        "endHour": 12
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 7734,
+    "itemName": "Prickly Pineapple Seeds",
+    "type": "Botany",
+    "zoneName": "Eastern La Noscea",
+    "gatheringPointBaseId": 214,
+    "territoryTypeId": 137,
+    "mapId": 17,
+    "mapX": 30.7,
+    "mapY": 27,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 9,
+        "endHour": 12
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 9519,
+    "itemName": "Pumice",
+    "type": "Mining",
+    "zoneName": "Eastern La Noscea",
+    "gatheringPointBaseId": 250,
+    "territoryTypeId": 137,
+    "mapId": 17,
+    "mapX": 17.6,
+    "mapY": 27.5,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 1,
+        "endHour": 4
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 6152,
+    "itemName": "Volcanic Rock Salt",
+    "type": "Mining",
+    "zoneName": "Eastern La Noscea",
+    "gatheringPointBaseId": 224,
+    "territoryTypeId": 137,
+    "mapId": 17,
+    "mapX": 19.4,
+    "mapY": 33.1,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 17,
+        "endHour": 20
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 8030,
+    "itemName": "Antumbral Rock",
+    "type": "Mining",
+    "zoneName": "Eastern Thanalan",
+    "gatheringPointBaseId": 246,
+    "territoryTypeId": 145,
+    "mapId": 22,
+    "mapX": 26.9,
+    "mapY": 18.6,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 2,
+        "endHour": 5
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 4800,
+    "itemName": "Black Truffle",
+    "type": "Botany",
+    "zoneName": "Eastern Thanalan",
+    "gatheringPointBaseId": 221,
+    "territoryTypeId": 145,
+    "mapId": 22,
+    "mapX": 12.3,
+    "mapY": 15.9,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 13,
+        "endHour": 16
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 6199,
+    "itemName": "Coblyn Larva",
+    "type": "Mining",
+    "zoneName": "Eastern Thanalan",
+    "gatheringPointBaseId": 223,
+    "territoryTypeId": 145,
+    "mapId": 22,
+    "mapX": 28.1,
+    "mapY": 21.7,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 9,
+        "endHour": 12
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 5118,
+    "itemName": "Gold Ore",
+    "type": "Mining",
+    "zoneName": "Eastern Thanalan",
+    "gatheringPointBaseId": 223,
+    "territoryTypeId": 145,
+    "mapId": 22,
+    "mapX": 28.1,
+    "mapY": 21.7,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 9,
+        "endHour": 12
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 5273,
+    "itemName": "Gold Sand",
+    "type": "Mining",
+    "zoneName": "Eastern Thanalan",
+    "gatheringPointBaseId": 226,
+    "territoryTypeId": 145,
+    "mapId": 22,
+    "mapX": 25.6,
+    "mapY": 23.2,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 5,
+        "endHour": 8
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 10095,
+    "itemName": "Gregarious Worm",
+    "type": "Mining",
+    "zoneName": "Eastern Thanalan",
+    "gatheringPointBaseId": 223,
+    "territoryTypeId": 145,
+    "mapId": 22,
+    "mapX": 28.1,
+    "mapY": 21.7,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 9,
+        "endHour": 12
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 10098,
+    "itemName": "Mazlaya Greens",
+    "type": "Botany",
+    "zoneName": "Eastern Thanalan",
+    "gatheringPointBaseId": 221,
+    "territoryTypeId": 145,
+    "mapId": 22,
+    "mapX": 12.3,
+    "mapY": 15.9,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 13,
+        "endHour": 16
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 36195,
+    "itemName": "Mempisang Log",
+    "type": "Botany",
+    "zoneName": "Elpis",
+    "gatheringPointBaseId": 856,
+    "territoryTypeId": 961,
+    "mapId": 700,
+    "mapX": 33.2,
+    "mapY": 14.8,
+    "jobLevelRequired": 90,
+    "timeWindows": [
+      {
+        "startHour": 6,
+        "endHour": 8
+      },
+      {
+        "startHour": 18,
+        "endHour": 20
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 37818,
+    "itemName": "Paldao Log",
+    "type": "Botany",
+    "zoneName": "Elpis",
+    "gatheringPointBaseId": 463,
+    "territoryTypeId": 961,
+    "mapId": 700,
+    "mapX": 9.8,
+    "mapY": 29.9,
+    "jobLevelRequired": 90,
+    "timeWindows": [
+      {
+        "startHour": 2,
+        "endHour": 4
+      },
+      {
+        "startHour": 14,
+        "endHour": 16
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 36214,
+    "itemName": "Potent Spice",
+    "type": "Botany",
+    "zoneName": "Elpis",
+    "gatheringPointBaseId": 856,
+    "territoryTypeId": 961,
+    "mapId": 700,
+    "mapX": 33.2,
+    "mapY": 14.8,
+    "jobLevelRequired": 90,
+    "timeWindows": [
+      {
+        "startHour": 6,
+        "endHour": 8
+      },
+      {
+        "startHour": 18,
+        "endHour": 20
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 39234,
+    "itemName": "Prime Sphongos",
+    "type": "Botany",
+    "zoneName": "Elpis",
+    "gatheringPointBaseId": 463,
+    "territoryTypeId": 961,
+    "mapId": 700,
+    "mapX": 9.8,
+    "mapY": 29.9,
+    "jobLevelRequired": 90,
+    "timeWindows": [
+      {
+        "startHour": 2,
+        "endHour": 4
+      },
+      {
+        "startHour": 14,
+        "endHour": 16
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 36299,
+    "itemName": "Rarefied Annite",
+    "type": "Mining",
+    "zoneName": "Elpis",
+    "gatheringPointBaseId": 832,
+    "territoryTypeId": 961,
+    "mapId": 700,
+    "mapX": 8.2,
+    "mapY": 36.6,
+    "jobLevelRequired": 90,
+    "timeWindows": [
+      {
+        "startHour": 10,
+        "endHour": 12
+      },
+      {
+        "startHour": 22,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 36297,
+    "itemName": "Rarefied Blue Zircon",
+    "type": "Mining",
+    "zoneName": "Elpis",
+    "gatheringPointBaseId": 832,
+    "territoryTypeId": 961,
+    "mapId": 700,
+    "mapX": 8.2,
+    "mapY": 36.6,
+    "jobLevelRequired": 90,
+    "timeWindows": [
+      {
+        "startHour": 10,
+        "endHour": 12
+      },
+      {
+        "startHour": 22,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 36308,
+    "itemName": "Rarefied Elder Nutmeg",
+    "type": "Botany",
+    "zoneName": "Elpis",
+    "gatheringPointBaseId": 853,
+    "territoryTypeId": 961,
+    "mapId": 700,
+    "mapX": 25,
+    "mapY": 5.6,
+    "jobLevelRequired": 90,
+    "timeWindows": [
+      {
+        "startHour": 0,
+        "endHour": 2
+      },
+      {
+        "startHour": 12,
+        "endHour": 14
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 36306,
+    "itemName": "Rarefied Sykon",
+    "type": "Botany",
+    "zoneName": "Elpis",
+    "gatheringPointBaseId": 853,
+    "territoryTypeId": 961,
+    "mapId": 700,
+    "mapX": 25,
+    "mapY": 5.6,
+    "jobLevelRequired": 90,
+    "timeWindows": [
+      {
+        "startHour": 0,
+        "endHour": 2
+      },
+      {
+        "startHour": 12,
+        "endHour": 14
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 39707,
+    "itemName": "Raw Spodumene",
+    "type": "Mining",
+    "zoneName": "Elpis",
+    "gatheringPointBaseId": 934,
+    "territoryTypeId": 961,
+    "mapId": 700,
+    "mapX": 30.3,
+    "mapY": 18.3,
+    "jobLevelRequired": 90,
+    "timeWindows": [
+      {
+        "startHour": 8,
+        "endHour": 10
+      },
+      {
+        "startHour": 20,
+        "endHour": 22
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 36179,
+    "itemName": "Rhodium Sand",
+    "type": "Mining",
+    "zoneName": "Elpis",
+    "gatheringPointBaseId": 836,
+    "territoryTypeId": 961,
+    "mapId": 700,
+    "mapX": 13.6,
+    "mapY": 7.2,
+    "jobLevelRequired": 90,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 6
+      },
+      {
+        "startHour": 16,
+        "endHour": 18
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 36215,
+    "itemName": "Stonehard Water",
+    "type": "Mining",
+    "zoneName": "Elpis",
+    "gatheringPointBaseId": 836,
+    "territoryTypeId": 961,
+    "mapId": 700,
+    "mapX": 13.6,
+    "mapY": 7.2,
+    "jobLevelRequired": 90,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 6
+      },
+      {
+        "startHour": 16,
+        "endHour": 18
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 36304,
+    "itemName": "Rarefied Red Pine Log",
+    "type": "Botany",
+    "zoneName": "Garlemald",
+    "gatheringPointBaseId": 852,
+    "territoryTypeId": 958,
+    "mapId": 697,
+    "mapX": 35.1,
+    "mapY": 5.8,
+    "jobLevelRequired": 85,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 6
+      },
+      {
+        "startHour": 16,
+        "endHour": 18
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 39709,
+    "itemName": "Field Mustard",
+    "type": "Botany",
+    "zoneName": "Garlemald",
+    "gatheringPointBaseId": 935,
+    "territoryTypeId": 958,
+    "mapId": 697,
+    "mapX": 17.8,
+    "mapY": 12.5,
+    "jobLevelRequired": 90,
+    "timeWindows": [
+      {
+        "startHour": 10,
+        "endHour": 12
+      },
+      {
+        "startHour": 22,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 36286,
+    "itemName": "Ghostly Umbral Rock",
+    "type": "Mining",
+    "zoneName": "Garlemald",
+    "gatheringPointBaseId": 828,
+    "territoryTypeId": 958,
+    "mapId": 697,
+    "mapX": 10.1,
+    "mapY": 15.3,
+    "jobLevelRequired": 90,
+    "timeWindows": [
+      {
+        "startHour": 20,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 12,
+    "itemName": "Lightning Crystal",
+    "type": "Mining",
+    "zoneName": "Garlemald",
+    "gatheringPointBaseId": 828,
+    "territoryTypeId": 958,
+    "mapId": 697,
+    "mapX": 10.1,
+    "mapY": 15.3,
+    "jobLevelRequired": 90,
+    "timeWindows": [
+      {
+        "startHour": 20,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 37694,
+    "itemName": "Prime Siderite",
+    "type": "Mining",
+    "zoneName": "Garlemald",
+    "gatheringPointBaseId": 834,
+    "territoryTypeId": 958,
+    "mapId": 697,
+    "mapX": 32.2,
+    "mapY": 34.9,
+    "jobLevelRequired": 90,
+    "timeWindows": [
+      {
+        "startHour": 0,
+        "endHour": 2
+      },
+      {
+        "startHour": 12,
+        "endHour": 14
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 36298,
+    "itemName": "Rarefied Eblan Alumen",
+    "type": "Mining",
+    "zoneName": "Garlemald",
+    "gatheringPointBaseId": 831,
+    "territoryTypeId": 958,
+    "mapId": 697,
+    "mapX": 12.8,
+    "mapY": 21.9,
+    "jobLevelRequired": 90,
+    "timeWindows": [
+      {
+        "startHour": 2,
+        "endHour": 4
+      },
+      {
+        "startHour": 14,
+        "endHour": 16
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 36296,
+    "itemName": "Rarefied Phrygian Gold Ore",
+    "type": "Mining",
+    "zoneName": "Garlemald",
+    "gatheringPointBaseId": 831,
+    "territoryTypeId": 958,
+    "mapId": 697,
+    "mapX": 12.8,
+    "mapY": 21.9,
+    "jobLevelRequired": 90,
+    "timeWindows": [
+      {
+        "startHour": 2,
+        "endHour": 4
+      },
+      {
+        "startHour": 14,
+        "endHour": 16
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 37279,
+    "itemName": "Raw Eblan Danburite",
+    "type": "Mining",
+    "zoneName": "Garlemald",
+    "gatheringPointBaseId": 834,
+    "territoryTypeId": 958,
+    "mapId": 697,
+    "mapX": 32.2,
+    "mapY": 34.9,
+    "jobLevelRequired": 90,
+    "timeWindows": [
+      {
+        "startHour": 0,
+        "endHour": 2
+      },
+      {
+        "startHour": 12,
+        "endHour": 14
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 37817,
+    "itemName": "Raw Rutilated Quartz",
+    "type": "Mining",
+    "zoneName": "Garlemald",
+    "gatheringPointBaseId": 338,
+    "territoryTypeId": 958,
+    "mapId": 697,
+    "mapX": 32,
+    "mapY": 17.4,
+    "jobLevelRequired": 90,
+    "timeWindows": [
+      {
+        "startHour": 6,
+        "endHour": 8
+      },
+      {
+        "startHour": 18,
+        "endHour": 20
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 38934,
+    "itemName": "Raw Zoisite",
+    "type": "Mining",
+    "zoneName": "Garlemald",
+    "gatheringPointBaseId": 338,
+    "territoryTypeId": 958,
+    "mapId": 697,
+    "mapX": 32,
+    "mapY": 17.4,
+    "jobLevelRequired": 90,
+    "timeWindows": [
+      {
+        "startHour": 6,
+        "endHour": 8
+      },
+      {
+        "startHour": 18,
+        "endHour": 20
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 36216,
+    "itemName": "Rime Dolomite",
+    "type": "Mining",
+    "zoneName": "Garlemald",
+    "gatheringPointBaseId": 834,
+    "territoryTypeId": 958,
+    "mapId": 697,
+    "mapX": 32.2,
+    "mapY": 34.9,
+    "jobLevelRequired": 90,
+    "timeWindows": [
+      {
+        "startHour": 0,
+        "endHour": 2
+      },
+      {
+        "startHour": 12,
+        "endHour": 14
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 36215,
+    "itemName": "Stonehard Water",
+    "type": "Mining",
+    "zoneName": "Garlemald",
+    "gatheringPointBaseId": 834,
+    "territoryTypeId": 958,
+    "mapId": 697,
+    "mapX": 32.2,
+    "mapY": 34.9,
+    "jobLevelRequired": 90,
+    "timeWindows": [
+      {
+        "startHour": 0,
+        "endHour": 2
+      },
+      {
+        "startHour": 12,
+        "endHour": 14
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 45972,
+    "itemName": "Cochineal Pigment",
+    "type": "Botany",
+    "zoneName": "Heritage Found",
+    "gatheringPointBaseId": 1193,
+    "territoryTypeId": 1191,
+    "mapId": 861,
+    "mapX": 34.2,
+    "mapY": 20.7,
+    "jobLevelRequired": 100,
+    "timeWindows": [
+      {
+        "startHour": 6,
+        "endHour": 8
+      },
+      {
+        "startHour": 18,
+        "endHour": 20
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 49208,
+    "itemName": "Dense Aluminum Ore",
+    "type": "Mining",
+    "zoneName": "Heritage Found",
+    "gatheringPointBaseId": 1297,
+    "territoryTypeId": 1191,
+    "mapId": 861,
+    "mapX": 23.7,
+    "mapY": 27.9,
+    "jobLevelRequired": 100,
+    "timeWindows": [
+      {
+        "startHour": 10,
+        "endHour": 12
+      },
+      {
+        "startHour": 22,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 46244,
+    "itemName": "Desert Lapis Ore",
+    "type": "Mining",
+    "zoneName": "Heritage Found",
+    "gatheringPointBaseId": 1190,
+    "territoryTypeId": 1191,
+    "mapId": 861,
+    "mapX": 14,
+    "mapY": 16.8,
+    "jobLevelRequired": 100,
+    "timeWindows": [
+      {
+        "startHour": 2,
+        "endHour": 4
+      },
+      {
+        "startHour": 14,
+        "endHour": 16
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 11,
+    "itemName": "Earth Crystal",
+    "type": "Mining",
+    "zoneName": "Heritage Found",
+    "gatheringPointBaseId": 1014,
+    "territoryTypeId": 1191,
+    "mapId": 861,
+    "mapX": 26.7,
+    "mapY": 12.2,
+    "jobLevelRequired": 100,
+    "timeWindows": [
+      {
+        "startHour": 20,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 43931,
+    "itemName": "Electrocoal",
+    "type": "Mining",
+    "zoneName": "Heritage Found",
+    "gatheringPointBaseId": 1014,
+    "territoryTypeId": 1191,
+    "mapId": 861,
+    "mapX": 26.7,
+    "mapY": 12.2,
+    "jobLevelRequired": 100,
+    "timeWindows": [
+      {
+        "startHour": 20,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 45973,
+    "itemName": "Fulgurite",
+    "type": "Mining",
+    "zoneName": "Heritage Found",
+    "gatheringPointBaseId": 1190,
+    "territoryTypeId": 1191,
+    "mapId": 861,
+    "mapX": 14,
+    "mapY": 16.8,
+    "jobLevelRequired": 100,
+    "timeWindows": [
+      {
+        "startHour": 2,
+        "endHour": 4
+      },
+      {
+        "startHour": 14,
+        "endHour": 16
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 43922,
+    "itemName": "Rarefied Ra\u0027Kaznar Ore",
+    "type": "Mining",
+    "zoneName": "Heritage Found",
+    "gatheringPointBaseId": 1024,
+    "territoryTypeId": 1191,
+    "mapId": 861,
+    "mapX": 34.6,
+    "mapY": 8.3,
+    "jobLevelRequired": 100,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 6
+      },
+      {
+        "startHour": 16,
+        "endHour": 18
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 44233,
+    "itemName": "Rarefied White Gold Ore",
+    "type": "Mining",
+    "zoneName": "Heritage Found",
+    "gatheringPointBaseId": 1024,
+    "territoryTypeId": 1191,
+    "mapId": 861,
+    "mapX": 34.6,
+    "mapY": 8.3,
+    "jobLevelRequired": 100,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 6
+      },
+      {
+        "startHour": 16,
+        "endHour": 18
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 27833,
+    "itemName": "Broad Beans",
+    "type": "Botany",
+    "zoneName": "Il Mheg",
+    "gatheringPointBaseId": 628,
+    "territoryTypeId": 816,
+    "mapId": 494,
+    "mapX": 24.9,
+    "mapY": 36.8,
+    "jobLevelRequired": 75,
+    "timeWindows": [
+      {
+        "startHour": 0,
+        "endHour": 2
+      },
+      {
+        "startHour": 12,
+        "endHour": 14
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 33004,
+    "itemName": "Rarefied Miracle Apple Log",
+    "type": "Botany",
+    "zoneName": "Il Mheg",
+    "gatheringPointBaseId": 773,
+    "territoryTypeId": 816,
+    "mapId": 494,
+    "mapX": 4.1,
+    "mapY": 23.1,
+    "jobLevelRequired": 75,
+    "timeWindows": [
+      {
+        "startHour": 10,
+        "endHour": 12
+      },
+      {
+        "startHour": 22,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 33002,
+    "itemName": "Rarefied Pixie Apple",
+    "type": "Botany",
+    "zoneName": "Il Mheg",
+    "gatheringPointBaseId": 773,
+    "territoryTypeId": 816,
+    "mapId": 494,
+    "mapX": 4.1,
+    "mapY": 23.1,
+    "jobLevelRequired": 75,
+    "timeWindows": [
+      {
+        "startHour": 10,
+        "endHour": 12
+      },
+      {
+        "startHour": 22,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 27727,
+    "itemName": "Raw Diaspore",
+    "type": "Mining",
+    "zoneName": "Il Mheg",
+    "gatheringPointBaseId": 604,
+    "territoryTypeId": 816,
+    "mapId": 494,
+    "mapX": 26.5,
+    "mapY": 13.3,
+    "jobLevelRequired": 75,
+    "timeWindows": [
+      {
+        "startHour": 6,
+        "endHour": 8
+      },
+      {
+        "startHour": 18,
+        "endHour": 20
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 28717,
+    "itemName": "Beryllium Ore",
+    "type": "Mining",
+    "zoneName": "Il Mheg",
+    "gatheringPointBaseId": 609,
+    "territoryTypeId": 816,
+    "mapId": 494,
+    "mapX": 30.6,
+    "mapY": 20.6,
+    "jobLevelRequired": 80,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 6
+      },
+      {
+        "startHour": 16,
+        "endHour": 18
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 29972,
+    "itemName": "Merbau Log",
+    "type": "Botany",
+    "zoneName": "Il Mheg",
+    "gatheringPointBaseId": 683,
+    "territoryTypeId": 816,
+    "mapId": 494,
+    "mapX": 36.5,
+    "mapY": 27.4,
+    "jobLevelRequired": 80,
+    "timeWindows": [
+      {
+        "startHour": 8,
+        "endHour": 10
+      },
+      {
+        "startHour": 20,
+        "endHour": 22
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 27705,
+    "itemName": "Prismstone",
+    "type": "Mining",
+    "zoneName": "Il Mheg",
+    "gatheringPointBaseId": 609,
+    "territoryTypeId": 816,
+    "mapId": 494,
+    "mapX": 30.6,
+    "mapY": 20.6,
+    "jobLevelRequired": 80,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 6
+      },
+      {
+        "startHour": 16,
+        "endHour": 18
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 32952,
+    "itemName": "Solstice Stone",
+    "type": "Mining",
+    "zoneName": "Il Mheg",
+    "gatheringPointBaseId": 759,
+    "territoryTypeId": 816,
+    "mapId": 494,
+    "mapX": 35.7,
+    "mapY": 8.7,
+    "jobLevelRequired": 80,
+    "timeWindows": [
+      {
+        "startHour": 2,
+        "endHour": 4
+      },
+      {
+        "startHour": 14,
+        "endHour": 16
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 27726,
+    "itemName": "Raw Hematite",
+    "type": "Mining",
+    "zoneName": "Kholusia",
+    "gatheringPointBaseId": 603,
+    "territoryTypeId": 814,
+    "mapId": 492,
+    "mapX": 34,
+    "mapY": 23.2,
+    "jobLevelRequired": 70,
+    "timeWindows": [
+      {
+        "startHour": 2,
+        "endHour": 4
+      },
+      {
+        "startHour": 14,
+        "endHour": 16
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 33003,
+    "itemName": "Rarefied White Oak Log",
+    "type": "Botany",
+    "zoneName": "Kholusia",
+    "gatheringPointBaseId": 774,
+    "territoryTypeId": 814,
+    "mapId": 492,
+    "mapX": 28,
+    "mapY": 32.8,
+    "jobLevelRequired": 75,
+    "timeWindows": [
+      {
+        "startHour": 8,
+        "endHour": 10
+      },
+      {
+        "startHour": 20,
+        "endHour": 22
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 8,
+    "itemName": "Fire Crystal",
+    "type": "Mining",
+    "zoneName": "Kholusia",
+    "gatheringPointBaseId": 601,
+    "territoryTypeId": 814,
+    "mapId": 492,
+    "mapX": 33,
+    "mapY": 18.5,
+    "jobLevelRequired": 80,
+    "timeWindows": [
+      {
+        "startHour": 16,
+        "endHour": 20
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 32955,
+    "itemName": "Hard Water",
+    "type": "Mining",
+    "zoneName": "Kholusia",
+    "gatheringPointBaseId": 758,
+    "territoryTypeId": 814,
+    "mapId": 492,
+    "mapX": 36.2,
+    "mapY": 12.3,
+    "jobLevelRequired": 80,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 6
+      },
+      {
+        "startHour": 16,
+        "endHour": 18
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 9,
+    "itemName": "Ice Crystal",
+    "type": "Botany",
+    "zoneName": "Kholusia",
+    "gatheringPointBaseId": 626,
+    "territoryTypeId": 814,
+    "mapId": 492,
+    "mapX": 18.7,
+    "mapY": 7.8,
+    "jobLevelRequired": 80,
+    "timeWindows": [
+      {
+        "startHour": 20,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 29978,
+    "itemName": "Imperial Fern",
+    "type": "Botany",
+    "zoneName": "Kholusia",
+    "gatheringPointBaseId": 684,
+    "territoryTypeId": 814,
+    "mapId": 492,
+    "mapX": 28.4,
+    "mapY": 21.2,
+    "jobLevelRequired": 80,
+    "timeWindows": [
+      {
+        "startHour": 0,
+        "endHour": 2
+      },
+      {
+        "startHour": 12,
+        "endHour": 14
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 27835,
+    "itemName": "Lemonette",
+    "type": "Botany",
+    "zoneName": "Kholusia",
+    "gatheringPointBaseId": 632,
+    "territoryTypeId": 814,
+    "mapId": 492,
+    "mapX": 20.1,
+    "mapY": 27.3,
+    "jobLevelRequired": 80,
+    "timeWindows": [
+      {
+        "startHour": 6,
+        "endHour": 8
+      },
+      {
+        "startHour": 18,
+        "endHour": 20
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 30592,
+    "itemName": "Levin Mint",
+    "type": "Botany",
+    "zoneName": "Kholusia",
+    "gatheringPointBaseId": 626,
+    "territoryTypeId": 814,
+    "mapId": 492,
+    "mapX": 18.7,
+    "mapY": 7.8,
+    "jobLevelRequired": 80,
+    "timeWindows": [
+      {
+        "startHour": 20,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 27807,
+    "itemName": "Shade Quartz",
+    "type": "Mining",
+    "zoneName": "Kholusia",
+    "gatheringPointBaseId": 601,
+    "territoryTypeId": 814,
+    "mapId": 492,
+    "mapX": 33,
+    "mapY": 18.5,
+    "jobLevelRequired": 80,
+    "timeWindows": [
+      {
+        "startHour": 16,
+        "endHour": 20
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 30485,
+    "itemName": "Tender Dill",
+    "type": "Botany",
+    "zoneName": "Kholusia",
+    "gatheringPointBaseId": 684,
+    "territoryTypeId": 814,
+    "mapId": 492,
+    "mapX": 28.4,
+    "mapY": 21.2,
+    "jobLevelRequired": 80,
+    "timeWindows": [
+      {
+        "startHour": 0,
+        "endHour": 2
+      },
+      {
+        "startHour": 12,
+        "endHour": 14
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 30591,
+    "itemName": "Thunder Rock",
+    "type": "Mining",
+    "zoneName": "Kholusia",
+    "gatheringPointBaseId": 601,
+    "territoryTypeId": 814,
+    "mapId": 492,
+    "mapX": 33,
+    "mapY": 18.5,
+    "jobLevelRequired": 80,
+    "timeWindows": [
+      {
+        "startHour": 16,
+        "endHour": 20
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 27808,
+    "itemName": "White Clay",
+    "type": "Botany",
+    "zoneName": "Kholusia",
+    "gatheringPointBaseId": 626,
+    "territoryTypeId": 814,
+    "mapId": 492,
+    "mapX": 18.7,
+    "mapY": 7.8,
+    "jobLevelRequired": 80,
+    "timeWindows": [
+      {
+        "startHour": 20,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 43919,
+    "itemName": "Rarefied Raw Dark Amber",
+    "type": "Mining",
+    "zoneName": "Kozama\u0027uka",
+    "gatheringPointBaseId": 1022,
+    "territoryTypeId": 1188,
+    "mapId": 858,
+    "mapX": 7,
+    "mapY": 7.4,
+    "jobLevelRequired": 95,
+    "timeWindows": [
+      {
+        "startHour": 10,
+        "endHour": 12
+      },
+      {
+        "startHour": 22,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 49210,
+    "itemName": "Carnauba Leaf",
+    "type": "Botany",
+    "zoneName": "Kozama\u0027uka",
+    "gatheringPointBaseId": 1299,
+    "territoryTypeId": 1188,
+    "mapId": 858,
+    "mapX": 14.7,
+    "mapY": 10.2,
+    "jobLevelRequired": 100,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 6
+      },
+      {
+        "startHour": 16,
+        "endHour": 18
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 44137,
+    "itemName": "Ipe Log",
+    "type": "Botany",
+    "zoneName": "Kozama\u0027uka",
+    "gatheringPointBaseId": 1033,
+    "territoryTypeId": 1188,
+    "mapId": 858,
+    "mapX": 7.4,
+    "mapY": 33.1,
+    "jobLevelRequired": 100,
+    "timeWindows": [
+      {
+        "startHour": 0,
+        "endHour": 2
+      },
+      {
+        "startHour": 12,
+        "endHour": 14
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 45970,
+    "itemName": "Raw Rhodochrosite",
+    "type": "Mining",
+    "zoneName": "Kozama\u0027uka",
+    "gatheringPointBaseId": 1188,
+    "territoryTypeId": 1188,
+    "mapId": 858,
+    "mapX": 12,
+    "mapY": 17.6,
+    "jobLevelRequired": 100,
+    "timeWindows": [
+      {
+        "startHour": 8,
+        "endHour": 10
+      },
+      {
+        "startHour": 20,
+        "endHour": 22
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 36293,
+    "itemName": "Rarefied Raw Ametrine",
+    "type": "Mining",
+    "zoneName": "Labyrinthos",
+    "gatheringPointBaseId": 829,
+    "territoryTypeId": 956,
+    "mapId": 695,
+    "mapX": 32.5,
+    "mapY": 21.2,
+    "jobLevelRequired": 85,
+    "timeWindows": [
+      {
+        "startHour": 0,
+        "endHour": 2
+      },
+      {
+        "startHour": 12,
+        "endHour": 14
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 36295,
+    "itemName": "Rarefied Sharlayan Rock Salt",
+    "type": "Mining",
+    "zoneName": "Labyrinthos",
+    "gatheringPointBaseId": 829,
+    "territoryTypeId": 956,
+    "mapId": 695,
+    "mapX": 32.5,
+    "mapY": 21.2,
+    "jobLevelRequired": 85,
+    "timeWindows": [
+      {
+        "startHour": 0,
+        "endHour": 2
+      },
+      {
+        "startHour": 12,
+        "endHour": 14
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 37822,
+    "itemName": "Ash Diatomite",
+    "type": "Mining",
+    "zoneName": "Labyrinthos",
+    "gatheringPointBaseId": 400,
+    "territoryTypeId": 956,
+    "mapId": 695,
+    "mapX": 11.2,
+    "mapY": 21.4,
+    "jobLevelRequired": 90,
+    "timeWindows": [
+      {
+        "startHour": 10,
+        "endHour": 12
+      },
+      {
+        "startHour": 22,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 37821,
+    "itemName": "Bayberry",
+    "type": "Botany",
+    "zoneName": "Labyrinthos",
+    "gatheringPointBaseId": 695,
+    "territoryTypeId": 956,
+    "mapId": 695,
+    "mapX": 28.1,
+    "mapY": 11.4,
+    "jobLevelRequired": 90,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 6
+      },
+      {
+        "startHour": 16,
+        "endHour": 18
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 39705,
+    "itemName": "Dark Cherry Log",
+    "type": "Botany",
+    "zoneName": "Labyrinthos",
+    "gatheringPointBaseId": 937,
+    "territoryTypeId": 956,
+    "mapId": 695,
+    "mapX": 19.1,
+    "mapY": 35.9,
+    "jobLevelRequired": 90,
+    "timeWindows": [
+      {
+        "startHour": 2,
+        "endHour": 4
+      },
+      {
+        "startHour": 14,
+        "endHour": 16
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 36287,
+    "itemName": "Ewer Clay",
+    "type": "Botany",
+    "zoneName": "Labyrinthos",
+    "gatheringPointBaseId": 849,
+    "territoryTypeId": 956,
+    "mapId": 695,
+    "mapX": 10.6,
+    "mapY": 34.8,
+    "jobLevelRequired": 90,
+    "timeWindows": [
+      {
+        "startHour": 8,
+        "endHour": 12
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 38933,
+    "itemName": "Mornveil Tree Bark",
+    "type": "Botany",
+    "zoneName": "Labyrinthos",
+    "gatheringPointBaseId": 695,
+    "territoryTypeId": 956,
+    "mapId": 695,
+    "mapX": 28.1,
+    "mapY": 11.4,
+    "jobLevelRequired": 90,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 6
+      },
+      {
+        "startHour": 16,
+        "endHour": 18
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 39909,
+    "itemName": "Prime Chloroschist",
+    "type": "Mining",
+    "zoneName": "Labyrinthos",
+    "gatheringPointBaseId": 400,
+    "territoryTypeId": 956,
+    "mapId": 695,
+    "mapX": 11.2,
+    "mapY": 21.4,
+    "jobLevelRequired": 90,
+    "timeWindows": [
+      {
+        "startHour": 10,
+        "endHour": 12
+      },
+      {
+        "startHour": 22,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 41413,
+    "itemName": "Prime Kukuru Beans",
+    "type": "Botany",
+    "zoneName": "Labyrinthos",
+    "gatheringPointBaseId": 937,
+    "territoryTypeId": 956,
+    "mapId": 695,
+    "mapX": 19.1,
+    "mapY": 35.9,
+    "jobLevelRequired": 90,
+    "timeWindows": [
+      {
+        "startHour": 2,
+        "endHour": 4
+      },
+      {
+        "startHour": 14,
+        "endHour": 16
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 36307,
+    "itemName": "Rarefied Dark Rye",
+    "type": "Botany",
+    "zoneName": "Labyrinthos",
+    "gatheringPointBaseId": 854,
+    "territoryTypeId": 956,
+    "mapId": 695,
+    "mapX": 10,
+    "mapY": 22.4,
+    "jobLevelRequired": 90,
+    "timeWindows": [
+      {
+        "startHour": 6,
+        "endHour": 8
+      },
+      {
+        "startHour": 18,
+        "endHour": 20
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 36309,
+    "itemName": "Rarefied Iceberg Lettuce",
+    "type": "Botany",
+    "zoneName": "Labyrinthos",
+    "gatheringPointBaseId": 854,
+    "territoryTypeId": 956,
+    "mapId": 695,
+    "mapX": 10,
+    "mapY": 22.4,
+    "jobLevelRequired": 90,
+    "timeWindows": [
+      {
+        "startHour": 6,
+        "endHour": 8
+      },
+      {
+        "startHour": 18,
+        "endHour": 20
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 38938,
+    "itemName": "Sophora Roots",
+    "type": "Botany",
+    "zoneName": "Labyrinthos",
+    "gatheringPointBaseId": 849,
+    "territoryTypeId": 956,
+    "mapId": 695,
+    "mapX": 10.6,
+    "mapY": 34.8,
+    "jobLevelRequired": 90,
+    "timeWindows": [
+      {
+        "startHour": 8,
+        "endHour": 12
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 10,
+    "itemName": "Wind Crystal",
+    "type": "Botany",
+    "zoneName": "Labyrinthos",
+    "gatheringPointBaseId": 849,
+    "territoryTypeId": 956,
+    "mapId": 695,
+    "mapX": 10.6,
+    "mapY": 34.8,
+    "jobLevelRequired": 90,
+    "timeWindows": [
+      {
+        "startHour": 8,
+        "endHour": 12
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 27836,
+    "itemName": "Peppermint",
+    "type": "Botany",
+    "zoneName": "Lakeland",
+    "gatheringPointBaseId": 629,
+    "territoryTypeId": 813,
+    "mapId": 491,
+    "mapX": 26.3,
+    "mapY": 20.7,
+    "jobLevelRequired": 75,
+    "timeWindows": [
+      {
+        "startHour": 10,
+        "endHour": 12
+      },
+      {
+        "startHour": 22,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 32982,
+    "itemName": "Rarefied Raw Petalite",
+    "type": "Mining",
+    "zoneName": "Lakeland",
+    "gatheringPointBaseId": 330,
+    "territoryTypeId": 813,
+    "mapId": 491,
+    "mapX": 31.3,
+    "mapY": 24.2,
+    "jobLevelRequired": 75,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 6
+      },
+      {
+        "startHour": 16,
+        "endHour": 18
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 32980,
+    "itemName": "Rarefied Titancopper Ore",
+    "type": "Mining",
+    "zoneName": "Lakeland",
+    "gatheringPointBaseId": 330,
+    "territoryTypeId": 813,
+    "mapId": 491,
+    "mapX": 31.3,
+    "mapY": 24.2,
+    "jobLevelRequired": 75,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 6
+      },
+      {
+        "startHour": 16,
+        "endHour": 18
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 27810,
+    "itemName": "Bog Sage",
+    "type": "Botany",
+    "zoneName": "Lakeland",
+    "gatheringPointBaseId": 622,
+    "territoryTypeId": 813,
+    "mapId": 491,
+    "mapX": 31.6,
+    "mapY": 36.6,
+    "jobLevelRequired": 80,
+    "timeWindows": [
+      {
+        "startHour": 12,
+        "endHour": 16
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 30486,
+    "itemName": "Brashgold Ore",
+    "type": "Mining",
+    "zoneName": "Lakeland",
+    "gatheringPointBaseId": 681,
+    "territoryTypeId": 813,
+    "mapId": 491,
+    "mapX": 4.7,
+    "mapY": 34,
+    "jobLevelRequired": 80,
+    "timeWindows": [
+      {
+        "startHour": 2,
+        "endHour": 4
+      },
+      {
+        "startHour": 14,
+        "endHour": 16
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 11,
+    "itemName": "Earth Crystal",
+    "type": "Botany",
+    "zoneName": "Lakeland",
+    "gatheringPointBaseId": 622,
+    "territoryTypeId": 813,
+    "mapId": 491,
+    "mapX": 31.6,
+    "mapY": 36.6,
+    "jobLevelRequired": 80,
+    "timeWindows": [
+      {
+        "startHour": 12,
+        "endHour": 16
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 27761,
+    "itemName": "Ethereal Cocoon",
+    "type": "Botany",
+    "zoneName": "Lakeland",
+    "gatheringPointBaseId": 634,
+    "territoryTypeId": 813,
+    "mapId": 491,
+    "mapX": 26.5,
+    "mapY": 10.1,
+    "jobLevelRequired": 80,
+    "timeWindows": [
+      {
+        "startHour": 8,
+        "endHour": 10
+      },
+      {
+        "startHour": 20,
+        "endHour": 22
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 29968,
+    "itemName": "Fireheart Cobalt",
+    "type": "Mining",
+    "zoneName": "Lakeland",
+    "gatheringPointBaseId": 681,
+    "territoryTypeId": 813,
+    "mapId": 491,
+    "mapX": 4.7,
+    "mapY": 34,
+    "jobLevelRequired": 80,
+    "timeWindows": [
+      {
+        "startHour": 2,
+        "endHour": 4
+      },
+      {
+        "startHour": 14,
+        "endHour": 16
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 30592,
+    "itemName": "Levin Mint",
+    "type": "Botany",
+    "zoneName": "Lakeland",
+    "gatheringPointBaseId": 622,
+    "territoryTypeId": 813,
+    "mapId": 491,
+    "mapX": 31.6,
+    "mapY": 36.6,
+    "jobLevelRequired": 80,
+    "timeWindows": [
+      {
+        "startHour": 12,
+        "endHour": 16
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 12,
+    "itemName": "Lightning Crystal",
+    "type": "Mining",
+    "zoneName": "Lakeland",
+    "gatheringPointBaseId": 599,
+    "territoryTypeId": 813,
+    "mapId": 491,
+    "mapX": 35.5,
+    "mapY": 30.6,
+    "jobLevelRequired": 80,
+    "timeWindows": [
+      {
+        "startHour": 8,
+        "endHour": 12
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 27730,
+    "itemName": "Raw Petalite",
+    "type": "Mining",
+    "zoneName": "Lakeland",
+    "gatheringPointBaseId": 607,
+    "territoryTypeId": 813,
+    "mapId": 491,
+    "mapX": 28.2,
+    "mapY": 33.2,
+    "jobLevelRequired": 80,
+    "timeWindows": [
+      {
+        "startHour": 6,
+        "endHour": 8
+      },
+      {
+        "startHour": 18,
+        "endHour": 20
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 27806,
+    "itemName": "Solarite",
+    "type": "Mining",
+    "zoneName": "Lakeland",
+    "gatheringPointBaseId": 599,
+    "territoryTypeId": 813,
+    "mapId": 491,
+    "mapX": 35.5,
+    "mapY": 30.6,
+    "jobLevelRequired": 80,
+    "timeWindows": [
+      {
+        "startHour": 8,
+        "endHour": 12
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 30591,
+    "itemName": "Thunder Rock",
+    "type": "Mining",
+    "zoneName": "Lakeland",
+    "gatheringPointBaseId": 599,
+    "territoryTypeId": 813,
+    "mapId": 491,
+    "mapX": 35.5,
+    "mapY": 30.6,
+    "jobLevelRequired": 80,
+    "timeWindows": [
+      {
+        "startHour": 8,
+        "endHour": 12
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 32954,
+    "itemName": "Wattle Petribark",
+    "type": "Botany",
+    "zoneName": "Lakeland",
+    "gatheringPointBaseId": 761,
+    "territoryTypeId": 813,
+    "mapId": 491,
+    "mapX": 5.2,
+    "mapY": 26.6,
+    "jobLevelRequired": 80,
+    "timeWindows": [
+      {
+        "startHour": 0,
+        "endHour": 2
+      },
+      {
+        "startHour": 12,
+        "endHour": 14
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 44845,
+    "itemName": "Alexandrian Ore",
+    "type": "Mining",
+    "zoneName": "Living Memory",
+    "gatheringPointBaseId": 1032,
+    "territoryTypeId": 1192,
+    "mapId": 862,
+    "mapX": 9.3,
+    "mapY": 15.2,
+    "jobLevelRequired": 100,
+    "timeWindows": [
+      {
+        "startHour": 6,
+        "endHour": 8
+      },
+      {
+        "startHour": 18,
+        "endHour": 20
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 44138,
+    "itemName": "Blackseed Cotton Boll",
+    "type": "Botany",
+    "zoneName": "Living Memory",
+    "gatheringPointBaseId": 1035,
+    "territoryTypeId": 1192,
+    "mapId": 862,
+    "mapX": 28.4,
+    "mapY": 17.4,
+    "jobLevelRequired": 100,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 6
+      },
+      {
+        "startHour": 16,
+        "endHour": 18
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 43932,
+    "itemName": "Brightwind Ore",
+    "type": "Mining",
+    "zoneName": "Living Memory",
+    "gatheringPointBaseId": 1015,
+    "territoryTypeId": 1192,
+    "mapId": 862,
+    "mapX": 10.5,
+    "mapY": 11.1,
+    "jobLevelRequired": 100,
+    "timeWindows": [
+      {
+        "startHour": 0,
+        "endHour": 4
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 46248,
+    "itemName": "Calamus Root",
+    "type": "Botany",
+    "zoneName": "Living Memory",
+    "gatheringPointBaseId": 1017,
+    "territoryTypeId": 1192,
+    "mapId": 862,
+    "mapX": 26.9,
+    "mapY": 7.4,
+    "jobLevelRequired": 100,
+    "timeWindows": [
+      {
+        "startHour": 16,
+        "endHour": 20
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 8,
+    "itemName": "Fire Crystal",
+    "type": "Botany",
+    "zoneName": "Living Memory",
+    "gatheringPointBaseId": 1017,
+    "territoryTypeId": 1192,
+    "mapId": 862,
+    "mapX": 26.9,
+    "mapY": 7.4,
+    "jobLevelRequired": 100,
+    "timeWindows": [
+      {
+        "startHour": 16,
+        "endHour": 20
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 49207,
+    "itemName": "Fulgurpine Log",
+    "type": "Botany",
+    "zoneName": "Living Memory",
+    "gatheringPointBaseId": 1301,
+    "territoryTypeId": 1192,
+    "mapId": 862,
+    "mapX": 8.5,
+    "mapY": 9.6,
+    "jobLevelRequired": 100,
+    "timeWindows": [
+      {
+        "startHour": 8,
+        "endHour": 10
+      },
+      {
+        "startHour": 20,
+        "endHour": 22
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 44135,
+    "itemName": "Harmonite Ore",
+    "type": "Mining",
+    "zoneName": "Living Memory",
+    "gatheringPointBaseId": 1032,
+    "territoryTypeId": 1192,
+    "mapId": 862,
+    "mapX": 9.3,
+    "mapY": 15.2,
+    "jobLevelRequired": 100,
+    "timeWindows": [
+      {
+        "startHour": 6,
+        "endHour": 8
+      },
+      {
+        "startHour": 18,
+        "endHour": 20
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 46247,
+    "itemName": "Levin Quartz",
+    "type": "Mining",
+    "zoneName": "Living Memory",
+    "gatheringPointBaseId": 1015,
+    "territoryTypeId": 1192,
+    "mapId": 862,
+    "mapX": 10.5,
+    "mapY": 11.1,
+    "jobLevelRequired": 100,
+    "timeWindows": [
+      {
+        "startHour": 0,
+        "endHour": 4
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 12,
+    "itemName": "Lightning Crystal",
+    "type": "Mining",
+    "zoneName": "Living Memory",
+    "gatheringPointBaseId": 1015,
+    "territoryTypeId": 1192,
+    "mapId": 862,
+    "mapX": 10.5,
+    "mapY": 11.1,
+    "jobLevelRequired": 100,
+    "timeWindows": [
+      {
+        "startHour": 0,
+        "endHour": 4
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 44844,
+    "itemName": "Optical Fibergrass",
+    "type": "Botany",
+    "zoneName": "Living Memory",
+    "gatheringPointBaseId": 1035,
+    "territoryTypeId": 1192,
+    "mapId": 862,
+    "mapX": 28.4,
+    "mapY": 17.4,
+    "jobLevelRequired": 100,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 6
+      },
+      {
+        "startHour": 16,
+        "endHour": 18
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 43923,
+    "itemName": "Rarefied Ash Soil",
+    "type": "Mining",
+    "zoneName": "Living Memory",
+    "gatheringPointBaseId": 1025,
+    "territoryTypeId": 1192,
+    "mapId": 862,
+    "mapX": 25,
+    "mapY": 17.3,
+    "jobLevelRequired": 100,
+    "timeWindows": [
+      {
+        "startHour": 0,
+        "endHour": 2
+      },
+      {
+        "startHour": 12,
+        "endHour": 14
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 43930,
+    "itemName": "Rarefied Windsbalm Bay Leaf",
+    "type": "Botany",
+    "zoneName": "Living Memory",
+    "gatheringPointBaseId": 1029,
+    "territoryTypeId": 1192,
+    "mapId": 862,
+    "mapX": 8.7,
+    "mapY": 7.5,
+    "jobLevelRequired": 100,
+    "timeWindows": [
+      {
+        "startHour": 10,
+        "endHour": 12
+      },
+      {
+        "startHour": 22,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 43934,
+    "itemName": "Volcanic Grass",
+    "type": "Botany",
+    "zoneName": "Living Memory",
+    "gatheringPointBaseId": 1017,
+    "territoryTypeId": 1192,
+    "mapId": 862,
+    "mapX": 26.9,
+    "mapY": 7.4,
+    "jobLevelRequired": 100,
+    "timeWindows": [
+      {
+        "startHour": 16,
+        "endHour": 20
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 49212,
+    "itemName": "Windspath Water",
+    "type": "Mining",
+    "zoneName": "Living Memory",
+    "gatheringPointBaseId": 1298,
+    "territoryTypeId": 1192,
+    "mapId": 862,
+    "mapX": 8.2,
+    "mapY": 14.2,
+    "jobLevelRequired": 100,
+    "timeWindows": [
+      {
+        "startHour": 2,
+        "endHour": 4
+      },
+      {
+        "startHour": 14,
+        "endHour": 16
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 10095,
+    "itemName": "Gregarious Worm",
+    "type": "Mining",
+    "zoneName": "Lower La Noscea",
+    "gatheringPointBaseId": 238,
+    "territoryTypeId": 135,
+    "mapId": 16,
+    "mapX": 23.8,
+    "mapY": 21.6,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 18,
+        "endHour": 21
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 10098,
+    "itemName": "Mazlaya Greens",
+    "type": "Botany",
+    "zoneName": "Lower La Noscea",
+    "gatheringPointBaseId": 235,
+    "territoryTypeId": 135,
+    "mapId": 16,
+    "mapX": 32.5,
+    "mapY": 13,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 6,
+        "endHour": 9
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 5146,
+    "itemName": "Raw Ruby",
+    "type": "Mining",
+    "zoneName": "Lower La Noscea",
+    "gatheringPointBaseId": 238,
+    "territoryTypeId": 135,
+    "mapId": 16,
+    "mapX": 23.8,
+    "mapY": 21.6,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 18,
+        "endHour": 21
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 5151,
+    "itemName": "Raw Sapphire",
+    "type": "Mining",
+    "zoneName": "Lower La Noscea",
+    "gatheringPointBaseId": 238,
+    "territoryTypeId": 135,
+    "mapId": 16,
+    "mapX": 23.8,
+    "mapY": 21.6,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 18,
+        "endHour": 21
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 7594,
+    "itemName": "Young Cieldalaes Spinach",
+    "type": "Botany",
+    "zoneName": "Lower La Noscea",
+    "gatheringPointBaseId": 235,
+    "territoryTypeId": 135,
+    "mapId": 16,
+    "mapX": 32.5,
+    "mapY": 13,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 6,
+        "endHour": 9
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 36294,
+    "itemName": "Rarefied Bismuth Ore",
+    "type": "Mining",
+    "zoneName": "Mare Lamentorum",
+    "gatheringPointBaseId": 830,
+    "territoryTypeId": 959,
+    "mapId": 698,
+    "mapX": 16.4,
+    "mapY": 32.7,
+    "jobLevelRequired": 85,
+    "timeWindows": [
+      {
+        "startHour": 6,
+        "endHour": 8
+      },
+      {
+        "startHour": 18,
+        "endHour": 20
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 11,
+    "itemName": "Earth Crystal",
+    "type": "Mining",
+    "zoneName": "Mare Lamentorum",
+    "gatheringPointBaseId": 827,
+    "territoryTypeId": 959,
+    "mapId": 698,
+    "mapX": 21.7,
+    "mapY": 34.7,
+    "jobLevelRequired": 90,
+    "timeWindows": [
+      {
+        "startHour": 0,
+        "endHour": 4
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 38937,
+    "itemName": "Earthen Quartz",
+    "type": "Mining",
+    "zoneName": "Mare Lamentorum",
+    "gatheringPointBaseId": 827,
+    "territoryTypeId": 959,
+    "mapId": 698,
+    "mapX": 21.7,
+    "mapY": 34.7,
+    "jobLevelRequired": 90,
+    "timeWindows": [
+      {
+        "startHour": 0,
+        "endHour": 4
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 37820,
+    "itemName": "Ilmenite",
+    "type": "Mining",
+    "zoneName": "Mare Lamentorum",
+    "gatheringPointBaseId": 346,
+    "territoryTypeId": 959,
+    "mapId": 698,
+    "mapX": 29.6,
+    "mapY": 22.4,
+    "jobLevelRequired": 90,
+    "timeWindows": [
+      {
+        "startHour": 8,
+        "endHour": 10
+      },
+      {
+        "startHour": 20,
+        "endHour": 22
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 39710,
+    "itemName": "Lovingbloom",
+    "type": "Botany",
+    "zoneName": "Mare Lamentorum",
+    "gatheringPointBaseId": 936,
+    "territoryTypeId": 959,
+    "mapId": 698,
+    "mapX": 25.9,
+    "mapY": 20.4,
+    "jobLevelRequired": 90,
+    "timeWindows": [
+      {
+        "startHour": 0,
+        "endHour": 2
+      },
+      {
+        "startHour": 12,
+        "endHour": 14
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 36167,
+    "itemName": "Lunar Adamantite Ore",
+    "type": "Mining",
+    "zoneName": "Mare Lamentorum",
+    "gatheringPointBaseId": 835,
+    "territoryTypeId": 959,
+    "mapId": 698,
+    "mapX": 9.5,
+    "mapY": 23.4,
+    "jobLevelRequired": 90,
+    "timeWindows": [
+      {
+        "startHour": 2,
+        "endHour": 4
+      },
+      {
+        "startHour": 14,
+        "endHour": 16
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 36285,
+    "itemName": "Lunar Quartz",
+    "type": "Mining",
+    "zoneName": "Mare Lamentorum",
+    "gatheringPointBaseId": 827,
+    "territoryTypeId": 959,
+    "mapId": 698,
+    "mapX": 21.7,
+    "mapY": 34.7,
+    "jobLevelRequired": 90,
+    "timeWindows": [
+      {
+        "startHour": 0,
+        "endHour": 4
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 39237,
+    "itemName": "Prime Achondrite",
+    "type": "Mining",
+    "zoneName": "Mare Lamentorum",
+    "gatheringPointBaseId": 346,
+    "territoryTypeId": 959,
+    "mapId": 698,
+    "mapX": 29.6,
+    "mapY": 22.4,
+    "jobLevelRequired": 90,
+    "timeWindows": [
+      {
+        "startHour": 8,
+        "endHour": 10
+      },
+      {
+        "startHour": 20,
+        "endHour": 22
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 36215,
+    "itemName": "Stonehard Water",
+    "type": "Mining",
+    "zoneName": "Mare Lamentorum",
+    "gatheringPointBaseId": 835,
+    "territoryTypeId": 959,
+    "mapId": 698,
+    "mapX": 9.5,
+    "mapY": 23.4,
+    "jobLevelRequired": 90,
+    "timeWindows": [
+      {
+        "startHour": 2,
+        "endHour": 4
+      },
+      {
+        "startHour": 14,
+        "endHour": 16
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 7592,
+    "itemName": "Apricot",
+    "type": "Botany",
+    "zoneName": "Middle La Noscea",
+    "gatheringPointBaseId": 231,
+    "territoryTypeId": 134,
+    "mapId": 15,
+    "mapX": 18.7,
+    "mapY": 16.5,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 9,
+        "endHour": 12
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 5394,
+    "itemName": "Ebony Log",
+    "type": "Botany",
+    "zoneName": "Middle La Noscea",
+    "gatheringPointBaseId": 248,
+    "territoryTypeId": 134,
+    "mapId": 15,
+    "mapX": 24.4,
+    "mapY": 26.4,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 7
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 14,
+    "itemName": "Fire Cluster",
+    "type": "Mining",
+    "zoneName": "Middle La Noscea",
+    "gatheringPointBaseId": 239,
+    "territoryTypeId": 134,
+    "mapId": 15,
+    "mapX": 24.3,
+    "mapY": 27,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 19,
+        "endHour": 22
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 7760,
+    "itemName": "Grade 3 La Noscean Topsoil",
+    "type": "Mining",
+    "zoneName": "Middle La Noscea",
+    "gatheringPointBaseId": 239,
+    "territoryTypeId": 134,
+    "mapId": 15,
+    "mapX": 24.3,
+    "mapY": 27,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 19,
+        "endHour": 22
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 17,
+    "itemName": "Earth Cluster",
+    "type": "Botany",
+    "zoneName": "Mor Dhona",
+    "gatheringPointBaseId": 215,
+    "territoryTypeId": 156,
+    "mapId": 25,
+    "mapX": 32.1,
+    "mapY": 13.6,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 1,
+        "endHour": 4
+      },
+      {
+        "startHour": 5,
+        "endHour": 8
+      },
+      {
+        "startHour": 9,
+        "endHour": 12
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 17,
+    "itemName": "Earth Cluster",
+    "type": "Mining",
+    "zoneName": "Mor Dhona",
+    "gatheringPointBaseId": 227,
+    "territoryTypeId": 156,
+    "mapId": 25,
+    "mapX": 27.8,
+    "mapY": 10.9,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 13,
+        "endHour": 16
+      },
+      {
+        "startHour": 17,
+        "endHour": 20
+      },
+      {
+        "startHour": 21,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 14,
+    "itemName": "Fire Cluster",
+    "type": "Botany",
+    "zoneName": "Mor Dhona",
+    "gatheringPointBaseId": 215,
+    "territoryTypeId": 156,
+    "mapId": 25,
+    "mapX": 32.1,
+    "mapY": 13.6,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 1,
+        "endHour": 4
+      },
+      {
+        "startHour": 5,
+        "endHour": 8
+      },
+      {
+        "startHour": 9,
+        "endHour": 12
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 14,
+    "itemName": "Fire Cluster",
+    "type": "Mining",
+    "zoneName": "Mor Dhona",
+    "gatheringPointBaseId": 227,
+    "territoryTypeId": 156,
+    "mapId": 25,
+    "mapX": 27.8,
+    "mapY": 10.9,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 13,
+        "endHour": 16
+      },
+      {
+        "startHour": 17,
+        "endHour": 20
+      },
+      {
+        "startHour": 21,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 15,
+    "itemName": "Ice Cluster",
+    "type": "Botany",
+    "zoneName": "Mor Dhona",
+    "gatheringPointBaseId": 215,
+    "territoryTypeId": 156,
+    "mapId": 25,
+    "mapX": 32.1,
+    "mapY": 13.6,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 1,
+        "endHour": 4
+      },
+      {
+        "startHour": 5,
+        "endHour": 8
+      },
+      {
+        "startHour": 9,
+        "endHour": 12
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 15,
+    "itemName": "Ice Cluster",
+    "type": "Mining",
+    "zoneName": "Mor Dhona",
+    "gatheringPointBaseId": 227,
+    "territoryTypeId": 156,
+    "mapId": 25,
+    "mapX": 27.8,
+    "mapY": 10.9,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 13,
+        "endHour": 16
+      },
+      {
+        "startHour": 17,
+        "endHour": 20
+      },
+      {
+        "startHour": 21,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 18,
+    "itemName": "Lightning Cluster",
+    "type": "Botany",
+    "zoneName": "Mor Dhona",
+    "gatheringPointBaseId": 215,
+    "territoryTypeId": 156,
+    "mapId": 25,
+    "mapX": 32.1,
+    "mapY": 13.6,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 1,
+        "endHour": 4
+      },
+      {
+        "startHour": 5,
+        "endHour": 8
+      },
+      {
+        "startHour": 9,
+        "endHour": 12
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 18,
+    "itemName": "Lightning Cluster",
+    "type": "Mining",
+    "zoneName": "Mor Dhona",
+    "gatheringPointBaseId": 227,
+    "territoryTypeId": 156,
+    "mapId": 25,
+    "mapX": 27.8,
+    "mapY": 10.9,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 13,
+        "endHour": 16
+      },
+      {
+        "startHour": 17,
+        "endHour": 20
+      },
+      {
+        "startHour": 21,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 19,
+    "itemName": "Water Cluster",
+    "type": "Botany",
+    "zoneName": "Mor Dhona",
+    "gatheringPointBaseId": 215,
+    "territoryTypeId": 156,
+    "mapId": 25,
+    "mapX": 32.1,
+    "mapY": 13.6,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 1,
+        "endHour": 4
+      },
+      {
+        "startHour": 5,
+        "endHour": 8
+      },
+      {
+        "startHour": 9,
+        "endHour": 12
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 19,
+    "itemName": "Water Cluster",
+    "type": "Mining",
+    "zoneName": "Mor Dhona",
+    "gatheringPointBaseId": 227,
+    "territoryTypeId": 156,
+    "mapId": 25,
+    "mapX": 27.8,
+    "mapY": 10.9,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 13,
+        "endHour": 16
+      },
+      {
+        "startHour": 17,
+        "endHour": 20
+      },
+      {
+        "startHour": 21,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 16,
+    "itemName": "Wind Cluster",
+    "type": "Botany",
+    "zoneName": "Mor Dhona",
+    "gatheringPointBaseId": 215,
+    "territoryTypeId": 156,
+    "mapId": 25,
+    "mapX": 32.1,
+    "mapY": 13.6,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 1,
+        "endHour": 4
+      },
+      {
+        "startHour": 5,
+        "endHour": 8
+      },
+      {
+        "startHour": 9,
+        "endHour": 12
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 16,
+    "itemName": "Wind Cluster",
+    "type": "Mining",
+    "zoneName": "Mor Dhona",
+    "gatheringPointBaseId": 227,
+    "territoryTypeId": 156,
+    "mapId": 25,
+    "mapX": 27.8,
+    "mapY": 10.9,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 13,
+        "endHour": 16
+      },
+      {
+        "startHour": 17,
+        "endHour": 20
+      },
+      {
+        "startHour": 21,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 7590,
+    "itemName": "Scarlet Sap",
+    "type": "Botany",
+    "zoneName": "North Shroud",
+    "gatheringPointBaseId": 230,
+    "territoryTypeId": 154,
+    "mapId": 7,
+    "mapX": 16.6,
+    "mapY": 27.6,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 3,
+        "endHour": 6
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 7588,
+    "itemName": "Ferberite",
+    "type": "Mining",
+    "zoneName": "Northern Thanalan",
+    "gatheringPointBaseId": 236,
+    "territoryTypeId": 147,
+    "mapId": 24,
+    "mapX": 17.3,
+    "mapY": 20.2,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 3,
+        "endHour": 6
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 10095,
+    "itemName": "Gregarious Worm",
+    "type": "Mining",
+    "zoneName": "Northern Thanalan",
+    "gatheringPointBaseId": 236,
+    "territoryTypeId": 147,
+    "mapId": 24,
+    "mapX": 17.3,
+    "mapY": 20.2,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 3,
+        "endHour": 6
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 10095,
+    "itemName": "Gregarious Worm",
+    "type": "Mining",
+    "zoneName": "Northern Thanalan",
+    "gatheringPointBaseId": 252,
+    "territoryTypeId": 147,
+    "mapId": 24,
+    "mapX": 23.1,
+    "mapY": 24.3,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 17,
+        "endHour": 20
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 5150,
+    "itemName": "Raw Iolite",
+    "type": "Mining",
+    "zoneName": "Northern Thanalan",
+    "gatheringPointBaseId": 236,
+    "territoryTypeId": 147,
+    "mapId": 24,
+    "mapX": 17.3,
+    "mapY": 20.2,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 3,
+        "endHour": 6
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 5149,
+    "itemName": "Raw Topaz",
+    "type": "Mining",
+    "zoneName": "Northern Thanalan",
+    "gatheringPointBaseId": 236,
+    "territoryTypeId": 147,
+    "mapId": 24,
+    "mapX": 17.3,
+    "mapY": 20.2,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 3,
+        "endHour": 6
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 10093,
+    "itemName": "Virgin Basilisk Egg",
+    "type": "Mining",
+    "zoneName": "Northern Thanalan",
+    "gatheringPointBaseId": 252,
+    "territoryTypeId": 147,
+    "mapId": 24,
+    "mapX": 23.1,
+    "mapY": 24.3,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 17,
+        "endHour": 20
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 44136,
+    "itemName": "Fine Silver Ore",
+    "type": "Mining",
+    "zoneName": "Shaaloani",
+    "gatheringPointBaseId": 1031,
+    "territoryTypeId": 1190,
+    "mapId": 860,
+    "mapX": 36.7,
+    "mapY": 28.1,
+    "jobLevelRequired": 100,
+    "timeWindows": [
+      {
+        "startHour": 10,
+        "endHour": 12
+      },
+      {
+        "startHour": 22,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 43933,
+    "itemName": "Goldbranch",
+    "type": "Botany",
+    "zoneName": "Shaaloani",
+    "gatheringPointBaseId": 1016,
+    "territoryTypeId": 1190,
+    "mapId": 860,
+    "mapX": 16.3,
+    "mapY": 10.4,
+    "jobLevelRequired": 100,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 8
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 44140,
+    "itemName": "Nopaliflower",
+    "type": "Botany",
+    "zoneName": "Shaaloani",
+    "gatheringPointBaseId": 1034,
+    "territoryTypeId": 1190,
+    "mapId": 860,
+    "mapX": 10.9,
+    "mapY": 31.1,
+    "jobLevelRequired": 100,
+    "timeWindows": [
+      {
+        "startHour": 2,
+        "endHour": 4
+      },
+      {
+        "startHour": 14,
+        "endHour": 16
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 44234,
+    "itemName": "Rarefied Acacia Bark",
+    "type": "Botany",
+    "zoneName": "Shaaloani",
+    "gatheringPointBaseId": 1028,
+    "territoryTypeId": 1190,
+    "mapId": 860,
+    "mapX": 31.7,
+    "mapY": 20.4,
+    "jobLevelRequired": 100,
+    "timeWindows": [
+      {
+        "startHour": 6,
+        "endHour": 8
+      },
+      {
+        "startHour": 18,
+        "endHour": 20
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 43929,
+    "itemName": "Rarefied Acacia Log",
+    "type": "Botany",
+    "zoneName": "Shaaloani",
+    "gatheringPointBaseId": 1028,
+    "territoryTypeId": 1190,
+    "mapId": 860,
+    "mapX": 31.7,
+    "mapY": 20.4,
+    "jobLevelRequired": 100,
+    "timeWindows": [
+      {
+        "startHour": 6,
+        "endHour": 8
+      },
+      {
+        "startHour": 18,
+        "endHour": 20
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 43921,
+    "itemName": "Rarefied Magnesite Ore",
+    "type": "Mining",
+    "zoneName": "Shaaloani",
+    "gatheringPointBaseId": 1023,
+    "territoryTypeId": 1190,
+    "mapId": 860,
+    "mapX": 9.2,
+    "mapY": 24.2,
+    "jobLevelRequired": 100,
+    "timeWindows": [
+      {
+        "startHour": 8,
+        "endHour": 10
+      },
+      {
+        "startHour": 20,
+        "endHour": 22
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 43920,
+    "itemName": "Rarefied Titanium Gold Ore",
+    "type": "Mining",
+    "zoneName": "Shaaloani",
+    "gatheringPointBaseId": 1023,
+    "territoryTypeId": 1190,
+    "mapId": 860,
+    "mapX": 9.2,
+    "mapY": 24.2,
+    "jobLevelRequired": 100,
+    "timeWindows": [
+      {
+        "startHour": 8,
+        "endHour": 10
+      },
+      {
+        "startHour": 20,
+        "endHour": 22
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 49209,
+    "itemName": "Rose Garnet Ore",
+    "type": "Mining",
+    "zoneName": "Shaaloani",
+    "gatheringPointBaseId": 1296,
+    "territoryTypeId": 1190,
+    "mapId": 860,
+    "mapX": 23.6,
+    "mapY": 27.1,
+    "jobLevelRequired": 100,
+    "timeWindows": [
+      {
+        "startHour": 0,
+        "endHour": 2
+      },
+      {
+        "startHour": 12,
+        "endHour": 14
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 45971,
+    "itemName": "Shaaloani Coffee",
+    "type": "Botany",
+    "zoneName": "Shaaloani",
+    "gatheringPointBaseId": 1192,
+    "territoryTypeId": 1190,
+    "mapId": 860,
+    "mapX": 35,
+    "mapY": 16.3,
+    "jobLevelRequired": 100,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 6
+      },
+      {
+        "startHour": 16,
+        "endHour": 18
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 10,
+    "itemName": "Wind Crystal",
+    "type": "Botany",
+    "zoneName": "Shaaloani",
+    "gatheringPointBaseId": 1016,
+    "territoryTypeId": 1190,
+    "mapId": 860,
+    "mapX": 16.3,
+    "mapY": 10.4,
+    "jobLevelRequired": 100,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 8
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 7611,
+    "itemName": "Fragrant Log",
+    "type": "Botany",
+    "zoneName": "South Shroud",
+    "gatheringPointBaseId": 242,
+    "territoryTypeId": 153,
+    "mapId": 6,
+    "mapX": 17.5,
+    "mapY": 23.1,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 2,
+        "endHour": 5
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 7763,
+    "itemName": "Grade 3 Shroud Topsoil",
+    "type": "Mining",
+    "zoneName": "South Shroud",
+    "gatheringPointBaseId": 240,
+    "territoryTypeId": 153,
+    "mapId": 6,
+    "mapX": 16.8,
+    "mapY": 30.7,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 6,
+        "endHour": 9
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 7610,
+    "itemName": "Umbral Rock",
+    "type": "Mining",
+    "zoneName": "South Shroud",
+    "gatheringPointBaseId": 240,
+    "territoryTypeId": 153,
+    "mapId": 6,
+    "mapX": 16.8,
+    "mapY": 30.7,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 6,
+        "endHour": 9
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 10095,
+    "itemName": "Gregarious Worm",
+    "type": "Mining",
+    "zoneName": "Southern Thanalan",
+    "gatheringPointBaseId": 247,
+    "territoryTypeId": 146,
+    "mapId": 23,
+    "mapX": 17.2,
+    "mapY": 10.6,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 7
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 5120,
+    "itemName": "Platinum Ore",
+    "type": "Mining",
+    "zoneName": "Southern Thanalan",
+    "gatheringPointBaseId": 247,
+    "territoryTypeId": 146,
+    "mapId": 23,
+    "mapX": 17.2,
+    "mapY": 10.6,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 7
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 36305,
+    "itemName": "Rarefied Coconut",
+    "type": "Botany",
+    "zoneName": "Thavnair",
+    "gatheringPointBaseId": 851,
+    "territoryTypeId": 957,
+    "mapId": 696,
+    "mapX": 14.4,
+    "mapY": 14.5,
+    "jobLevelRequired": 85,
+    "timeWindows": [
+      {
+        "startHour": 2,
+        "endHour": 4
+      },
+      {
+        "startHour": 14,
+        "endHour": 16
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 36303,
+    "itemName": "Rarefied Palm Log",
+    "type": "Botany",
+    "zoneName": "Thavnair",
+    "gatheringPointBaseId": 851,
+    "territoryTypeId": 957,
+    "mapId": 696,
+    "mapX": 14.4,
+    "mapY": 14.5,
+    "jobLevelRequired": 85,
+    "timeWindows": [
+      {
+        "startHour": 2,
+        "endHour": 4
+      },
+      {
+        "startHour": 14,
+        "endHour": 16
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 8,
+    "itemName": "Fire Crystal",
+    "type": "Botany",
+    "zoneName": "Thavnair",
+    "gatheringPointBaseId": 850,
+    "territoryTypeId": 957,
+    "mapId": 696,
+    "mapX": 26.8,
+    "mapY": 15.7,
+    "jobLevelRequired": 90,
+    "timeWindows": [
+      {
+        "startHour": 12,
+        "endHour": 16
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 36207,
+    "itemName": "Golden Cocoon",
+    "type": "Botany",
+    "zoneName": "Thavnair",
+    "gatheringPointBaseId": 857,
+    "territoryTypeId": 957,
+    "mapId": 696,
+    "mapX": 25.3,
+    "mapY": 21.7,
+    "jobLevelRequired": 90,
+    "timeWindows": [
+      {
+        "startHour": 8,
+        "endHour": 10
+      },
+      {
+        "startHour": 20,
+        "endHour": 22
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 37819,
+    "itemName": "Haritaki",
+    "type": "Botany",
+    "zoneName": "Thavnair",
+    "gatheringPointBaseId": 627,
+    "territoryTypeId": 957,
+    "mapId": 696,
+    "mapX": 29.1,
+    "mapY": 26.9,
+    "jobLevelRequired": 90,
+    "timeWindows": [
+      {
+        "startHour": 0,
+        "endHour": 2
+      },
+      {
+        "startHour": 12,
+        "endHour": 14
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 39708,
+    "itemName": "Maghemite",
+    "type": "Mining",
+    "zoneName": "Thavnair",
+    "gatheringPointBaseId": 932,
+    "territoryTypeId": 957,
+    "mapId": 696,
+    "mapX": 24.5,
+    "mapY": 13.1,
+    "jobLevelRequired": 90,
+    "timeWindows": [
+      {
+        "startHour": 6,
+        "endHour": 8
+      },
+      {
+        "startHour": 18,
+        "endHour": 20
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 36288,
+    "itemName": "Palm Chippings",
+    "type": "Botany",
+    "zoneName": "Thavnair",
+    "gatheringPointBaseId": 850,
+    "territoryTypeId": 957,
+    "mapId": 696,
+    "mapX": 26.8,
+    "mapY": 15.7,
+    "jobLevelRequired": 90,
+    "timeWindows": [
+      {
+        "startHour": 12,
+        "endHour": 16
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 36214,
+    "itemName": "Potent Spice",
+    "type": "Botany",
+    "zoneName": "Thavnair",
+    "gatheringPointBaseId": 857,
+    "territoryTypeId": 957,
+    "mapId": 696,
+    "mapX": 25.3,
+    "mapY": 21.7,
+    "jobLevelRequired": 90,
+    "timeWindows": [
+      {
+        "startHour": 8,
+        "endHour": 10
+      },
+      {
+        "startHour": 20,
+        "endHour": 22
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 39906,
+    "itemName": "Prime Haritaki",
+    "type": "Botany",
+    "zoneName": "Thavnair",
+    "gatheringPointBaseId": 627,
+    "territoryTypeId": 957,
+    "mapId": 696,
+    "mapX": 29.1,
+    "mapY": 26.9,
+    "jobLevelRequired": 90,
+    "timeWindows": [
+      {
+        "startHour": 0,
+        "endHour": 2
+      },
+      {
+        "startHour": 12,
+        "endHour": 14
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 36300,
+    "itemName": "Rarefied Pewter Ore",
+    "type": "Mining",
+    "zoneName": "Thavnair",
+    "gatheringPointBaseId": 833,
+    "territoryTypeId": 957,
+    "mapId": 696,
+    "mapX": 32.4,
+    "mapY": 25,
+    "jobLevelRequired": 90,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 6
+      },
+      {
+        "startHour": 16,
+        "endHour": 18
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 37278,
+    "itemName": "Thavnairian Corn",
+    "type": "Botany",
+    "zoneName": "Thavnair",
+    "gatheringPointBaseId": 857,
+    "territoryTypeId": 957,
+    "mapId": 696,
+    "mapX": 25.3,
+    "mapY": 21.7,
+    "jobLevelRequired": 90,
+    "timeWindows": [
+      {
+        "startHour": 8,
+        "endHour": 10
+      },
+      {
+        "startHour": 20,
+        "endHour": 22
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 21086,
+    "itemName": "Azim Cotton Boll",
+    "type": "Botany",
+    "zoneName": "The Azim Steppe",
+    "gatheringPointBaseId": 528,
+    "territoryTypeId": 622,
+    "mapId": 372,
+    "mapX": 19.7,
+    "mapY": 9.8,
+    "jobLevelRequired": 70,
+    "timeWindows": [
+      {
+        "startHour": 0,
+        "endHour": 2
+      },
+      {
+        "startHour": 12,
+        "endHour": 14
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 24255,
+    "itemName": "Azim Spring Water",
+    "type": "Mining",
+    "zoneName": "The Azim Steppe",
+    "gatheringPointBaseId": 536,
+    "territoryTypeId": 622,
+    "mapId": 372,
+    "mapX": 24.1,
+    "mapY": 37.2,
+    "jobLevelRequired": 70,
+    "timeWindows": [
+      {
+        "startHour": 8,
+        "endHour": 10
+      },
+      {
+        "startHour": 20,
+        "endHour": 22
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 20012,
+    "itemName": "Doman Yellow",
+    "type": "Botany",
+    "zoneName": "The Azim Steppe",
+    "gatheringPointBaseId": 520,
+    "territoryTypeId": 622,
+    "mapId": 372,
+    "mapX": 25.8,
+    "mapY": 29.9,
+    "jobLevelRequired": 70,
+    "timeWindows": [
+      {
+        "startHour": 8,
+        "endHour": 12
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 11,
+    "itemName": "Earth Crystal",
+    "type": "Botany",
+    "zoneName": "The Azim Steppe",
+    "gatheringPointBaseId": 520,
+    "territoryTypeId": 622,
+    "mapId": 372,
+    "mapX": 25.8,
+    "mapY": 29.9,
+    "jobLevelRequired": 70,
+    "timeWindows": [
+      {
+        "startHour": 8,
+        "endHour": 12
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 12,
+    "itemName": "Lightning Crystal",
+    "type": "Mining",
+    "zoneName": "The Azim Steppe",
+    "gatheringPointBaseId": 496,
+    "territoryTypeId": 622,
+    "mapId": 372,
+    "mapX": 34.8,
+    "mapY": 24.5,
+    "jobLevelRequired": 70,
+    "timeWindows": [
+      {
+        "startHour": 12,
+        "endHour": 16
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 19852,
+    "itemName": "Othardian Plum",
+    "type": "Botany",
+    "zoneName": "The Azim Steppe",
+    "gatheringPointBaseId": 523,
+    "territoryTypeId": 622,
+    "mapId": 372,
+    "mapX": 27.2,
+    "mapY": 16.3,
+    "jobLevelRequired": 70,
+    "timeWindows": [
+      {
+        "startHour": 2,
+        "endHour": 4
+      },
+      {
+        "startHour": 14,
+        "endHour": 16
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 32978,
+    "itemName": "Rarefied Raw Azurite",
+    "type": "Mining",
+    "zoneName": "The Azim Steppe",
+    "gatheringPointBaseId": 328,
+    "territoryTypeId": 622,
+    "mapId": 372,
+    "mapX": 36,
+    "mapY": 26.4,
+    "jobLevelRequired": 70,
+    "timeWindows": [
+      {
+        "startHour": 6,
+        "endHour": 8
+      },
+      {
+        "startHour": 18,
+        "endHour": 20
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 32979,
+    "itemName": "Rarefied Silvergrace Ore",
+    "type": "Mining",
+    "zoneName": "The Azim Steppe",
+    "gatheringPointBaseId": 328,
+    "territoryTypeId": 622,
+    "mapId": 372,
+    "mapX": 36,
+    "mapY": 26.4,
+    "jobLevelRequired": 70,
+    "timeWindows": [
+      {
+        "startHour": 6,
+        "endHour": 8
+      },
+      {
+        "startHour": 18,
+        "endHour": 20
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 19971,
+    "itemName": "Raw Azurite",
+    "type": "Mining",
+    "zoneName": "The Azim Steppe",
+    "gatheringPointBaseId": 501,
+    "territoryTypeId": 622,
+    "mapId": 372,
+    "mapX": 4.9,
+    "mapY": 29.5,
+    "jobLevelRequired": 70,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 6
+      },
+      {
+        "startHour": 16,
+        "endHour": 18
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 19991,
+    "itemName": "Rhea",
+    "type": "Botany",
+    "zoneName": "The Azim Steppe",
+    "gatheringPointBaseId": 528,
+    "territoryTypeId": 622,
+    "mapId": 372,
+    "mapX": 19.7,
+    "mapY": 9.8,
+    "jobLevelRequired": 70,
+    "timeWindows": [
+      {
+        "startHour": 0,
+        "endHour": 2
+      },
+      {
+        "startHour": 12,
+        "endHour": 14
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 20009,
+    "itemName": "Schorl",
+    "type": "Mining",
+    "zoneName": "The Azim Steppe",
+    "gatheringPointBaseId": 496,
+    "territoryTypeId": 622,
+    "mapId": 372,
+    "mapX": 34.8,
+    "mapY": 24.5,
+    "jobLevelRequired": 70,
+    "timeWindows": [
+      {
+        "startHour": 12,
+        "endHour": 16
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 22418,
+    "itemName": "Silvergrace Ore",
+    "type": "Mining",
+    "zoneName": "The Azim Steppe",
+    "gatheringPointBaseId": 536,
+    "territoryTypeId": 622,
+    "mapId": 372,
+    "mapX": 24.1,
+    "mapY": 37.2,
+    "jobLevelRequired": 70,
+    "timeWindows": [
+      {
+        "startHour": 8,
+        "endHour": 10
+      },
+      {
+        "startHour": 20,
+        "endHour": 22
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 23220,
+    "itemName": "Yanxian Soil",
+    "type": "Mining",
+    "zoneName": "The Azim Steppe",
+    "gatheringPointBaseId": 496,
+    "territoryTypeId": 622,
+    "mapId": 372,
+    "mapX": 34.8,
+    "mapY": 24.5,
+    "jobLevelRequired": 70,
+    "timeWindows": [
+      {
+        "startHour": 12,
+        "endHour": 16
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 23221,
+    "itemName": "Yanxian Verbena",
+    "type": "Botany",
+    "zoneName": "The Azim Steppe",
+    "gatheringPointBaseId": 520,
+    "territoryTypeId": 622,
+    "mapId": 372,
+    "mapX": 25.8,
+    "mapY": 29.9,
+    "jobLevelRequired": 70,
+    "timeWindows": [
+      {
+        "startHour": 8,
+        "endHour": 12
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 12943,
+    "itemName": "Dravanian Mistletoe",
+    "type": "Botany",
+    "zoneName": "The Churning Mists",
+    "gatheringPointBaseId": 341,
+    "territoryTypeId": 400,
+    "mapId": 214,
+    "mapX": 26,
+    "mapY": 8.8,
+    "jobLevelRequired": 55,
+    "timeWindows": [
+      {
+        "startHour": 0,
+        "endHour": 2
+      },
+      {
+        "startHour": 12,
+        "endHour": 14
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 12899,
+    "itemName": "Porcini",
+    "type": "Botany",
+    "zoneName": "The Churning Mists",
+    "gatheringPointBaseId": 341,
+    "territoryTypeId": 400,
+    "mapId": 214,
+    "mapX": 26,
+    "mapY": 8.8,
+    "jobLevelRequired": 55,
+    "timeWindows": [
+      {
+        "startHour": 0,
+        "endHour": 2
+      },
+      {
+        "startHour": 12,
+        "endHour": 14
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 12536,
+    "itemName": "Aurum Regis Ore",
+    "type": "Mining",
+    "zoneName": "The Churning Mists",
+    "gatheringPointBaseId": 323,
+    "territoryTypeId": 400,
+    "mapId": 214,
+    "mapX": 9.6,
+    "mapY": 36.9,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 2,
+        "endHour": 4
+      },
+      {
+        "startHour": 14,
+        "endHour": 16
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 12970,
+    "itemName": "Black Soil",
+    "type": "Botany",
+    "zoneName": "The Churning Mists",
+    "gatheringPointBaseId": 333,
+    "territoryTypeId": 400,
+    "mapId": 214,
+    "mapX": 10.3,
+    "mapY": 37,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 16,
+        "endHour": 20
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 12966,
+    "itemName": "Bright Fire Rock",
+    "type": "Mining",
+    "zoneName": "The Churning Mists",
+    "gatheringPointBaseId": 311,
+    "territoryTypeId": 400,
+    "mapId": 214,
+    "mapX": 19.5,
+    "mapY": 37,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 12,
+        "endHour": 16
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 16722,
+    "itemName": "Brown Mushroom",
+    "type": "Botany",
+    "zoneName": "The Churning Mists",
+    "gatheringPointBaseId": 299,
+    "territoryTypeId": 400,
+    "mapId": 214,
+    "mapX": 10.4,
+    "mapY": 38.1,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 10,
+        "endHour": 12
+      },
+      {
+        "startHour": 22,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 15647,
+    "itemName": "Crystallized Sap",
+    "type": "Botany",
+    "zoneName": "The Churning Mists",
+    "gatheringPointBaseId": 395,
+    "territoryTypeId": 400,
+    "mapId": 214,
+    "mapX": 10,
+    "mapY": 9.7,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 8,
+        "endHour": 10
+      },
+      {
+        "startHour": 20,
+        "endHour": 22
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 11,
+    "itemName": "Earth Crystal",
+    "type": "Botany",
+    "zoneName": "The Churning Mists",
+    "gatheringPointBaseId": 333,
+    "territoryTypeId": 400,
+    "mapId": 214,
+    "mapX": 10.3,
+    "mapY": 37,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 16,
+        "endHour": 20
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 8,
+    "itemName": "Fire Crystal",
+    "type": "Mining",
+    "zoneName": "The Churning Mists",
+    "gatheringPointBaseId": 311,
+    "territoryTypeId": 400,
+    "mapId": 214,
+    "mapX": 19.5,
+    "mapY": 37,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 12,
+        "endHour": 16
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 5214,
+    "itemName": "Fire Moraine",
+    "type": "Mining",
+    "zoneName": "The Churning Mists",
+    "gatheringPointBaseId": 311,
+    "territoryTypeId": 400,
+    "mapId": 214,
+    "mapX": 19.5,
+    "mapY": 37,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 12,
+        "endHour": 16
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 12968,
+    "itemName": "Granular Clay",
+    "type": "Botany",
+    "zoneName": "The Churning Mists",
+    "gatheringPointBaseId": 333,
+    "territoryTypeId": 400,
+    "mapId": 214,
+    "mapX": 10.3,
+    "mapY": 37,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 16,
+        "endHour": 20
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 33147,
+    "itemName": "Humic Soil",
+    "type": "Botany",
+    "zoneName": "The Churning Mists",
+    "gatheringPointBaseId": 333,
+    "territoryTypeId": 400,
+    "mapId": 214,
+    "mapX": 10.3,
+    "mapY": 37,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 16,
+        "endHour": 20
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 15948,
+    "itemName": "Lover\u0027s Laurel",
+    "type": "Botany",
+    "zoneName": "The Churning Mists",
+    "gatheringPointBaseId": 333,
+    "territoryTypeId": 400,
+    "mapId": 214,
+    "mapX": 10.3,
+    "mapY": 37,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 16,
+        "endHour": 20
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 14148,
+    "itemName": "Lumythrite Ore",
+    "type": "Mining",
+    "zoneName": "The Churning Mists",
+    "gatheringPointBaseId": 323,
+    "territoryTypeId": 400,
+    "mapId": 214,
+    "mapX": 9.6,
+    "mapY": 36.9,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 2,
+        "endHour": 4
+      },
+      {
+        "startHour": 14,
+        "endHour": 16
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 14957,
+    "itemName": "Old-growth Camphorwood Log",
+    "type": "Botany",
+    "zoneName": "The Churning Mists",
+    "gatheringPointBaseId": 395,
+    "territoryTypeId": 400,
+    "mapId": 214,
+    "mapX": 10,
+    "mapY": 9.7,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 8,
+        "endHour": 10
+      },
+      {
+        "startHour": 20,
+        "endHour": 22
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 12969,
+    "itemName": "Peat Moss",
+    "type": "Botany",
+    "zoneName": "The Churning Mists",
+    "gatheringPointBaseId": 333,
+    "territoryTypeId": 400,
+    "mapId": 214,
+    "mapX": 10.3,
+    "mapY": 37,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 16,
+        "endHour": 20
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 15949,
+    "itemName": "Radiant Astral Moraine",
+    "type": "Mining",
+    "zoneName": "The Churning Mists",
+    "gatheringPointBaseId": 311,
+    "territoryTypeId": 400,
+    "mapId": 214,
+    "mapX": 19.5,
+    "mapY": 37,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 12,
+        "endHour": 16
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 5220,
+    "itemName": "Radiant Fire Moraine",
+    "type": "Mining",
+    "zoneName": "The Churning Mists",
+    "gatheringPointBaseId": 311,
+    "territoryTypeId": 400,
+    "mapId": 214,
+    "mapX": 19.5,
+    "mapY": 37,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 12,
+        "endHour": 16
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 12634,
+    "itemName": "Seventh Heaven",
+    "type": "Botany",
+    "zoneName": "The Churning Mists",
+    "gatheringPointBaseId": 347,
+    "territoryTypeId": 400,
+    "mapId": 214,
+    "mapX": 17.6,
+    "mapY": 37,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 6
+      },
+      {
+        "startHour": 16,
+        "endHour": 18
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 12896,
+    "itemName": "Old World Fig",
+    "type": "Botany",
+    "zoneName": "The Dravanian Forelands",
+    "gatheringPointBaseId": 340,
+    "territoryTypeId": 398,
+    "mapId": 212,
+    "mapX": 26.6,
+    "mapY": 13.3,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 2,
+        "endHour": 4
+      },
+      {
+        "startHour": 14,
+        "endHour": 16
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 13765,
+    "itemName": "Old World Fig Seeds",
+    "type": "Botany",
+    "zoneName": "The Dravanian Forelands",
+    "gatheringPointBaseId": 340,
+    "territoryTypeId": 398,
+    "mapId": 212,
+    "mapX": 26.6,
+    "mapY": 13.3,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 2,
+        "endHour": 4
+      },
+      {
+        "startHour": 14,
+        "endHour": 16
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 32971,
+    "itemName": "Rarefied Chalcocite",
+    "type": "Mining",
+    "zoneName": "The Dravanian Forelands",
+    "gatheringPointBaseId": 306,
+    "territoryTypeId": 398,
+    "mapId": 212,
+    "mapX": 30.7,
+    "mapY": 32.2,
+    "jobLevelRequired": 55,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 6
+      },
+      {
+        "startHour": 16,
+        "endHour": 18
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 32994,
+    "itemName": "Rarefied Dark Chestnut Branch",
+    "type": "Botany",
+    "zoneName": "The Dravanian Forelands",
+    "gatheringPointBaseId": 768,
+    "territoryTypeId": 398,
+    "mapId": 212,
+    "mapX": 29.2,
+    "mapY": 30.1,
+    "jobLevelRequired": 55,
+    "timeWindows": [
+      {
+        "startHour": 10,
+        "endHour": 12
+      },
+      {
+        "startHour": 22,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 32993,
+    "itemName": "Rarefied Dark Chestnut Log",
+    "type": "Botany",
+    "zoneName": "The Dravanian Forelands",
+    "gatheringPointBaseId": 768,
+    "territoryTypeId": 398,
+    "mapId": 212,
+    "mapX": 29.2,
+    "mapY": 30.1,
+    "jobLevelRequired": 55,
+    "timeWindows": [
+      {
+        "startHour": 10,
+        "endHour": 12
+      },
+      {
+        "startHour": 22,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 32992,
+    "itemName": "Rarefied Dark Chestnut Sap",
+    "type": "Botany",
+    "zoneName": "The Dravanian Forelands",
+    "gatheringPointBaseId": 768,
+    "territoryTypeId": 398,
+    "mapId": 212,
+    "mapX": 29.2,
+    "mapY": 30.1,
+    "jobLevelRequired": 55,
+    "timeWindows": [
+      {
+        "startHour": 10,
+        "endHour": 12
+      },
+      {
+        "startHour": 22,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 32972,
+    "itemName": "Rarefied Limonite",
+    "type": "Mining",
+    "zoneName": "The Dravanian Forelands",
+    "gatheringPointBaseId": 306,
+    "territoryTypeId": 398,
+    "mapId": 212,
+    "mapX": 30.7,
+    "mapY": 32.2,
+    "jobLevelRequired": 55,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 6
+      },
+      {
+        "startHour": 16,
+        "endHour": 18
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 32970,
+    "itemName": "Rarefied Pyrite",
+    "type": "Mining",
+    "zoneName": "The Dravanian Forelands",
+    "gatheringPointBaseId": 306,
+    "territoryTypeId": 398,
+    "mapId": 212,
+    "mapX": 30.7,
+    "mapY": 32.2,
+    "jobLevelRequired": 55,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 6
+      },
+      {
+        "startHour": 16,
+        "endHour": 18
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 12970,
+    "itemName": "Black Soil",
+    "type": "Botany",
+    "zoneName": "The Dravanian Forelands",
+    "gatheringPointBaseId": 331,
+    "territoryTypeId": 398,
+    "mapId": 212,
+    "mapX": 17.5,
+    "mapY": 31.9,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 8,
+        "endHour": 12
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 12966,
+    "itemName": "Bright Fire Rock",
+    "type": "Mining",
+    "zoneName": "The Dravanian Forelands",
+    "gatheringPointBaseId": 307,
+    "territoryTypeId": 398,
+    "mapId": 212,
+    "mapX": 25.7,
+    "mapY": 21.6,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 8
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 11,
+    "itemName": "Earth Crystal",
+    "type": "Botany",
+    "zoneName": "The Dravanian Forelands",
+    "gatheringPointBaseId": 331,
+    "territoryTypeId": 398,
+    "mapId": 212,
+    "mapX": 17.5,
+    "mapY": 31.9,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 8,
+        "endHour": 12
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 8,
+    "itemName": "Fire Crystal",
+    "type": "Mining",
+    "zoneName": "The Dravanian Forelands",
+    "gatheringPointBaseId": 307,
+    "territoryTypeId": 398,
+    "mapId": 212,
+    "mapX": 25.7,
+    "mapY": 21.6,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 8
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 5214,
+    "itemName": "Fire Moraine",
+    "type": "Mining",
+    "zoneName": "The Dravanian Forelands",
+    "gatheringPointBaseId": 307,
+    "territoryTypeId": 398,
+    "mapId": 212,
+    "mapX": 25.7,
+    "mapY": 21.6,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 8
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 12968,
+    "itemName": "Granular Clay",
+    "type": "Botany",
+    "zoneName": "The Dravanian Forelands",
+    "gatheringPointBaseId": 331,
+    "territoryTypeId": 398,
+    "mapId": 212,
+    "mapX": 17.5,
+    "mapY": 31.9,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 8,
+        "endHour": 12
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 33147,
+    "itemName": "Humic Soil",
+    "type": "Botany",
+    "zoneName": "The Dravanian Forelands",
+    "gatheringPointBaseId": 331,
+    "territoryTypeId": 398,
+    "mapId": 212,
+    "mapX": 17.5,
+    "mapY": 31.9,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 8,
+        "endHour": 12
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 15948,
+    "itemName": "Lover\u0027s Laurel",
+    "type": "Botany",
+    "zoneName": "The Dravanian Forelands",
+    "gatheringPointBaseId": 331,
+    "territoryTypeId": 398,
+    "mapId": 212,
+    "mapX": 17.5,
+    "mapY": 31.9,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 8,
+        "endHour": 12
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 16723,
+    "itemName": "Noble Sage",
+    "type": "Botany",
+    "zoneName": "The Dravanian Forelands",
+    "gatheringPointBaseId": 301,
+    "territoryTypeId": 398,
+    "mapId": 212,
+    "mapX": 34.7,
+    "mapY": 29,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 6,
+        "endHour": 8
+      },
+      {
+        "startHour": 18,
+        "endHour": 20
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 12969,
+    "itemName": "Peat Moss",
+    "type": "Botany",
+    "zoneName": "The Dravanian Forelands",
+    "gatheringPointBaseId": 331,
+    "territoryTypeId": 398,
+    "mapId": 212,
+    "mapX": 17.5,
+    "mapY": 31.9,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 8,
+        "endHour": 12
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 15949,
+    "itemName": "Radiant Astral Moraine",
+    "type": "Mining",
+    "zoneName": "The Dravanian Forelands",
+    "gatheringPointBaseId": 307,
+    "territoryTypeId": 398,
+    "mapId": 212,
+    "mapX": 25.7,
+    "mapY": 21.6,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 8
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 5220,
+    "itemName": "Radiant Fire Moraine",
+    "type": "Mining",
+    "zoneName": "The Dravanian Forelands",
+    "gatheringPointBaseId": 307,
+    "territoryTypeId": 398,
+    "mapId": 212,
+    "mapX": 25.7,
+    "mapY": 21.6,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 8
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 32995,
+    "itemName": "Rarefied Dark Chestnut",
+    "type": "Botany",
+    "zoneName": "The Dravanian Forelands",
+    "gatheringPointBaseId": 769,
+    "territoryTypeId": 398,
+    "mapId": 212,
+    "mapX": 16.2,
+    "mapY": 36.5,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 0,
+        "endHour": 2
+      },
+      {
+        "startHour": 12,
+        "endHour": 14
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 32996,
+    "itemName": "Rarefied Dark Chestnut Resin",
+    "type": "Botany",
+    "zoneName": "The Dravanian Forelands",
+    "gatheringPointBaseId": 769,
+    "territoryTypeId": 398,
+    "mapId": 212,
+    "mapX": 16.2,
+    "mapY": 36.5,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 0,
+        "endHour": 2
+      },
+      {
+        "startHour": 12,
+        "endHour": 14
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 12970,
+    "itemName": "Black Soil",
+    "type": "Botany",
+    "zoneName": "The Dravanian Hinterlands",
+    "gatheringPointBaseId": 337,
+    "territoryTypeId": 399,
+    "mapId": 213,
+    "mapX": 6.9,
+    "mapY": 27.8,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 8
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 5160,
+    "itemName": "Blue Quartz",
+    "type": "Mining",
+    "zoneName": "The Dravanian Hinterlands",
+    "gatheringPointBaseId": 325,
+    "territoryTypeId": 399,
+    "mapId": 213,
+    "mapX": 11.6,
+    "mapY": 16,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 6,
+        "endHour": 8
+      },
+      {
+        "startHour": 18,
+        "endHour": 20
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 12966,
+    "itemName": "Bright Fire Rock",
+    "type": "Mining",
+    "zoneName": "The Dravanian Hinterlands",
+    "gatheringPointBaseId": 309,
+    "territoryTypeId": 399,
+    "mapId": 213,
+    "mapX": 29.2,
+    "mapY": 17.9,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 8,
+        "endHour": 12
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 12897,
+    "itemName": "Cloud Banana",
+    "type": "Botany",
+    "zoneName": "The Dravanian Hinterlands",
+    "gatheringPointBaseId": 343,
+    "territoryTypeId": 399,
+    "mapId": 213,
+    "mapX": 16.1,
+    "mapY": 37.2,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 6
+      },
+      {
+        "startHour": 16,
+        "endHour": 18
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 11,
+    "itemName": "Earth Crystal",
+    "type": "Botany",
+    "zoneName": "The Dravanian Hinterlands",
+    "gatheringPointBaseId": 337,
+    "territoryTypeId": 399,
+    "mapId": 213,
+    "mapX": 6.9,
+    "mapY": 27.8,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 8
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 8,
+    "itemName": "Fire Crystal",
+    "type": "Mining",
+    "zoneName": "The Dravanian Hinterlands",
+    "gatheringPointBaseId": 309,
+    "territoryTypeId": 399,
+    "mapId": 213,
+    "mapX": 29.2,
+    "mapY": 17.9,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 8,
+        "endHour": 12
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 5214,
+    "itemName": "Fire Moraine",
+    "type": "Mining",
+    "zoneName": "The Dravanian Hinterlands",
+    "gatheringPointBaseId": 309,
+    "territoryTypeId": 399,
+    "mapId": 213,
+    "mapX": 29.2,
+    "mapY": 17.9,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 8,
+        "endHour": 12
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 12968,
+    "itemName": "Granular Clay",
+    "type": "Botany",
+    "zoneName": "The Dravanian Hinterlands",
+    "gatheringPointBaseId": 337,
+    "territoryTypeId": 399,
+    "mapId": 213,
+    "mapX": 6.9,
+    "mapY": 27.8,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 8
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 33147,
+    "itemName": "Humic Soil",
+    "type": "Botany",
+    "zoneName": "The Dravanian Hinterlands",
+    "gatheringPointBaseId": 337,
+    "territoryTypeId": 399,
+    "mapId": 213,
+    "mapX": 6.9,
+    "mapY": 27.8,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 8
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 15948,
+    "itemName": "Lover\u0027s Laurel",
+    "type": "Botany",
+    "zoneName": "The Dravanian Hinterlands",
+    "gatheringPointBaseId": 337,
+    "territoryTypeId": 399,
+    "mapId": 213,
+    "mapX": 6.9,
+    "mapY": 27.8,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 8
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 12898,
+    "itemName": "Morel",
+    "type": "Botany",
+    "zoneName": "The Dravanian Hinterlands",
+    "gatheringPointBaseId": 343,
+    "territoryTypeId": 399,
+    "mapId": 213,
+    "mapX": 16.1,
+    "mapY": 37.2,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 6
+      },
+      {
+        "startHour": 16,
+        "endHour": 18
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 12969,
+    "itemName": "Peat Moss",
+    "type": "Botany",
+    "zoneName": "The Dravanian Hinterlands",
+    "gatheringPointBaseId": 337,
+    "territoryTypeId": 399,
+    "mapId": 213,
+    "mapX": 6.9,
+    "mapY": 27.8,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 8
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 15949,
+    "itemName": "Radiant Astral Moraine",
+    "type": "Mining",
+    "zoneName": "The Dravanian Hinterlands",
+    "gatheringPointBaseId": 309,
+    "territoryTypeId": 399,
+    "mapId": 213,
+    "mapX": 29.2,
+    "mapY": 17.9,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 8,
+        "endHour": 12
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 5220,
+    "itemName": "Radiant Fire Moraine",
+    "type": "Mining",
+    "zoneName": "The Dravanian Hinterlands",
+    "gatheringPointBaseId": 309,
+    "territoryTypeId": 399,
+    "mapId": 213,
+    "mapX": 29.2,
+    "mapY": 17.9,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 8,
+        "endHour": 12
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 12904,
+    "itemName": "Snurbleberry",
+    "type": "Botany",
+    "zoneName": "The Dravanian Hinterlands",
+    "gatheringPointBaseId": 349,
+    "territoryTypeId": 399,
+    "mapId": 213,
+    "mapX": 38.9,
+    "mapY": 23.8,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 10,
+        "endHour": 12
+      },
+      {
+        "startHour": 22,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 5392,
+    "itemName": "Teak Log",
+    "type": "Botany",
+    "zoneName": "The Dravanian Hinterlands",
+    "gatheringPointBaseId": 292,
+    "territoryTypeId": 399,
+    "mapId": 213,
+    "mapX": 7.7,
+    "mapY": 28.1,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 0,
+        "endHour": 2
+      },
+      {
+        "startHour": 12,
+        "endHour": 14
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 16726,
+    "itemName": "Zeolite Ore",
+    "type": "Mining",
+    "zoneName": "The Dravanian Hinterlands",
+    "gatheringPointBaseId": 290,
+    "territoryTypeId": 399,
+    "mapId": 213,
+    "mapX": 16.6,
+    "mapY": 30.3,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 8,
+        "endHour": 10
+      },
+      {
+        "startHour": 20,
+        "endHour": 22
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 19968,
+    "itemName": "Raw Triphane",
+    "type": "Mining",
+    "zoneName": "The Fringes",
+    "gatheringPointBaseId": 497,
+    "territoryTypeId": 612,
+    "mapId": 367,
+    "mapX": 25.3,
+    "mapY": 8.3,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 2,
+        "endHour": 4
+      },
+      {
+        "startHour": 14,
+        "endHour": 16
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 32977,
+    "itemName": "Rarefied Raw Kyanite",
+    "type": "Mining",
+    "zoneName": "The Fringes",
+    "gatheringPointBaseId": 310,
+    "territoryTypeId": 612,
+    "mapId": 367,
+    "mapX": 29.6,
+    "mapY": 12.9,
+    "jobLevelRequired": 65,
+    "timeWindows": [
+      {
+        "startHour": 8,
+        "endHour": 10
+      },
+      {
+        "startHour": 20,
+        "endHour": 22
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 32975,
+    "itemName": "Rarefied Raw Triphane",
+    "type": "Mining",
+    "zoneName": "The Fringes",
+    "gatheringPointBaseId": 310,
+    "territoryTypeId": 612,
+    "mapId": 367,
+    "mapX": 29.6,
+    "mapY": 12.9,
+    "jobLevelRequired": 65,
+    "timeWindows": [
+      {
+        "startHour": 8,
+        "endHour": 10
+      },
+      {
+        "startHour": 20,
+        "endHour": 22
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 22419,
+    "itemName": "Black Willow Log",
+    "type": "Botany",
+    "zoneName": "The Fringes",
+    "gatheringPointBaseId": 537,
+    "territoryTypeId": 612,
+    "mapId": 367,
+    "mapX": 14.9,
+    "mapY": 21.2,
+    "jobLevelRequired": 70,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 6
+      },
+      {
+        "startHour": 16,
+        "endHour": 18
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 24240,
+    "itemName": "Gyr Abanian Ore",
+    "type": "Mining",
+    "zoneName": "The Fringes",
+    "gatheringPointBaseId": 555,
+    "territoryTypeId": 612,
+    "mapId": 367,
+    "mapX": 27.4,
+    "mapY": 30.2,
+    "jobLevelRequired": 70,
+    "timeWindows": [
+      {
+        "startHour": 0,
+        "endHour": 2
+      },
+      {
+        "startHour": 12,
+        "endHour": 14
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 23180,
+    "itemName": "Hardened Veteran Tree Sap",
+    "type": "Botany",
+    "zoneName": "The Fringes",
+    "gatheringPointBaseId": 537,
+    "territoryTypeId": 612,
+    "mapId": 367,
+    "mapX": 14.9,
+    "mapY": 21.2,
+    "jobLevelRequired": 70,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 6
+      },
+      {
+        "startHour": 16,
+        "endHour": 18
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 32987,
+    "itemName": "Rarefied Gyr Abanian Alumen",
+    "type": "Mining",
+    "zoneName": "The Fringes",
+    "gatheringPointBaseId": 767,
+    "territoryTypeId": 612,
+    "mapId": 367,
+    "mapX": 31.6,
+    "mapY": 31.4,
+    "jobLevelRequired": 80,
+    "timeWindows": [
+      {
+        "startHour": 10,
+        "endHour": 12
+      },
+      {
+        "startHour": 22,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 19907,
+    "itemName": "Ala Mhigan Salt Crystal",
+    "type": "Mining",
+    "zoneName": "The Lochs",
+    "gatheringPointBaseId": 502,
+    "territoryTypeId": 621,
+    "mapId": 369,
+    "mapX": 21.2,
+    "mapY": 29,
+    "jobLevelRequired": 70,
+    "timeWindows": [
+      {
+        "startHour": 0,
+        "endHour": 2
+      },
+      {
+        "startHour": 12,
+        "endHour": 14
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 20011,
+    "itemName": "Almandine",
+    "type": "Mining",
+    "zoneName": "The Lochs",
+    "gatheringPointBaseId": 494,
+    "territoryTypeId": 621,
+    "mapId": 369,
+    "mapX": 13.3,
+    "mapY": 27.4,
+    "jobLevelRequired": 70,
+    "timeWindows": [
+      {
+        "startHour": 0,
+        "endHour": 4
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 24241,
+    "itemName": "Evergleam Ore",
+    "type": "Mining",
+    "zoneName": "The Lochs",
+    "gatheringPointBaseId": 556,
+    "territoryTypeId": 621,
+    "mapId": 369,
+    "mapX": 21.8,
+    "mapY": 13.5,
+    "jobLevelRequired": 70,
+    "timeWindows": [
+      {
+        "startHour": 10,
+        "endHour": 12
+      },
+      {
+        "startHour": 22,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 9,
+    "itemName": "Ice Crystal",
+    "type": "Mining",
+    "zoneName": "The Lochs",
+    "gatheringPointBaseId": 494,
+    "territoryTypeId": 621,
+    "mapId": 369,
+    "mapX": 13.3,
+    "mapY": 27.4,
+    "jobLevelRequired": 70,
+    "timeWindows": [
+      {
+        "startHour": 0,
+        "endHour": 4
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 9,
+    "itemName": "Ice Crystal",
+    "type": "Botany",
+    "zoneName": "The Lochs",
+    "gatheringPointBaseId": 515,
+    "territoryTypeId": 621,
+    "mapId": 369,
+    "mapX": 31.1,
+    "mapY": 27,
+    "jobLevelRequired": 70,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 8
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 19857,
+    "itemName": "Jhammel Ginger",
+    "type": "Botany",
+    "zoneName": "The Lochs",
+    "gatheringPointBaseId": 526,
+    "territoryTypeId": 621,
+    "mapId": 369,
+    "mapX": 6.9,
+    "mapY": 9,
+    "jobLevelRequired": 70,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 6
+      },
+      {
+        "startHour": 16,
+        "endHour": 18
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 17948,
+    "itemName": "Rhalgr\u0027s Streak",
+    "type": "Botany",
+    "zoneName": "The Lochs",
+    "gatheringPointBaseId": 526,
+    "territoryTypeId": 621,
+    "mapId": 369,
+    "mapX": 6.9,
+    "mapY": 9,
+    "jobLevelRequired": 70,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 6
+      },
+      {
+        "startHour": 16,
+        "endHour": 18
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 33153,
+    "itemName": "Rhodolite",
+    "type": "Mining",
+    "zoneName": "The Lochs",
+    "gatheringPointBaseId": 494,
+    "territoryTypeId": 621,
+    "mapId": 369,
+    "mapX": 13.3,
+    "mapY": 27.4,
+    "jobLevelRequired": 70,
+    "timeWindows": [
+      {
+        "startHour": 0,
+        "endHour": 4
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 19937,
+    "itemName": "Torreya Branch",
+    "type": "Botany",
+    "zoneName": "The Lochs",
+    "gatheringPointBaseId": 515,
+    "territoryTypeId": 621,
+    "mapId": 369,
+    "mapX": 31.1,
+    "mapY": 27,
+    "jobLevelRequired": 70,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 8
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 19934,
+    "itemName": "Torreya Log",
+    "type": "Botany",
+    "zoneName": "The Lochs",
+    "gatheringPointBaseId": 527,
+    "territoryTypeId": 621,
+    "mapId": 369,
+    "mapX": 11.9,
+    "mapY": 12.7,
+    "jobLevelRequired": 70,
+    "timeWindows": [
+      {
+        "startHour": 6,
+        "endHour": 8
+      },
+      {
+        "startHour": 18,
+        "endHour": 20
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 23220,
+    "itemName": "Yanxian Soil",
+    "type": "Mining",
+    "zoneName": "The Lochs",
+    "gatheringPointBaseId": 494,
+    "territoryTypeId": 621,
+    "mapId": 369,
+    "mapX": 13.3,
+    "mapY": 27.4,
+    "jobLevelRequired": 70,
+    "timeWindows": [
+      {
+        "startHour": 0,
+        "endHour": 4
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 23221,
+    "itemName": "Yanxian Verbena",
+    "type": "Botany",
+    "zoneName": "The Lochs",
+    "gatheringPointBaseId": 515,
+    "territoryTypeId": 621,
+    "mapId": 369,
+    "mapX": 31.1,
+    "mapY": 27,
+    "jobLevelRequired": 70,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 8
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 19959,
+    "itemName": "Chromite Ore",
+    "type": "Mining",
+    "zoneName": "The Peaks",
+    "gatheringPointBaseId": 503,
+    "territoryTypeId": 620,
+    "mapId": 368,
+    "mapX": 15.9,
+    "mapY": 33.9,
+    "jobLevelRequired": 70,
+    "timeWindows": [
+      {
+        "startHour": 10,
+        "endHour": 12
+      },
+      {
+        "startHour": 22,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 21085,
+    "itemName": "Gyr Abanian Spring Water",
+    "type": "Mining",
+    "zoneName": "The Peaks",
+    "gatheringPointBaseId": 503,
+    "territoryTypeId": 620,
+    "mapId": 368,
+    "mapX": 15.9,
+    "mapY": 33.9,
+    "jobLevelRequired": 70,
+    "timeWindows": [
+      {
+        "startHour": 10,
+        "endHour": 12
+      },
+      {
+        "startHour": 22,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 19918,
+    "itemName": "Hallowed Basil",
+    "type": "Botany",
+    "zoneName": "The Peaks",
+    "gatheringPointBaseId": 524,
+    "territoryTypeId": 620,
+    "mapId": 368,
+    "mapX": 24.1,
+    "mapY": 16.6,
+    "jobLevelRequired": 70,
+    "timeWindows": [
+      {
+        "startHour": 6,
+        "endHour": 8
+      },
+      {
+        "startHour": 18,
+        "endHour": 20
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 22420,
+    "itemName": "Hingan Flax",
+    "type": "Botany",
+    "zoneName": "The Peaks",
+    "gatheringPointBaseId": 538,
+    "territoryTypeId": 620,
+    "mapId": 368,
+    "mapX": 24.7,
+    "mapY": 36.1,
+    "jobLevelRequired": 70,
+    "timeWindows": [
+      {
+        "startHour": 2,
+        "endHour": 4
+      },
+      {
+        "startHour": 14,
+        "endHour": 16
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 17944,
+    "itemName": "Pummelite",
+    "type": "Mining",
+    "zoneName": "The Peaks",
+    "gatheringPointBaseId": 499,
+    "territoryTypeId": 620,
+    "mapId": 368,
+    "mapX": 27,
+    "mapY": 12.6,
+    "jobLevelRequired": 70,
+    "timeWindows": [
+      {
+        "startHour": 8,
+        "endHour": 10
+      },
+      {
+        "startHour": 20,
+        "endHour": 22
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 19973,
+    "itemName": "Raw Rhodonite",
+    "type": "Mining",
+    "zoneName": "The Peaks",
+    "gatheringPointBaseId": 499,
+    "territoryTypeId": 620,
+    "mapId": 368,
+    "mapX": 27,
+    "mapY": 12.6,
+    "jobLevelRequired": 70,
+    "timeWindows": [
+      {
+        "startHour": 8,
+        "endHour": 10
+      },
+      {
+        "startHour": 20,
+        "endHour": 22
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 24242,
+    "itemName": "Urunday Log",
+    "type": "Botany",
+    "zoneName": "The Peaks",
+    "gatheringPointBaseId": 557,
+    "territoryTypeId": 620,
+    "mapId": 368,
+    "mapX": 33.4,
+    "mapY": 10.6,
+    "jobLevelRequired": 70,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 6
+      },
+      {
+        "startHour": 16,
+        "endHour": 18
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 33009,
+    "itemName": "Rarefied Urunday Log",
+    "type": "Botany",
+    "zoneName": "The Peaks",
+    "gatheringPointBaseId": 777,
+    "territoryTypeId": 620,
+    "mapId": 368,
+    "mapX": 30.6,
+    "mapY": 6.9,
+    "jobLevelRequired": 80,
+    "timeWindows": [
+      {
+        "startHour": 0,
+        "endHour": 2
+      },
+      {
+        "startHour": 12,
+        "endHour": 14
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 32981,
+    "itemName": "Rarefied Raw Lazurite",
+    "type": "Mining",
+    "zoneName": "The Rak\u0027tika Greatwood",
+    "gatheringPointBaseId": 332,
+    "territoryTypeId": 817,
+    "mapId": 495,
+    "mapX": 16.5,
+    "mapY": 18.2,
+    "jobLevelRequired": 75,
+    "timeWindows": [
+      {
+        "startHour": 6,
+        "endHour": 8
+      },
+      {
+        "startHour": 18,
+        "endHour": 20
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 27728,
+    "itemName": "Raw Lazurite",
+    "type": "Mining",
+    "zoneName": "The Rak\u0027tika Greatwood",
+    "gatheringPointBaseId": 605,
+    "territoryTypeId": 817,
+    "mapId": 495,
+    "mapX": 19.8,
+    "mapY": 20.5,
+    "jobLevelRequired": 75,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 6
+      },
+      {
+        "startHour": 16,
+        "endHour": 18
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 32951,
+    "itemName": "Dolomite",
+    "type": "Mining",
+    "zoneName": "The Rak\u0027tika Greatwood",
+    "gatheringPointBaseId": 760,
+    "territoryTypeId": 817,
+    "mapId": 495,
+    "mapX": 7.6,
+    "mapY": 30.2,
+    "jobLevelRequired": 80,
+    "timeWindows": [
+      {
+        "startHour": 8,
+        "endHour": 10
+      },
+      {
+        "startHour": 20,
+        "endHour": 22
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 27805,
+    "itemName": "Gale Rock",
+    "type": "Mining",
+    "zoneName": "The Rak\u0027tika Greatwood",
+    "gatheringPointBaseId": 597,
+    "territoryTypeId": 817,
+    "mapId": 495,
+    "mapX": 22.5,
+    "mapY": 11.9,
+    "jobLevelRequired": 80,
+    "timeWindows": [
+      {
+        "startHour": 0,
+        "endHour": 4
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 30592,
+    "itemName": "Levin Mint",
+    "type": "Botany",
+    "zoneName": "The Rak\u0027tika Greatwood",
+    "gatheringPointBaseId": 624,
+    "territoryTypeId": 817,
+    "mapId": 495,
+    "mapX": 22.5,
+    "mapY": 13.1,
+    "jobLevelRequired": 80,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 8
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 27828,
+    "itemName": "Mist Spinach",
+    "type": "Botany",
+    "zoneName": "The Rak\u0027tika Greatwood",
+    "gatheringPointBaseId": 631,
+    "territoryTypeId": 817,
+    "mapId": 495,
+    "mapX": 34.7,
+    "mapY": 21.6,
+    "jobLevelRequired": 80,
+    "timeWindows": [
+      {
+        "startHour": 0,
+        "endHour": 2
+      },
+      {
+        "startHour": 12,
+        "endHour": 14
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 32953,
+    "itemName": "Raindrop Cotton Boll",
+    "type": "Botany",
+    "zoneName": "The Rak\u0027tika Greatwood",
+    "gatheringPointBaseId": 763,
+    "territoryTypeId": 817,
+    "mapId": 495,
+    "mapX": 33.7,
+    "mapY": 13.3,
+    "jobLevelRequired": 80,
+    "timeWindows": [
+      {
+        "startHour": 10,
+        "endHour": 12
+      },
+      {
+        "startHour": 22,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 27688,
+    "itemName": "Sandalwood Log",
+    "type": "Botany",
+    "zoneName": "The Rak\u0027tika Greatwood",
+    "gatheringPointBaseId": 633,
+    "territoryTypeId": 817,
+    "mapId": 495,
+    "mapX": 24.7,
+    "mapY": 36.9,
+    "jobLevelRequired": 80,
+    "timeWindows": [
+      {
+        "startHour": 2,
+        "endHour": 4
+      },
+      {
+        "startHour": 14,
+        "endHour": 16
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 28716,
+    "itemName": "Sandalwood Sap",
+    "type": "Botany",
+    "zoneName": "The Rak\u0027tika Greatwood",
+    "gatheringPointBaseId": 633,
+    "territoryTypeId": 817,
+    "mapId": 495,
+    "mapX": 24.7,
+    "mapY": 36.9,
+    "jobLevelRequired": 80,
+    "timeWindows": [
+      {
+        "startHour": 2,
+        "endHour": 4
+      },
+      {
+        "startHour": 14,
+        "endHour": 16
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 27809,
+    "itemName": "Sweet Marjoram",
+    "type": "Botany",
+    "zoneName": "The Rak\u0027tika Greatwood",
+    "gatheringPointBaseId": 624,
+    "territoryTypeId": 817,
+    "mapId": 495,
+    "mapX": 22.5,
+    "mapY": 13.1,
+    "jobLevelRequired": 80,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 8
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 30591,
+    "itemName": "Thunder Rock",
+    "type": "Mining",
+    "zoneName": "The Rak\u0027tika Greatwood",
+    "gatheringPointBaseId": 597,
+    "territoryTypeId": 817,
+    "mapId": 495,
+    "mapX": 22.5,
+    "mapY": 11.9,
+    "jobLevelRequired": 80,
+    "timeWindows": [
+      {
+        "startHour": 0,
+        "endHour": 4
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 13,
+    "itemName": "Water Crystal",
+    "type": "Mining",
+    "zoneName": "The Rak\u0027tika Greatwood",
+    "gatheringPointBaseId": 597,
+    "territoryTypeId": 817,
+    "mapId": 495,
+    "mapX": 22.5,
+    "mapY": 11.9,
+    "jobLevelRequired": 80,
+    "timeWindows": [
+      {
+        "startHour": 0,
+        "endHour": 4
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 10,
+    "itemName": "Wind Crystal",
+    "type": "Botany",
+    "zoneName": "The Rak\u0027tika Greatwood",
+    "gatheringPointBaseId": 624,
+    "territoryTypeId": 817,
+    "mapId": 495,
+    "mapX": 22.5,
+    "mapY": 13.1,
+    "jobLevelRequired": 80,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 8
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 32997,
+    "itemName": "Rarefied Larch Log",
+    "type": "Botany",
+    "zoneName": "The Ruby Sea",
+    "gatheringPointBaseId": 770,
+    "territoryTypeId": 613,
+    "mapId": 371,
+    "mapX": 6,
+    "mapY": 15.8,
+    "jobLevelRequired": 65,
+    "timeWindows": [
+      {
+        "startHour": 2,
+        "endHour": 4
+      },
+      {
+        "startHour": 14,
+        "endHour": 16
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 32999,
+    "itemName": "Rarefied Larch Sap",
+    "type": "Botany",
+    "zoneName": "The Ruby Sea",
+    "gatheringPointBaseId": 770,
+    "territoryTypeId": 613,
+    "mapId": 371,
+    "mapX": 6,
+    "mapY": 15.8,
+    "jobLevelRequired": 65,
+    "timeWindows": [
+      {
+        "startHour": 2,
+        "endHour": 4
+      },
+      {
+        "startHour": 14,
+        "endHour": 16
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 32976,
+    "itemName": "Rarefied Raw Star Spinel",
+    "type": "Mining",
+    "zoneName": "The Ruby Sea",
+    "gatheringPointBaseId": 312,
+    "territoryTypeId": 613,
+    "mapId": 371,
+    "mapX": 21.2,
+    "mapY": 34.3,
+    "jobLevelRequired": 65,
+    "timeWindows": [
+      {
+        "startHour": 10,
+        "endHour": 12
+      },
+      {
+        "startHour": 22,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 32998,
+    "itemName": "Rarefied Shiitake Mushroom",
+    "type": "Botany",
+    "zoneName": "The Ruby Sea",
+    "gatheringPointBaseId": 771,
+    "territoryTypeId": 613,
+    "mapId": 371,
+    "mapX": 33.1,
+    "mapY": 9.2,
+    "jobLevelRequired": 65,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 6
+      },
+      {
+        "startHour": 16,
+        "endHour": 18
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 19970,
+    "itemName": "Raw Star Spinel",
+    "type": "Mining",
+    "zoneName": "The Ruby Sea",
+    "gatheringPointBaseId": 498,
+    "territoryTypeId": 613,
+    "mapId": 371,
+    "mapX": 14.9,
+    "mapY": 5,
+    "jobLevelRequired": 65,
+    "timeWindows": [
+      {
+        "startHour": 0,
+        "endHour": 2
+      },
+      {
+        "startHour": 12,
+        "endHour": 14
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 23179,
+    "itemName": "Hawk\u0027s Eye",
+    "type": "Mining",
+    "zoneName": "The Ruby Sea",
+    "gatheringPointBaseId": 535,
+    "territoryTypeId": 613,
+    "mapId": 371,
+    "mapX": 10.9,
+    "mapY": 22.6,
+    "jobLevelRequired": 70,
+    "timeWindows": [
+      {
+        "startHour": 6,
+        "endHour": 8
+      },
+      {
+        "startHour": 18,
+        "endHour": 20
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 22417,
+    "itemName": "Nightsteel Ore",
+    "type": "Mining",
+    "zoneName": "The Ruby Sea",
+    "gatheringPointBaseId": 535,
+    "territoryTypeId": 613,
+    "mapId": 371,
+    "mapX": 10.9,
+    "mapY": 22.6,
+    "jobLevelRequired": 70,
+    "timeWindows": [
+      {
+        "startHour": 6,
+        "endHour": 8
+      },
+      {
+        "startHour": 18,
+        "endHour": 20
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 12944,
+    "itemName": "Abalathian Mistletoe",
+    "type": "Botany",
+    "zoneName": "The Sea of Clouds",
+    "gatheringPointBaseId": 342,
+    "territoryTypeId": 401,
+    "mapId": 215,
+    "mapX": 35.9,
+    "mapY": 21.4,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 6,
+        "endHour": 8
+      },
+      {
+        "startHour": 18,
+        "endHour": 20
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 12901,
+    "itemName": "Abalathian Rock Salt",
+    "type": "Mining",
+    "zoneName": "The Sea of Clouds",
+    "gatheringPointBaseId": 318,
+    "territoryTypeId": 401,
+    "mapId": 215,
+    "mapX": 7.8,
+    "mapY": 7.6,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 10,
+        "endHour": 12
+      },
+      {
+        "startHour": 22,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 12967,
+    "itemName": "Bright Lightning Rock",
+    "type": "Mining",
+    "zoneName": "The Sea of Clouds",
+    "gatheringPointBaseId": 313,
+    "territoryTypeId": 401,
+    "mapId": 215,
+    "mapX": 25.2,
+    "mapY": 31.3,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 16,
+        "endHour": 20
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 12973,
+    "itemName": "Clary Sage",
+    "type": "Botany",
+    "zoneName": "The Sea of Clouds",
+    "gatheringPointBaseId": 327,
+    "territoryTypeId": 401,
+    "mapId": 215,
+    "mapX": 13.9,
+    "mapY": 20.7,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 20,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 12972,
+    "itemName": "Furymint",
+    "type": "Botany",
+    "zoneName": "The Sea of Clouds",
+    "gatheringPointBaseId": 327,
+    "territoryTypeId": 401,
+    "mapId": 215,
+    "mapX": 13.9,
+    "mapY": 20.7,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 20,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 12889,
+    "itemName": "Heavens Lemon",
+    "type": "Botany",
+    "zoneName": "The Sea of Clouds",
+    "gatheringPointBaseId": 342,
+    "territoryTypeId": 401,
+    "mapId": 215,
+    "mapX": 35.9,
+    "mapY": 21.4,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 6,
+        "endHour": 8
+      },
+      {
+        "startHour": 18,
+        "endHour": 20
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 12971,
+    "itemName": "Highland Oregano",
+    "type": "Botany",
+    "zoneName": "The Sea of Clouds",
+    "gatheringPointBaseId": 327,
+    "territoryTypeId": 401,
+    "mapId": 215,
+    "mapX": 13.9,
+    "mapY": 20.7,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 20,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 12902,
+    "itemName": "Honeydew Almonds",
+    "type": "Botany",
+    "zoneName": "The Sea of Clouds",
+    "gatheringPointBaseId": 348,
+    "territoryTypeId": 401,
+    "mapId": 215,
+    "mapX": 22.3,
+    "mapY": 6.4,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 0,
+        "endHour": 2
+      },
+      {
+        "startHour": 12,
+        "endHour": 14
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 12,
+    "itemName": "Lightning Crystal",
+    "type": "Mining",
+    "zoneName": "The Sea of Clouds",
+    "gatheringPointBaseId": 313,
+    "territoryTypeId": 401,
+    "mapId": 215,
+    "mapX": 25.2,
+    "mapY": 31.3,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 16,
+        "endHour": 20
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 5218,
+    "itemName": "Lightning Moraine",
+    "type": "Mining",
+    "zoneName": "The Sea of Clouds",
+    "gatheringPointBaseId": 313,
+    "territoryTypeId": 401,
+    "mapId": 215,
+    "mapX": 25.2,
+    "mapY": 31.3,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 16,
+        "endHour": 20
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 15948,
+    "itemName": "Lover\u0027s Laurel",
+    "type": "Botany",
+    "zoneName": "The Sea of Clouds",
+    "gatheringPointBaseId": 327,
+    "territoryTypeId": 401,
+    "mapId": 215,
+    "mapX": 13.9,
+    "mapY": 20.7,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 20,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 15646,
+    "itemName": "Meteorite",
+    "type": "Mining",
+    "zoneName": "The Sea of Clouds",
+    "gatheringPointBaseId": 397,
+    "territoryTypeId": 401,
+    "mapId": 215,
+    "mapX": 37.6,
+    "mapY": 14.6,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 8,
+        "endHour": 10
+      },
+      {
+        "startHour": 20,
+        "endHour": 22
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 33148,
+    "itemName": "Pot Marjoram",
+    "type": "Botany",
+    "zoneName": "The Sea of Clouds",
+    "gatheringPointBaseId": 327,
+    "territoryTypeId": 401,
+    "mapId": 215,
+    "mapX": 13.9,
+    "mapY": 20.7,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 20,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 15949,
+    "itemName": "Radiant Astral Moraine",
+    "type": "Mining",
+    "zoneName": "The Sea of Clouds",
+    "gatheringPointBaseId": 313,
+    "territoryTypeId": 401,
+    "mapId": 215,
+    "mapX": 25.2,
+    "mapY": 31.3,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 16,
+        "endHour": 20
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 5224,
+    "itemName": "Radiant Lightning Moraine",
+    "type": "Mining",
+    "zoneName": "The Sea of Clouds",
+    "gatheringPointBaseId": 313,
+    "territoryTypeId": 401,
+    "mapId": 215,
+    "mapX": 25.2,
+    "mapY": 31.3,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 16,
+        "endHour": 20
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 32973,
+    "itemName": "Rarefied Abalathian Spring Water",
+    "type": "Mining",
+    "zoneName": "The Sea of Clouds",
+    "gatheringPointBaseId": 308,
+    "territoryTypeId": 401,
+    "mapId": 215,
+    "mapX": 20.6,
+    "mapY": 11.6,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 2,
+        "endHour": 4
+      },
+      {
+        "startHour": 14,
+        "endHour": 16
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 32974,
+    "itemName": "Rarefied Aurum Regis Sand",
+    "type": "Mining",
+    "zoneName": "The Sea of Clouds",
+    "gatheringPointBaseId": 308,
+    "territoryTypeId": 401,
+    "mapId": 215,
+    "mapX": 20.6,
+    "mapY": 11.6,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 2,
+        "endHour": 4
+      },
+      {
+        "startHour": 14,
+        "endHour": 16
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 5159,
+    "itemName": "Red Quartz",
+    "type": "Mining",
+    "zoneName": "The Sea of Clouds",
+    "gatheringPointBaseId": 318,
+    "territoryTypeId": 401,
+    "mapId": 215,
+    "mapX": 7.8,
+    "mapY": 7.6,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 10,
+        "endHour": 12
+      },
+      {
+        "startHour": 22,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 14151,
+    "itemName": "Smithsonite Ore",
+    "type": "Mining",
+    "zoneName": "The Sea of Clouds",
+    "gatheringPointBaseId": 397,
+    "territoryTypeId": 401,
+    "mapId": 215,
+    "mapX": 37.6,
+    "mapY": 14.6,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 8,
+        "endHour": 10
+      },
+      {
+        "startHour": 20,
+        "endHour": 22
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 12540,
+    "itemName": "Sun Mica",
+    "type": "Mining",
+    "zoneName": "The Sea of Clouds",
+    "gatheringPointBaseId": 324,
+    "territoryTypeId": 401,
+    "mapId": 215,
+    "mapX": 36.4,
+    "mapY": 37.7,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 6
+      },
+      {
+        "startHour": 16,
+        "endHour": 18
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 33149,
+    "itemName": "Water Mint",
+    "type": "Botany",
+    "zoneName": "The Sea of Clouds",
+    "gatheringPointBaseId": 327,
+    "territoryTypeId": 401,
+    "mapId": 215,
+    "mapX": 13.9,
+    "mapY": 20.7,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 20,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 33150,
+    "itemName": "Wild Sage",
+    "type": "Botany",
+    "zoneName": "The Sea of Clouds",
+    "gatheringPointBaseId": 327,
+    "territoryTypeId": 401,
+    "mapId": 215,
+    "mapX": 13.9,
+    "mapY": 20.7,
+    "jobLevelRequired": 60,
+    "timeWindows": [
+      {
+        "startHour": 20,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 29970,
+    "itemName": "Purpure Shell Chip",
+    "type": "Mining",
+    "zoneName": "The Tempest",
+    "gatheringPointBaseId": 682,
+    "territoryTypeId": 818,
+    "mapId": 496,
+    "mapX": 34.4,
+    "mapY": 31.4,
+    "jobLevelRequired": 80,
+    "timeWindows": [
+      {
+        "startHour": 6,
+        "endHour": 8
+      },
+      {
+        "startHour": 18,
+        "endHour": 20
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 33008,
+    "itemName": "Rarefied Coral",
+    "type": "Botany",
+    "zoneName": "The Tempest",
+    "gatheringPointBaseId": 776,
+    "territoryTypeId": 818,
+    "mapId": 496,
+    "mapX": 37.5,
+    "mapY": 11.6,
+    "jobLevelRequired": 80,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 6
+      },
+      {
+        "startHour": 16,
+        "endHour": 18
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 33006,
+    "itemName": "Rarefied Kelp",
+    "type": "Botany",
+    "zoneName": "The Tempest",
+    "gatheringPointBaseId": 776,
+    "territoryTypeId": 818,
+    "mapId": 496,
+    "mapX": 37.5,
+    "mapY": 11.6,
+    "jobLevelRequired": 80,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 6
+      },
+      {
+        "startHour": 16,
+        "endHour": 18
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 32985,
+    "itemName": "Rarefied Raw Onyx",
+    "type": "Mining",
+    "zoneName": "The Tempest",
+    "gatheringPointBaseId": 334,
+    "territoryTypeId": 818,
+    "mapId": 496,
+    "mapX": 25.1,
+    "mapY": 4.5,
+    "jobLevelRequired": 80,
+    "timeWindows": [
+      {
+        "startHour": 8,
+        "endHour": 10
+      },
+      {
+        "startHour": 20,
+        "endHour": 22
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 32984,
+    "itemName": "Rarefied Reef Rock",
+    "type": "Mining",
+    "zoneName": "The Tempest",
+    "gatheringPointBaseId": 766,
+    "territoryTypeId": 818,
+    "mapId": 496,
+    "mapX": 32.7,
+    "mapY": 20.6,
+    "jobLevelRequired": 80,
+    "timeWindows": [
+      {
+        "startHour": 2,
+        "endHour": 4
+      },
+      {
+        "startHour": 14,
+        "endHour": 16
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 32983,
+    "itemName": "Rarefied Sea Salt",
+    "type": "Mining",
+    "zoneName": "The Tempest",
+    "gatheringPointBaseId": 334,
+    "territoryTypeId": 818,
+    "mapId": 496,
+    "mapX": 25.1,
+    "mapY": 4.5,
+    "jobLevelRequired": 80,
+    "timeWindows": [
+      {
+        "startHour": 8,
+        "endHour": 10
+      },
+      {
+        "startHour": 20,
+        "endHour": 22
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 32986,
+    "itemName": "Rarefied Tungsten Ore",
+    "type": "Mining",
+    "zoneName": "The Tempest",
+    "gatheringPointBaseId": 766,
+    "territoryTypeId": 818,
+    "mapId": 496,
+    "mapX": 32.7,
+    "mapY": 20.6,
+    "jobLevelRequired": 80,
+    "timeWindows": [
+      {
+        "startHour": 2,
+        "endHour": 4
+      },
+      {
+        "startHour": 14,
+        "endHour": 16
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 27731,
+    "itemName": "Raw Onyx",
+    "type": "Mining",
+    "zoneName": "The Tempest",
+    "gatheringPointBaseId": 608,
+    "territoryTypeId": 818,
+    "mapId": 496,
+    "mapX": 16,
+    "mapY": 21.6,
+    "jobLevelRequired": 80,
+    "timeWindows": [
+      {
+        "startHour": 0,
+        "endHour": 2
+      },
+      {
+        "startHour": 12,
+        "endHour": 14
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 27704,
+    "itemName": "Tungsten Ore",
+    "type": "Mining",
+    "zoneName": "The Tempest",
+    "gatheringPointBaseId": 610,
+    "territoryTypeId": 818,
+    "mapId": 496,
+    "mapX": 32.8,
+    "mapY": 7.7,
+    "jobLevelRequired": 80,
+    "timeWindows": [
+      {
+        "startHour": 10,
+        "endHour": 12
+      },
+      {
+        "startHour": 22,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 36217,
+    "itemName": "Double-edged Herb",
+    "type": "Botany",
+    "zoneName": "Ultima Thule",
+    "gatheringPointBaseId": 858,
+    "territoryTypeId": 960,
+    "mapId": 699,
+    "mapX": 28.1,
+    "mapY": 13.2,
+    "jobLevelRequired": 90,
+    "timeWindows": [
+      {
+        "startHour": 10,
+        "endHour": 12
+      },
+      {
+        "startHour": 22,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 36214,
+    "itemName": "Potent Spice",
+    "type": "Botany",
+    "zoneName": "Ultima Thule",
+    "gatheringPointBaseId": 858,
+    "territoryTypeId": 960,
+    "mapId": 699,
+    "mapX": 28.1,
+    "mapY": 13.2,
+    "jobLevelRequired": 90,
+    "timeWindows": [
+      {
+        "startHour": 10,
+        "endHour": 12
+      },
+      {
+        "startHour": 22,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 37691,
+    "itemName": "Prime Crystalbloom",
+    "type": "Botany",
+    "zoneName": "Ultima Thule",
+    "gatheringPointBaseId": 858,
+    "territoryTypeId": 960,
+    "mapId": 699,
+    "mapX": 28.1,
+    "mapY": 13.2,
+    "jobLevelRequired": 90,
+    "timeWindows": [
+      {
+        "startHour": 10,
+        "endHour": 12
+      },
+      {
+        "startHour": 22,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 41416,
+    "itemName": "Prime Fossilized Dragon\u0027s Scale",
+    "type": "Mining",
+    "zoneName": "Ultima Thule",
+    "gatheringPointBaseId": 933,
+    "territoryTypeId": 960,
+    "mapId": 699,
+    "mapX": 17,
+    "mapY": 29.4,
+    "jobLevelRequired": 90,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 6
+      },
+      {
+        "startHour": 16,
+        "endHour": 18
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 36310,
+    "itemName": "Rarefied AR-Caean Cotton Boll",
+    "type": "Botany",
+    "zoneName": "Ultima Thule",
+    "gatheringPointBaseId": 855,
+    "territoryTypeId": 960,
+    "mapId": 699,
+    "mapX": 9.5,
+    "mapY": 33.2,
+    "jobLevelRequired": 90,
+    "timeWindows": [
+      {
+        "startHour": 8,
+        "endHour": 10
+      },
+      {
+        "startHour": 20,
+        "endHour": 22
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 39706,
+    "itemName": "Softsilver Ore",
+    "type": "Mining",
+    "zoneName": "Ultima Thule",
+    "gatheringPointBaseId": 933,
+    "territoryTypeId": 960,
+    "mapId": 699,
+    "mapX": 17,
+    "mapY": 29.4,
+    "jobLevelRequired": 90,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 6
+      },
+      {
+        "startHour": 16,
+        "endHour": 18
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 5365,
+    "itemName": "Bamboo Stick",
+    "type": "Botany",
+    "zoneName": "Upper La Noscea",
+    "gatheringPointBaseId": 232,
+    "territoryTypeId": 139,
+    "mapId": 19,
+    "mapX": 29.1,
+    "mapY": 25.5,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 7,
+        "endHour": 10
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 7595,
+    "itemName": "Blood Orange",
+    "type": "Botany",
+    "zoneName": "Upper La Noscea",
+    "gatheringPointBaseId": 232,
+    "territoryTypeId": 139,
+    "mapId": 19,
+    "mapX": 29.1,
+    "mapY": 25.5,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 7,
+        "endHour": 10
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 43926,
+    "itemName": "Rarefied Mountain Flax",
+    "type": "Botany",
+    "zoneName": "Urqopacha",
+    "gatheringPointBaseId": 1026,
+    "territoryTypeId": 1187,
+    "mapId": 857,
+    "mapX": 5.9,
+    "mapY": 23.8,
+    "jobLevelRequired": 95,
+    "timeWindows": [
+      {
+        "startHour": 0,
+        "endHour": 2
+      },
+      {
+        "startHour": 12,
+        "endHour": 14
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 44139,
+    "itemName": "Turali Alumen",
+    "type": "Mining",
+    "zoneName": "Urqopacha",
+    "gatheringPointBaseId": 1030,
+    "territoryTypeId": 1187,
+    "mapId": 857,
+    "mapX": 37.1,
+    "mapY": 29.6,
+    "jobLevelRequired": 100,
+    "timeWindows": [
+      {
+        "startHour": 8,
+        "endHour": 10
+      },
+      {
+        "startHour": 20,
+        "endHour": 22
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 49211,
+    "itemName": "Urqopacha Flax",
+    "type": "Botany",
+    "zoneName": "Urqopacha",
+    "gatheringPointBaseId": 1300,
+    "territoryTypeId": 1187,
+    "mapId": 857,
+    "mapX": 5.2,
+    "mapY": 25.2,
+    "jobLevelRequired": 100,
+    "timeWindows": [
+      {
+        "startHour": 6,
+        "endHour": 8
+      },
+      {
+        "startHour": 18,
+        "endHour": 20
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 7593,
+    "itemName": "La Noscean Leek",
+    "type": "Botany",
+    "zoneName": "Western La Noscea",
+    "gatheringPointBaseId": 234,
+    "territoryTypeId": 138,
+    "mapId": 18,
+    "mapX": 34.3,
+    "mapY": 28.3,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 8,
+        "endHour": 11
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 10098,
+    "itemName": "Mazlaya Greens",
+    "type": "Botany",
+    "zoneName": "Western La Noscea",
+    "gatheringPointBaseId": 234,
+    "territoryTypeId": 138,
+    "mapId": 18,
+    "mapX": 34.3,
+    "mapY": 28.3,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 8,
+        "endHour": 11
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 8024,
+    "itemName": "Waterfowl Feather",
+    "type": "Botany",
+    "zoneName": "Western La Noscea",
+    "gatheringPointBaseId": 234,
+    "territoryTypeId": 138,
+    "mapId": 18,
+    "mapX": 34.3,
+    "mapY": 28.3,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 8,
+        "endHour": 11
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 7766,
+    "itemName": "Grade 3 Thanalan Topsoil",
+    "type": "Mining",
+    "zoneName": "Western Thanalan",
+    "gatheringPointBaseId": 241,
+    "territoryTypeId": 140,
+    "mapId": 20,
+    "mapX": 18.9,
+    "mapY": 28.4,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 5,
+        "endHour": 8
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 19,
+    "itemName": "Water Cluster",
+    "type": "Mining",
+    "zoneName": "Western Thanalan",
+    "gatheringPointBaseId": 241,
+    "territoryTypeId": 140,
+    "mapId": 20,
+    "mapX": 18.9,
+    "mapY": 28.4,
+    "jobLevelRequired": 50,
+    "timeWindows": [
+      {
+        "startHour": 5,
+        "endHour": 8
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 9
+  },
+  {
+    "itemId": 45968,
+    "itemName": "Cordia Log",
+    "type": "Botany",
+    "zoneName": "Yak T\u0027el",
+    "gatheringPointBaseId": 1191,
+    "territoryTypeId": 1189,
+    "mapId": 859,
+    "mapX": 35.8,
+    "mapY": 22.3,
+    "jobLevelRequired": 100,
+    "timeWindows": [
+      {
+        "startHour": 0,
+        "endHour": 2
+      },
+      {
+        "startHour": 12,
+        "endHour": 14
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 46243,
+    "itemName": "Cordia Sap",
+    "type": "Botany",
+    "zoneName": "Yak T\u0027el",
+    "gatheringPointBaseId": 1191,
+    "territoryTypeId": 1189,
+    "mapId": 859,
+    "mapX": 35.8,
+    "mapY": 22.3,
+    "jobLevelRequired": 100,
+    "timeWindows": [
+      {
+        "startHour": 0,
+        "endHour": 2
+      },
+      {
+        "startHour": 12,
+        "endHour": 14
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 45969,
+    "itemName": "Octahedrite",
+    "type": "Mining",
+    "zoneName": "Yak T\u0027el",
+    "gatheringPointBaseId": 1189,
+    "territoryTypeId": 1189,
+    "mapId": 859,
+    "mapX": 18,
+    "mapY": 37,
+    "jobLevelRequired": 100,
+    "timeWindows": [
+      {
+        "startHour": 10,
+        "endHour": 12
+      },
+      {
+        "startHour": 22,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 43928,
+    "itemName": "Rarefied Dark Mahogany Log",
+    "type": "Botany",
+    "zoneName": "Yak T\u0027el",
+    "gatheringPointBaseId": 1027,
+    "territoryTypeId": 1189,
+    "mapId": 859,
+    "mapX": 36.9,
+    "mapY": 34.8,
+    "jobLevelRequired": 100,
+    "timeWindows": [
+      {
+        "startHour": 2,
+        "endHour": 4
+      },
+      {
+        "startHour": 14,
+        "endHour": 16
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 43927,
+    "itemName": "Rarefied Sweet Kukuru Bean",
+    "type": "Botany",
+    "zoneName": "Yak T\u0027el",
+    "gatheringPointBaseId": 1027,
+    "territoryTypeId": 1189,
+    "mapId": 859,
+    "mapX": 36.9,
+    "mapY": 34.8,
+    "jobLevelRequired": 100,
+    "timeWindows": [
+      {
+        "startHour": 2,
+        "endHour": 4
+      },
+      {
+        "startHour": 14,
+        "endHour": 16
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 19860,
+    "itemName": "Bamboo Shoot",
+    "type": "Botany",
+    "zoneName": "Yanxia",
+    "gatheringPointBaseId": 522,
+    "territoryTypeId": 614,
+    "mapId": 354,
+    "mapX": 28.8,
+    "mapY": 25.6,
+    "jobLevelRequired": 65,
+    "timeWindows": [
+      {
+        "startHour": 10,
+        "endHour": 12
+      },
+      {
+        "startHour": 22,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 33151,
+    "itemName": "Countess Tea Leaves",
+    "type": "Botany",
+    "zoneName": "Yanxia",
+    "gatheringPointBaseId": 518,
+    "territoryTypeId": 614,
+    "mapId": 354,
+    "mapX": 32.1,
+    "mapY": 26.7,
+    "jobLevelRequired": 70,
+    "timeWindows": [
+      {
+        "startHour": 16,
+        "endHour": 20
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 33152,
+    "itemName": "Dacite",
+    "type": "Mining",
+    "zoneName": "Yanxia",
+    "gatheringPointBaseId": 492,
+    "territoryTypeId": 614,
+    "mapId": 354,
+    "mapX": 29,
+    "mapY": 6.7,
+    "jobLevelRequired": 70,
+    "timeWindows": [
+      {
+        "startHour": 20,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 8,
+    "itemName": "Fire Crystal",
+    "type": "Mining",
+    "zoneName": "Yanxia",
+    "gatheringPointBaseId": 492,
+    "territoryTypeId": 614,
+    "mapId": 354,
+    "mapX": 29,
+    "mapY": 6.7,
+    "jobLevelRequired": 70,
+    "timeWindows": [
+      {
+        "startHour": 20,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 19865,
+    "itemName": "Lotus Root",
+    "type": "Botany",
+    "zoneName": "Yanxia",
+    "gatheringPointBaseId": 525,
+    "territoryTypeId": 614,
+    "mapId": 354,
+    "mapX": 28.1,
+    "mapY": 7.8,
+    "jobLevelRequired": 70,
+    "timeWindows": [
+      {
+        "startHour": 8,
+        "endHour": 10
+      },
+      {
+        "startHour": 20,
+        "endHour": 22
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 19958,
+    "itemName": "Palladium Ore",
+    "type": "Mining",
+    "zoneName": "Yanxia",
+    "gatheringPointBaseId": 504,
+    "territoryTypeId": 614,
+    "mapId": 354,
+    "mapX": 20.5,
+    "mapY": 9.7,
+    "jobLevelRequired": 70,
+    "timeWindows": [
+      {
+        "startHour": 4,
+        "endHour": 6
+      },
+      {
+        "startHour": 16,
+        "endHour": 18
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 20010,
+    "itemName": "Perlite",
+    "type": "Mining",
+    "zoneName": "Yanxia",
+    "gatheringPointBaseId": 492,
+    "territoryTypeId": 614,
+    "mapId": 354,
+    "mapX": 29,
+    "mapY": 6.7,
+    "jobLevelRequired": 70,
+    "timeWindows": [
+      {
+        "startHour": 20,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 33001,
+    "itemName": "Rarefied Pine Log",
+    "type": "Botany",
+    "zoneName": "Yanxia",
+    "gatheringPointBaseId": 772,
+    "territoryTypeId": 614,
+    "mapId": 354,
+    "mapX": 18.7,
+    "mapY": 14.4,
+    "jobLevelRequired": 70,
+    "timeWindows": [
+      {
+        "startHour": 0,
+        "endHour": 2
+      },
+      {
+        "startHour": 12,
+        "endHour": 14
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 33000,
+    "itemName": "Rarefied Pine Resin",
+    "type": "Botany",
+    "zoneName": "Yanxia",
+    "gatheringPointBaseId": 772,
+    "territoryTypeId": 614,
+    "mapId": 354,
+    "mapX": 18.7,
+    "mapY": 14.4,
+    "jobLevelRequired": 70,
+    "timeWindows": [
+      {
+        "startHour": 0,
+        "endHour": 2
+      },
+      {
+        "startHour": 12,
+        "endHour": 14
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 19972,
+    "itemName": "Raw Imperial Jade",
+    "type": "Mining",
+    "zoneName": "Yanxia",
+    "gatheringPointBaseId": 500,
+    "territoryTypeId": 614,
+    "mapId": 354,
+    "mapX": 29.9,
+    "mapY": 9.3,
+    "jobLevelRequired": 70,
+    "timeWindows": [
+      {
+        "startHour": 6,
+        "endHour": 8
+      },
+      {
+        "startHour": 18,
+        "endHour": 20
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 10,
+    "itemName": "Wind Crystal",
+    "type": "Botany",
+    "zoneName": "Yanxia",
+    "gatheringPointBaseId": 518,
+    "territoryTypeId": 614,
+    "mapId": 354,
+    "mapX": 32.1,
+    "mapY": 26.7,
+    "jobLevelRequired": 70,
+    "timeWindows": [
+      {
+        "startHour": 16,
+        "endHour": 20
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 19916,
+    "itemName": "Windtea Leaves",
+    "type": "Botany",
+    "zoneName": "Yanxia",
+    "gatheringPointBaseId": 518,
+    "territoryTypeId": 614,
+    "mapId": 354,
+    "mapX": 32.1,
+    "mapY": 26.7,
+    "jobLevelRequired": 70,
+    "timeWindows": [
+      {
+        "startHour": 16,
+        "endHour": 20
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 24243,
+    "itemName": "Yanxian Cotton Boll",
+    "type": "Botany",
+    "zoneName": "Yanxia",
+    "gatheringPointBaseId": 558,
+    "territoryTypeId": 614,
+    "mapId": 354,
+    "mapX": 28.4,
+    "mapY": 35.4,
+    "jobLevelRequired": 70,
+    "timeWindows": [
+      {
+        "startHour": 2,
+        "endHour": 4
+      },
+      {
+        "startHour": 14,
+        "endHour": 16
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 6
+  },
+  {
+    "itemId": 23220,
+    "itemName": "Yanxian Soil",
+    "type": "Mining",
+    "zoneName": "Yanxia",
+    "gatheringPointBaseId": 492,
+    "territoryTypeId": 614,
+    "mapId": 354,
+    "mapX": 29,
+    "mapY": 6.7,
+    "jobLevelRequired": 70,
+    "timeWindows": [
+      {
+        "startHour": 20,
+        "endHour": 0
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  },
+  {
+    "itemId": 23221,
+    "itemName": "Yanxian Verbena",
+    "type": "Botany",
+    "zoneName": "Yanxia",
+    "gatheringPointBaseId": 518,
+    "territoryTypeId": 614,
+    "mapId": 354,
+    "mapX": 32.1,
+    "mapY": 26.7,
+    "jobLevelRequired": 70,
+    "timeWindows": [
+      {
+        "startHour": 16,
+        "endHour": 20
+      }
+    ],
+    "requiredWeather": [],
+    "spawnDurationMinutes": 12
+  }
+]
