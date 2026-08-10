@@ -15,6 +15,37 @@ rest of the steps.
 
 ## [Unreleased]
 
+### Changed
+
+- **The two windows are now one, tabbed.** The node list is the first tab of
+  what used to be the settings window; `Wishlist`, `Display` and `Appearance`
+  sit behind it. Two windows meant hunting for the second one every time you
+  wanted to track something, and closing one left the other floating.
+
+  `/veinvine` toggles it on whichever tab you left it, `/veinvine cfg` and the
+  installer's cog open it on `Display`, and the node list's cog jumps to
+  `Wishlist`. The window keeps its old ImGui id, so its saved position and size
+  carry over.
+
+### Added
+
+- An **Appearance** tab with three independent switches for borrowing the
+  game's own look: **Font** (Axis, the game's UI typeface), **Colours** (its
+  dark blue panels, warm off-white text and muted gold borders), and **Window
+  frame** (the WindowA nine-slice panel every normal game window is built
+  from).
+- `Services/UiStyle.cs`, which owns the Axis font handle, the palette, and the
+  frame art. All three come out of the client — nothing is downloaded.
+
+  All three are on by default — a plugin window sitting next to the game's own
+  windows may as well look like one — and each drops back to Dalamud's default
+  with a click. An explicit choice outranks the default, so anyone who has
+  already picked Dalamud keeps it.
+
+  The frame is the least finished of the three: it replaces the window
+  background but leaves ImGui's title bar and resize grip in place, so it reads
+  as a blend rather than a true native window.
+
 ## [0.0.0.3] - 2026-08-10
 
 ### Added

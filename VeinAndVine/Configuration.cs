@@ -36,6 +36,18 @@ public class Configuration : IPluginConfiguration
     /// <summary>Hide always-up nodes, leaving only the ones with a spawn window.</summary>
     public bool TimedNodesOnly { get; set; } = false;
 
+    // Appearance. The game's own look is the default: this is a plugin for a
+    // game, shown next to that game's windows, and matching them is the less
+    // surprising of the two options. Each axis is still one click from
+    // Dalamud's default in the Appearance tab.
+    //
+    // Anyone who has already chosen Dalamud keeps it - the value is written to
+    // the config file, so an explicit choice outranks a changed default. Only
+    // a config that predates these settings picks the new one up.
+    public UiFontChoice Font { get; set; } = UiFontChoice.GameAxis;
+    public UiThemeChoice Theme { get; set; } = UiThemeChoice.GameDark;
+    public UiChromeChoice Chrome { get; set; } = UiChromeChoice.GameFrame;
+
     /// <summary>
     /// The job toggles as the filter the engine wants. A method, not a
     /// property, so Dalamud's serializer doesn't write a derived value into the

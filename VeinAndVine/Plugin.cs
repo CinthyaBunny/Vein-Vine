@@ -31,6 +31,9 @@ public sealed class Plugin : IDalamudPlugin
     /// <summary>Icons and item descriptions, read from the game's own data.</summary>
     public ItemInfo ItemInfo { get; }
 
+    /// <summary>Game font, palette and window art, each independently optional.</summary>
+    public UiStyle UiStyle { get; }
+
     /// <summary>Static node dataset, loaded once at startup from Data/nodes.json.</summary>
     public IReadOnlyList<GatherNode> NodeDatabase { get; private set; }
 
@@ -51,9 +54,11 @@ public sealed class Plugin : IDalamudPlugin
     /// </summary>
     private readonly HashSet<uint> trackedItemIds = [];
 
+    // One window, tabbed. The node list and the things that configure it are
+    // the same task, and splitting them across two windows meant hunting for
+    // the second one every time you wanted to track something.
     private readonly WindowSystem windowSystem = new("VeinAndVine");
     private readonly MainWindow mainWindow;
-    private readonly ConfigWindow configWindow;
 
     public Plugin(IDalamudPluginInterface pluginInterface)
     {
@@ -65,14 +70,13 @@ public sealed class Plugin : IDalamudPlugin
         WeatherService = new WeatherService();
         PriorityEngine = new PriorityEngine(WeatherService);
         ItemInfo = new ItemInfo();
+        UiStyle = new UiStyle(Configuration);
         NodeDatabase = Services.NodeDatabase.Load();
 
         RebuildTrackedIndex();
 
         mainWindow = new MainWindow(this);
-        configWindow = new ConfigWindow(this);
         windowSystem.AddWindow(mainWindow);
-        windowSystem.AddWindow(configWindow);
 
         Service.PluginInterface.UiBuilder.Draw += DrawUi;
         Service.PluginInterface.UiBuilder.OpenConfigUi += ToggleConfigUi;  // cog icon in the installer
@@ -80,7 +84,7 @@ public sealed class Plugin : IDalamudPlugin
 
         Service.CommandManager.AddHandler(CommandName, new CommandInfo(OnCommand)
         {
-            HelpMessage = "Toggle the Vein & Vine window. \"/veinvine cfg\" for settings.",
+            HelpMessage = "Toggle the Vein & Vine window. \"/veinvine cfg\" opens it on settings.",
         });
         Service.CommandManager.AddHandler(CommandAlias, new CommandInfo(OnCommand)
         {
@@ -105,7 +109,9 @@ public sealed class Plugin : IDalamudPlugin
 
         windowSystem.RemoveAllWindows();
         mainWindow.Dispose();
-        configWindow.Dispose();
+
+        // Owns a font handle, which holds a slot in Dalamud's font atlas.
+        UiStyle.Dispose();
     }
 
     /// <summary>Re-reads Data/nodes.json without a plugin reload.</summary>
@@ -186,10 +192,16 @@ public sealed class Plugin : IDalamudPlugin
 
     private void DrawUi() => windowSystem.Draw();
 
+    /// <summary>Toggles the window, leaving whichever tab was last open in front.</summary>
     public void ToggleMainUi() => mainWindow.Toggle();
 
-    public void ToggleConfigUi() => configWindow.Toggle();
+    /// <summary>
+    /// The installer's cog and "/veinvine cfg". Both now land on the same
+    /// window as everything else, so this opens rather than toggles - a cog
+    /// that closes the window you were reading would be a surprise.
+    /// </summary>
+    public void ToggleConfigUi() => mainWindow.Open(MainWindow.Tab.Display);
 
-    /// <summary>Opens settings straight on the item picker.</summary>
-    public void OpenWishlist() => configWindow.OpenWishlist();
+    /// <summary>Brings up the item picker, from wherever you were.</summary>
+    public void OpenWishlist() => mainWindow.Open(MainWindow.Tab.Wishlist);
 }

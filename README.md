@@ -65,9 +65,9 @@ try to load the stale scaffold's csproj.
 
 | Command | Effect |
 |---|---|
-| `/veinvine` | Toggle the main window |
+| `/veinvine` | Toggle the window, on whichever tab you left it |
 | `/vnv` | Alias, hidden from the command list |
-| `/veinvine cfg` | Toggle settings |
+| `/veinvine cfg` | Open it on the **Display** tab |
 
 ## Architecture
 
@@ -85,8 +85,10 @@ column is a function of its inputs and can be unit tested with no game running.
 | `Services/PriorityEngine.cs` | **pure** | Availability + sorting, gated behind `IWeatherProvider` |
 | `Services/NodeQuery.cs` | **pure** | Filters, the per-item index, picker sorting |
 | `Services/ItemInfo.cs` | Lumina, textures | Item icons and descriptions, from the game client |
+| `Services/UiStyle.cs` | fonts, textures | Optional game font, palette and window frame |
 | `Models/` | **pure** | `GatherNode`, `WishlistEntry` |
-| `Windows/` | ImGui | Node list, item picker |
+| `Windows/MainWindow.cs` | ImGui | The one window: tab bar, Display and Appearance |
+| `Windows/NodeListTab.cs` | ImGui | The node list, and the map flag |
 | `Windows/UiShared.cs` | ImGui | Colours, duration formatting, sort-spec bridge |
 | `tools/NodeGen/` | Lumina, build-time | Regenerates `Data/nodes.json` from game sheets |
 
@@ -95,12 +97,14 @@ so it can be tested against a fake clock.
 
 ## The UI
 
-Two windows, one job each: the main window answers *what can I gather right
-now*, and the settings window's **Wishlist** tab answers *what do I care about*.
+One window, four tabs. **Nodes** leads because that is the question you keep the
+window open to answer; **Wishlist**, **Display** and **Appearance** configure it
+and sit behind it in the same frame. They used to be two separate windows, which
+meant hunting for the second one every time you wanted to track something.
 
-Both are ImGui tables with sortable, resizable, hideable columns.
+Both lists are ImGui tables with sortable, resizable, hideable columns.
 
-**Main window** — one row per node, coloured green (up, and going to expire),
+**Nodes tab** — one row per node, coloured green (up, and going to expire),
 amber (up within five minutes), grey (waiting), or ordinary text for a node
 that is simply always there. That fourth state matters: three quarters of the
 dataset is always up, and painting it the same green as a node with four
@@ -114,6 +118,7 @@ map flag; so does the marker button at its right end, and right-click also
 offers *Stop tracking*.
 
 **Wishlist tab** — one row per *item*, not per node. The dataset is node-shaped,
+
 so the same item appears in several zones with several windows; `NodeQuery`
 collapses that into one row per item, with the zone count and the union of its
 windows.
@@ -161,6 +166,39 @@ the cursor.
 
 Icons load asynchronously, so a row reserves the space whether or not the
 texture has arrived — otherwise the whole list twitches on first paint.
+
+### Wearing the game's clothes
+
+The **Appearance** tab has three independent switches, all sourced from the
+client rather than from bundled assets:
+
+| Switch | What it uses |
+|---|---|
+| Font | **Axis**, via `FontAtlas.NewGameFontHandle` — the typeface the game's own UI draws with, and the single biggest contributor to looking native |
+| Colours | A hand-matched palette: near-black blue panels, warm off-white text, muted gold borders |
+| Window frame | `ui/uld/WindowA_BgNormal_{Corner,H,V,HV}.tex`, drawn as a nine-slice |
+
+The frame textures are loaded whole with hand-computed UVs rather than through
+`UldWrapper`'s part indices. The part tables are undocumented and shift between
+patches, whereas those four files each hold exactly one kind of tile — which
+the filenames make unambiguous.
+
+All three are **on by default** — a plugin window sitting next to the game's own
+windows may as well look like one — and each drops back to Dalamud's default
+with a click. An explicit choice outranks the default: only a config that
+predates these settings picks the game look up automatically.
+
+The frame is the least finished of the three: it replaces the window background
+but leaves ImGui's title bar and resize grip alone, so it reads as a blend
+rather than a true native window. It also degrades safely — if any of the four
+textures fail to load, the normal ImGui background is drawn instead of a broken
+frame.
+
+Font and palette are pushed from `PreDraw` and popped in `PostDraw`, not inside
+`Draw` — the window background, border and title bar are drawn by `ImGui.Begin`
+itself and would otherwise ignore them. `PushWindowStyle` pops any leftover
+state before pushing, so a skipped `PostDraw` can't leak a few style entries per
+frame until ImGui asserts.
 
 Sort state deliberately lives in ImGui's own `.ini`, not in `Configuration`.
 ImGui already persists table column sorting, and a second copy in our config

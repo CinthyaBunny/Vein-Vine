@@ -4,13 +4,19 @@ using Dalamud.Game.Text.SeStringHandling.Payloads;
 using Dalamud.Interface;
 using Dalamud.Interface.Components;
 using Dalamud.Interface.Utility;
-using Dalamud.Interface.Windowing;
 using VeinAndVine.Models;
 using VeinAndVine.Services;
 
 namespace VeinAndVine.Windows;
 
-public sealed class MainWindow : Window, IDisposable
+/// <summary>
+/// The node list: what is up now, what is coming, and where. The plugin's
+/// reason for existing, and the first tab of <see cref="MainWindow"/>.
+///
+/// Not a Window in its own right - the host window owns the frame, the theme
+/// and the font, so this only ever draws into whatever region it is given.
+/// </summary>
+public sealed class NodeListTab
 {
     private const ImGuiTableFlags TableFlags =
         ImGuiTableFlags.Resizable |
@@ -29,19 +35,9 @@ public sealed class MainWindow : Window, IDisposable
     private NodeSort sort = NodeSort.Priority;
     private bool sortDescending;
 
-    public MainWindow(Plugin plugin) : base("Vein & Vine###VeinAndVineMain")
-    {
-        this.plugin = plugin;
-        SizeConstraints = new WindowSizeConstraints
-        {
-            MinimumSize = new Vector2(480, 240),
-            MaximumSize = new Vector2(1400, 1200),
-        };
-    }
+    public NodeListTab(Plugin plugin) => this.plugin = plugin;
 
-    public void Dispose() { }
-
-    public override void Draw()
+    public void Draw()
     {
         if (plugin.NodeDatabase.Count == 0)
         {
@@ -98,9 +94,6 @@ public sealed class MainWindow : Window, IDisposable
         ImGui.TextDisabled($"Expected: Data/{NodeDatabase.DataFileName}");
         if (ImGui.SmallButton("Reload data"))
             plugin.ReloadNodeDatabase();
-        ImGui.SameLine();
-        if (ImGui.SmallButton("Settings"))
-            plugin.ToggleConfigUi();
     }
 
     private void DrawToolbar((float X, float Y, uint TerritoryTypeId)? player)

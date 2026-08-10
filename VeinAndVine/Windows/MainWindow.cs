@@ -1,13 +1,28 @@
 using System.Numerics;
 using Dalamud.Bindings.ImGui;
+using Dalamud.Interface.Components;
 using Dalamud.Interface.Utility;
 using Dalamud.Interface.Windowing;
 using VeinAndVine.Services;
 
 namespace VeinAndVine.Windows;
 
-public sealed class ConfigWindow : Window, IDisposable
+/// <summary>
+/// The plugin's only window. The node list leads, because that is the question
+/// you keep the window open to answer; everything that configures it lives
+/// behind it in the same frame rather than in a second window you have to find.
+/// </summary>
+public sealed class MainWindow : Window, IDisposable
 {
+    /// <summary>Which tab a command or the installer wants brought forward.</summary>
+    public enum Tab
+    {
+        Nodes,
+        Wishlist,
+        Display,
+        Appearance,
+    }
+
     private const ImGuiTableFlags TableFlags =
         ImGuiTableFlags.Resizable |
         ImGuiTableFlags.Reorderable |
@@ -63,13 +78,16 @@ public sealed class ConfigWindow : Window, IDisposable
         [JobFilter.Botanist] = new JobTab(),
     };
 
-    /// <summary>Set to jump to a tab the next time the window draws.</summary>
-    private bool selectWishlistTab;
+    private readonly NodeListTab nodeList;
 
-    public ConfigWindow(Plugin plugin) : base("Vein & Vine Settings###VeinAndVineConfig")
+    /// <summary>Which tab to bring forward on the next draw, if any.</summary>
+    private Tab? requestedTab;
+
+    public MainWindow(Plugin plugin) : base("Vein & Vine###VeinAndVineMain")
     {
         this.plugin = plugin;
         configuration = plugin.Configuration;
+        nodeList = new NodeListTab(plugin);
 
         SizeConstraints = new WindowSizeConstraints
         {
@@ -80,34 +98,143 @@ public sealed class ConfigWindow : Window, IDisposable
 
     public void Dispose() { }
 
-    /// <summary>Opens the window on the item picker, from wherever it was last.</summary>
-    public void OpenWishlist()
+    /// <summary>Opens the window with a particular tab in front.</summary>
+    public void Open(Tab tab)
     {
-        selectWishlistTab = true;
+        requestedTab = tab;
         IsOpen = true;
     }
 
+    // The theme has to go on before ImGui.Begin: the window background, border
+    // and title bar are drawn by Begin itself and would ignore a style pushed
+    // inside Draw.
+    public override void PreDraw()
+    {
+        plugin.UiStyle.PushWindowStyle();
+        Flags = plugin.UiStyle.ExtraWindowFlags;
+    }
+
+    public override void PostDraw() => plugin.UiStyle.PopWindowStyle();
+
     public override void Draw()
     {
-        if (!ImGui.BeginTabBar("##veinandvine_config_tabs"))
+        // First thing in the window, so everything else lands on top of it.
+        plugin.UiStyle.DrawChrome();
+
+        if (!ImGui.BeginTabBar("##veinandvine_tabs"))
             return;
 
-        var wishlistFlags = selectWishlistTab ? ImGuiTabItemFlags.SetSelected : ImGuiTabItemFlags.None;
-        selectWishlistTab = false;
+        // Consumed by whichever tab claims it this frame; cleared either way so
+        // a request can't pin a tab open forever.
+        var requested = requestedTab;
+        requestedTab = null;
 
-        if (ImGui.BeginTabItem("Wishlist", wishlistFlags))
-        {
-            DrawWishlistTab();
-            ImGui.EndTabItem();
-        }
-
-        if (ImGui.BeginTabItem("Display"))
-        {
-            DrawDisplayTab();
-            ImGui.EndTabItem();
-        }
+        DrawTab("Nodes", Tab.Nodes, requested, nodeList.Draw);
+        DrawTab("Wishlist", Tab.Wishlist, requested, DrawWishlistTab);
+        DrawTab("Display", Tab.Display, requested, DrawDisplayTab);
+        DrawTab("Appearance", Tab.Appearance, requested, DrawAppearanceTab);
 
         ImGui.EndTabBar();
+    }
+
+    private static void DrawTab(string label, Tab tab, Tab? requested, Action draw)
+    {
+        var flags = requested == tab ? ImGuiTabItemFlags.SetSelected : ImGuiTabItemFlags.None;
+
+        if (!ImGui.BeginTabItem(label, flags))
+            return;
+
+        draw();
+        ImGui.EndTabItem();
+    }
+
+    private void DrawAppearanceTab()
+    {
+        ImGui.TextWrapped(
+            "Vein & Vine borrows the game's own look by default. The font, the palette " +
+            "and the window frame all come out of the client - nothing is downloaded - " +
+            "and each one is separate, so you can drop back to Dalamud's default for " +
+            "any of them.");
+
+        ImGui.Spacing();
+        ImGui.Separator();
+        ImGui.Spacing();
+
+        var font = configuration.Font;
+        if (DrawChoice("Font", ref font,
+                [UiFontChoice.Dalamud, UiFontChoice.GameAxis],
+                ["Dalamud default", "Axis (game UI font)"],
+                "Axis is the typeface the game's own interface uses. This is the single\n" +
+                "biggest change of the three - it is what makes a window read as native."))
+        {
+            configuration.Font = font;
+            configuration.Save();
+        }
+
+        var theme = configuration.Theme;
+        if (DrawChoice("Colours", ref theme,
+                [UiThemeChoice.Dalamud, UiThemeChoice.GameDark],
+                ["Dalamud default", "Game dark"],
+                "The game's dark blue panels, warm off-white text and muted gold borders.\n" +
+                "Leave this on Dalamud default if you have themed Dalamud yourself."))
+        {
+            configuration.Theme = theme;
+            configuration.Save();
+        }
+
+        var chrome = configuration.Chrome;
+        if (DrawChoice("Window frame", ref chrome,
+                [UiChromeChoice.Dalamud, UiChromeChoice.GameFrame],
+                ["Dalamud default", "Game panel"],
+                "Draws the game's WindowA panel art behind the window, the same nine-slice\n" +
+                "every normal game window is built from.\n\n" +
+                "The most experimental of the three: it replaces the window background but\n" +
+                "leaves ImGui's title bar and resize grip in place, so it is a blend rather\n" +
+                "than a perfect match."))
+        {
+            configuration.Chrome = chrome;
+            configuration.Save();
+        }
+
+        ImGui.Spacing();
+        ImGui.Separator();
+        ImGui.Spacing();
+
+        ImGui.TextDisabled("Everything here affects only Vein & Vine's own windows.");
+    }
+
+    /// <summary>
+    /// One labelled radio row per appearance axis. Radio buttons rather than a
+    /// combo because there are only two choices each and both are worth seeing
+    /// without opening anything.
+    /// </summary>
+    private static bool DrawChoice<T>(string label, ref T current, T[] values, string[] names, string help)
+        where T : struct, Enum
+    {
+        var changed = false;
+
+        ImGui.AlignTextToFramePadding();
+        ImGui.TextUnformatted(label);
+        UiShared.Tooltip(help);
+
+        ImGui.SameLine(120f * ImGuiHelpers.GlobalScale);
+
+        for (var i = 0; i < values.Length; i++)
+        {
+            if (i > 0)
+                ImGui.SameLine();
+
+            if (ImGui.RadioButton($"{names[i]}##{label}{i}", current.Equals(values[i])))
+            {
+                current = values[i];
+                changed = true;
+            }
+        }
+
+        ImGui.SameLine();
+        ImGuiComponents.HelpMarker(help);
+
+        return changed;
     }
 
     private void DrawWishlistTab()
