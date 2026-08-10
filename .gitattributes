@@ -1,0 +1,9 @@
+# Every source file in this repo is LF. Without this, Windows' default
+# core.autocrlf=true rewrites the whole tree to CRLF on the next checkout
+# and every file shows as modified.
+* text=auto eol=lf
+
+# Build output that must stay byte-exact.
+*.zip binary
+*.png binary
+*.dll binary
