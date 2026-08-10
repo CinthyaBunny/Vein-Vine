@@ -3,7 +3,7 @@
     "Author": "CinthyaBunny",
     "Name": "Vein & Vine",
     "InternalName": "VeinAndVine",
-    "AssemblyVersion": "0.1.0.1",
+    "AssemblyVersion": "0.0.0.2",
     "Changelog": "",
     "Punchline": "Priority-sorted gathering node tracker. No automation.",
     "Description": "Shows a priority-sorted list of active and upcoming gathering nodes from your wishlist, using FFXIV's deterministic weather and Eorzea clock. Read-only by design: no automated movement or gathering.",
