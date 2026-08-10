@@ -193,25 +193,27 @@ csproj, which DalamudPackager stamps into the manifest inside `latest.zip`, and
 what the user already has. Drift between them fails *quietly* — the installer
 either never offers the update, or offers one that appears not to apply.
 
-Two things stop that. A **Release build refuses to run** when they disagree
-(`VerifyRepoManifestVersion` in the csproj; Debug builds are untouched, since
-they're never shipped). And [`tools/bump-version.ps1`](tools/bump-version.ps1)
-is the one thing that moves them:
+Bumping is by hand, but a **Release build refuses to run** when the two
+disagree — `VerifyRepoManifestVersion` in the csproj. Debug builds are left
+alone; they're never shipped, and blocking the inner loop over a manifest isn't
+worth it. So the mistake is caught before it can reach a user, at the only
+moment that matters.
 
-```powershell
-.\tools\bump-version.ps1 -Version 0.1.0.0            # bump, build, review
-.\tools\bump-version.ps1 -Version 0.1.0.0 -Commit    # ...and commit + tag
-.\tools\bump-version.ps1 -Version 0.1.0.0 -DryRun    # show, write nothing
-```
+Release steps:
 
-It updates both version fields, promotes the changelog's `[Unreleased]` section
-into a dated release, copies that text into both plugin manifests so it shows
-up in-game, and builds Release so the guard runs and you're left with the
-`latest.zip` to attach. It refuses to go backwards, refuses to release with an
-empty `[Unreleased]`, and resolves every file before writing any of them.
-
-Nothing is ever pushed. `-Commit` also tags `v<version>`; without it you get the
-commands to run yourself.
+1. Move `## [Unreleased]` in [`CHANGELOG.md`](CHANGELOG.md) into a dated
+   `## [x.y.z.w] - YYYY-MM-DD` section, and leave a fresh empty `[Unreleased]`.
+2. Set the same version in **both** places:
+   - `<Version>` in [`VeinAndVine.csproj`](VeinAndVine/VeinAndVine.csproj)
+   - `"AssemblyVersion"` in [`repo.json`](repo.json)
+3. Optionally paste the release notes as plain text into the `"Changelog"`
+   field of `repo.json` and [`VeinAndVine.json`](VeinAndVine/VeinAndVine.json)
+   — that's what the in-game installer shows. Markdown isn't rendered there, so
+   flatten it.
+4. `dotnet build -c Release` — the guard runs, and you get
+   `VeinAndVine\bin\x64\Release\VeinAndVine\latest.zip`.
+5. Commit, `git tag -a vX -m "..."`, push both, and attach `latest.zip` to the
+   GitHub release so `repo.json`'s download links resolve.
 
 Note that **version bumps belong to releases, not commits.** Dalamud only
 compares `AssemblyVersion` to decide whether a user sees an update, so bumping
@@ -222,12 +224,7 @@ per commit burns numbers on work nobody can install.
 [`CHANGELOG.md`](CHANGELOG.md) is the index of what changed between versions,
 in [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) format. Write
 entries into `## [Unreleased]` as you go rather than reconstructing them from a
-diff at release time; `bump-version.ps1` promotes that section and leaves a
-fresh empty one behind.
-
-The release notes are flattened to plain text on their way into the manifests —
-`### Added` becomes `Added:`, wrapped bullets are rejoined, and markdown
-emphasis is dropped, since the installer renders none of it.
+diff at release time — they're far more accurate written next to the change.
 
 ## Still stubbed
 

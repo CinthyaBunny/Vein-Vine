@@ -124,7 +124,7 @@
            Text="Could not read a four-part &quot;AssemblyVersion&quot; from '$(RepoManifestPath)'. Expected a line like: &quot;AssemblyVersion&quot;: &quot;$(Version)&quot;" />
 
     <Error Condition="'$(RepoManifestVersion)' != '$(Version)'"
-           Text="Version mismatch: the csproj says $(Version) but repo.json says $(RepoManifestVersion). The zip and the repository manifest must agree, or the in-game installer will not offer the update. Move both with: .\tools\bump-version.ps1 -Version &lt;new version&gt;" />
+           Text="Version mismatch: the csproj says $(Version) but repo.json says $(RepoManifestVersion). The zip and the repository manifest must agree, or the in-game installer will not offer the update. Set both to the same value: &lt;Version&gt; in VeinAndVine.csproj and &quot;AssemblyVersion&quot; in repo.json." />
 
     <Message Importance="normal" Text="Version check: csproj and repo.json both at $(Version)." />
   </Target>

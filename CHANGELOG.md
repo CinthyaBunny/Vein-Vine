@@ -8,10 +8,10 @@ four-part `AssemblyVersion` and the in-game installer compares them to decide
 whether a user is offered an update.
 
 **Add entries to `## [Unreleased]` as you go**, not at release time — the notes
-are far more accurate written next to the change than reconstructed from a
-diff a week later. [`tools/bump-version.ps1`](tools/bump-version.ps1) promotes
-that section into a dated release, and copies it into both plugin manifests so
-it shows up in-game.
+are far more accurate written next to the change than reconstructed from a diff
+a week later. At release, rename that section to `## [x.y.z.w] - YYYY-MM-DD`
+and leave a fresh empty one behind. See [Releasing](README.md#releasing) for the
+rest of the steps.
 
 ## [Unreleased]
 
@@ -33,9 +33,9 @@ it shows up in-game.
   order is testable with no game running.
 - `PriorityEngine.Sort` is public and static, letting the UI reorder on a
   column-header click without rebuilding the list.
-- `CHANGELOG.md`, a Release-build guard that fails if `repo.json` and the csproj
-  disagree on the version, and `tools/bump-version.ps1` to move all of it
-  forward in one step.
+- `CHANGELOG.md`, and a Release-build guard that fails the build if `repo.json`
+  and the csproj disagree on the version — the drift that otherwise makes the
+  in-game installer silently refuse to offer an update.
 
 ### Changed
 
