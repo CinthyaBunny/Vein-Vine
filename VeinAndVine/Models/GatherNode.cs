@@ -60,6 +60,28 @@ public sealed class GatherNode
     public required int JobLevelRequired { get; init; }
 
     /// <summary>
+    /// Item sheet icon id, for <c>ITextureProvider.GetFromGameIcon</c>. Zero
+    /// means unknown, and the UI leaves the space blank rather than guessing.
+    ///
+    /// Baked into the dataset rather than looked up live: it is two bytes, it
+    /// is needed for every visible row, and having it here keeps the icon
+    /// working without a sheet read on the draw path.
+    /// </summary>
+    public uint IconId { get; init; }
+
+    /// <summary>
+    /// Gathering perception needed for the node's full yield. Zero means no
+    /// requirement.
+    /// </summary>
+    public int PerceptionRequired { get; init; }
+
+    /// <summary>
+    /// Node star rating, 0-4. Higher means stricter stat requirements. Four is
+    /// rare - only the level 90 collectable nodes reach it.
+    /// </summary>
+    public int Stars { get; init; }
+
+    /// <summary>
     /// Eorzea-hour windows during which the node is up. Empty means no time
     /// restriction.
     ///

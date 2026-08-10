@@ -157,6 +157,10 @@ internal static class Program
                 if (windows.Count > 0)
                     timedCount++;
 
+                // Stars live one hop away, on the convert table the gathering
+                // item points at. Missing is normal for unrestricted items.
+                var levelRow = gatheringItem.GatheringItemLevel.ValueNullable;
+
                 nodes.Add(new GatherNode
                 {
                     ItemId = item.RowId,
@@ -169,6 +173,9 @@ internal static class Program
                     MapX = Round(mapX),
                     MapY = Round(mapY),
                     JobLevelRequired = pointBase.GatheringLevel,
+                    IconId = item.Icon,
+                    PerceptionRequired = gatheringItem.PerceptionReq,
+                    Stars = levelRow.HasValue ? levelRow.Value.Stars : 0,
                     TimeWindows = windows,
                     RequiredWeather = [],
                     SpawnDurationMinutes = LongestWindowRealMinutes(windows),
@@ -369,6 +376,13 @@ internal static class Program
                               $"{nodes.Select(n => n.ZoneName).Distinct().Count()} zones");
             Console.WriteLine($"        {nodes.Count(n => n.TimeWindows.Count > 0)} timed, " +
                               $"{nodes.Count(n => n.TimeWindows.Count == 0)} always up");
+
+            // Cosmetic rather than fatal - a node with no icon still works, it
+            // just draws a gap. Reported so a wiring mistake that zeroed the
+            // whole column would be obvious instead of silent.
+            Console.WriteLine($"        {nodes.Count(n => n.IconId != 0)} with an icon, " +
+                              $"{nodes.Count(n => n.Stars > 0)} starred, " +
+                              $"{nodes.Count(n => n.PerceptionRequired > 0)} with a perception requirement");
             return true;
         }
 

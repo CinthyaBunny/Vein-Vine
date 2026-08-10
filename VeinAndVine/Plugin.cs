@@ -28,6 +28,9 @@ public sealed class Plugin : IDalamudPlugin
     public WeatherService WeatherService { get; }
     public PriorityEngine PriorityEngine { get; }
 
+    /// <summary>Icons and item descriptions, read from the game's own data.</summary>
+    public ItemInfo ItemInfo { get; }
+
     /// <summary>Static node dataset, loaded once at startup from Data/nodes.json.</summary>
     public IReadOnlyList<GatherNode> NodeDatabase { get; private set; }
 
@@ -61,6 +64,7 @@ public sealed class Plugin : IDalamudPlugin
 
         WeatherService = new WeatherService();
         PriorityEngine = new PriorityEngine(WeatherService);
+        ItemInfo = new ItemInfo();
         NodeDatabase = Services.NodeDatabase.Load();
 
         RebuildTrackedIndex();

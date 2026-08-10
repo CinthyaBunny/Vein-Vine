@@ -15,7 +15,50 @@ rest of the steps.
 
 ## [Unreleased]
 
-Nothing yet.
+## [0.0.0.3] - 2026-08-10
+
+### Added
+
+- Item icons in both lists, and a mouseover giving the item's own in-game
+  description plus its gathering requirements — perception needed for the full
+  yield, and the node's star rating.
+- `Services/ItemInfo.cs`, reading icons through Dalamud's `ITextureProvider`
+  and descriptions from the `Item` sheet. Deliberately not XIVAPI: the client
+  already has both on disk, already localised, and a network source would add
+  latency, a cache, a rate limit and an offline failure mode for the same
+  bytes.
+- `iconId`, `perceptionRequired` and `stars` in `nodes.json`. Only the icon id
+  is baked in, since every visible row needs it; descriptions are read live for
+  the row under the cursor.
+
+### Changed
+
+- The picker splits its items across **All / Miner / Botanist** sub-tabs
+  instead of two job checkboxes. Each tab keeps its own sort order and its own
+  filtered list, so the two jobs can be sorted differently and switching
+  between them is instant. The `Job` column hides itself where a tab has
+  already answered it, and the footer counts against that tab's population
+  rather than the whole dataset.
+- The picker's level range is two boxes you type into rather than sliders.
+  They're clamped when editing finishes, not per keystroke, so a half-typed
+  number neither blanks the list nor fights you as you type.
+
+### Fixed
+
+- **98 items were missing from a job tab.** Nearly a tenth of the index has
+  both mining and botany nodes, but the picker collapsed each item to a single
+  job, so every one of them showed on only one of the two tabs. `GatherItem`
+  now carries the full set of jobs its nodes span, the Job column reads
+  `MIN+BTN` for them, and sorting by job groups them together.
+- The main window drew each row's icon before the row-spanning selectable, so
+  hovering a row painted the highlight over its own icon. The selectable is now
+  submitted first and the icon and name drawn back over it.
+- `Configuration.Save` no longer lets a failed disk write escape. Every call
+  site is inside an ImGui draw, where an exception unwinds out of a half-drawn
+  table and leaves the begin/end stack unbalanced — much worse than a
+  preference that did not persist.
+- Both list tables release `EndTable` in a `finally`, so a throw from a single
+  row costs a log line rather than the game client.
 
 ## [0.0.0.2] - 2026-08-10
 

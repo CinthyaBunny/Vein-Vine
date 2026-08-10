@@ -250,10 +250,19 @@ public sealed class MainWindow : Window, IDisposable
 
         UiShared.ReadSortSpecs(ref sort, ref sortDescending);
 
-        foreach (var result in PriorityEngine.Sort(results, sort, sortDescending))
-            DrawRow(result);
-
-        ImGui.EndTable();
+        // EndTable in a finally so a throw from a single row cannot unwind past
+        // it. Dalamud would log the exception either way, but leaving ImGui's
+        // begin/end stack unbalanced mid-frame takes the game client down with
+        // it - a bad row should cost a log line, not the session.
+        try
+        {
+            foreach (var result in PriorityEngine.Sort(results, sort, sortDescending))
+                DrawRow(result);
+        }
+        finally
+        {
+            ImGui.EndTable();
+        }
     }
 
     private void DrawRow(PriorityResult result)
@@ -279,25 +288,40 @@ public sealed class MainWindow : Window, IDisposable
         };
 
         ImGui.TableNextColumn();
-        if (color is { } textColor)
-            ImGui.PushStyleColor(ImGuiCol.Text, textColor);
 
-        ImGui.Selectable(node.ItemName, false,
+        // The row-spanning Selectable is submitted first and the icon and name
+        // drawn back over it. Its hover highlight is a filled rect added to the
+        // draw list at the point of submission, so an icon drawn beforehand
+        // would sit underneath it and wash out blue exactly when you are
+        // looking at it.
+        var rowStart = ImGui.GetCursorPos();
+
+        ImGui.Selectable("##row", false,
             ImGuiSelectableFlags.SpanAllColumns |
             ImGuiSelectableFlags.AllowItemOverlap |
             ImGuiSelectableFlags.AllowDoubleClick);
 
+        var rowHovered = ImGui.IsItemHovered();
+        if (rowHovered && ImGui.IsMouseDoubleClicked(ImGuiMouseButton.Left))
+            SetMapFlag(node);
+
+        // Has to sit immediately after the Selectable: the popup opens off
+        // whichever item was submitted last.
+        DrawRowContextMenu(result);
+
+        ImGui.SetCursorPos(rowStart);
+        UiShared.DrawItemIcon(plugin, node.IconId, ImGui.GetTextLineHeight());
+
+        if (color is { } textColor)
+            ImGui.PushStyleColor(ImGuiCol.Text, textColor);
+
+        ImGui.TextUnformatted(node.ItemName);
+
         if (color is not null)
             ImGui.PopStyleColor();
 
-        if (ImGui.IsItemHovered())
-        {
+        if (rowHovered)
             DrawRowTooltip(result);
-            if (ImGui.IsMouseDoubleClicked(ImGuiMouseButton.Left))
-                SetMapFlag(node);
-        }
-
-        DrawRowContextMenu(result);
 
         ImGui.TableNextColumn();
         ImGui.TextDisabled(UiShared.JobLabel(node.Type));
@@ -350,16 +374,19 @@ public sealed class MainWindow : Window, IDisposable
         ImGui.TextDisabled(result.BlockedReason ?? "Not up");
     }
 
-    private static void DrawRowTooltip(PriorityResult result)
+    private void DrawRowTooltip(PriorityResult result)
     {
         var node = result.Node;
 
         ImGui.BeginTooltip();
-        ImGui.TextUnformatted(node.ItemName);
+
+        UiShared.DrawItemTooltipHeader(plugin, node.ItemId, node.IconId, node.ItemName);
+
         ImGui.Separator();
         ImGui.TextDisabled($"{node.Type}  Lv{node.JobLevelRequired}");
         ImGui.TextDisabled($"{node.ZoneName}  ({node.MapX:F1}, {node.MapY:F1})");
         ImGui.TextDisabled($"Windows: {NodeQuery.DescribeWindows(node.TimeWindows)} ET");
+        UiShared.DrawGatheringRequirements(node.PerceptionRequired, node.Stars);
 
         if (node.RequiredWeather.Count > 0)
             ImGui.TextDisabled($"Weather: {string.Join(" / ", node.RequiredWeather)}");

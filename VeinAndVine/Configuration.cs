@@ -49,5 +49,24 @@ public class Configuration : IPluginConfiguration
         return jobs;
     }
 
-    public void Save() => Service.PluginInterface.SavePluginConfig(this);
+    /// <summary>
+    /// Writes the config to disk. Never throws.
+    ///
+    /// Every call site is inside an ImGui draw - a checkbox, a row toggle, a
+    /// footer button. An exception escaping there would unwind out of the
+    /// middle of a table or a tab bar, leaving ImGui's begin/end stack
+    /// unbalanced for the rest of the frame, which is far worse than a
+    /// preference that failed to persist.
+    /// </summary>
+    public void Save()
+    {
+        try
+        {
+            Service.PluginInterface.SavePluginConfig(this);
+        }
+        catch (Exception ex)
+        {
+            Service.Log.Error(ex, "Could not save the Vein & Vine configuration.");
+        }
+    }
 }

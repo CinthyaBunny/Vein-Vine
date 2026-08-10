@@ -33,6 +33,21 @@ internal static class UiShared
     };
 
     /// <summary>
+    /// Label for a set of jobs. Plenty of items are gatherable by both, and
+    /// showing only one of them in a list you can filter by job is how an item
+    /// goes missing.
+    /// </summary>
+    public static string JobLabel(JobFilter jobs)
+    {
+        var parts = new List<string>(3);
+        if ((jobs & JobFilter.Miner) != 0) parts.Add("MIN");
+        if ((jobs & JobFilter.Botanist) != 0) parts.Add("BTN");
+        if ((jobs & JobFilter.Fisher) != 0) parts.Add("FSH");
+
+        return parts.Count == 0 ? "?" : string.Join("+", parts);
+    }
+
+    /// <summary>
     /// Compact enough for a table cell: "1h04m", "6m30s", "12s". Seconds are
     /// dropped past an hour, where they'd be noise.
     /// </summary>
@@ -82,6 +97,65 @@ internal static class UiShared
         sort = candidate;
         descending = column.SortDirection == ImGuiSortDirection.Descending;
         specs.SpecsDirty = false;
+    }
+
+    /// <summary>
+    /// Draws an item's icon at <paramref name="size"/> square, followed by
+    /// SameLine.
+    ///
+    /// Always occupies the space, even with nothing to draw: icons stream in
+    /// asynchronously, and letting the row collapse to nothing until the
+    /// texture arrives makes the whole list twitch on first paint.
+    /// </summary>
+    public static void DrawItemIcon(Plugin plugin, uint iconId, float size)
+    {
+        var icon = plugin.ItemInfo.GetIcon(iconId);
+
+        if (icon is not null)
+            ImGui.Image(icon.Handle, new Vector2(size, size));
+        else
+            ImGui.Dummy(new Vector2(size, size));
+
+        ImGui.SameLine(0, ImGui.GetStyle().ItemInnerSpacing.X);
+    }
+
+    /// <summary>
+    /// The shared top of an item tooltip: icon, name, and the item's own
+    /// in-game description.
+    /// </summary>
+    public static void DrawItemTooltipHeader(Plugin plugin, uint itemId, uint iconId, string itemName)
+    {
+        DrawItemIcon(plugin, iconId, ImGui.GetFontSize() * 2f);
+
+        ImGui.AlignTextToFramePadding();
+        ImGui.TextUnformatted(itemName);
+
+        if (plugin.ItemInfo.GetDescription(itemId) is { } description)
+        {
+            ImGui.Separator();
+
+            // Tooltips size to their content, so an unwrapped description
+            // would stretch one to the width of the screen.
+            ImGui.PushTextWrapPos(ImGui.GetFontSize() * 24f);
+            ImGui.TextWrapped(description);
+            ImGui.PopTextWrapPos();
+        }
+    }
+
+    /// <summary>
+    /// What a gatherer needs to actually get the full yield. Draws nothing
+    /// when the node asks for nothing in particular.
+    ///
+    /// Spelled out rather than drawn as star glyphs - the game font has no
+    /// reliable star, and a row of missing-glyph boxes reads worse than words.
+    /// </summary>
+    public static void DrawGatheringRequirements(int perceptionRequired, int stars)
+    {
+        if (stars > 0)
+            ImGui.TextDisabled($"{stars}-star node");
+
+        if (perceptionRequired > 0)
+            ImGui.TextDisabled($"Perception {perceptionRequired} for the full yield");
     }
 
     /// <summary>Tooltip for the widget just submitted.</summary>

@@ -84,6 +84,7 @@ column is a function of its inputs and can be unit tested with no game running.
 | `Services/EorzeaTime.cs` | **pure** | Eorzea clock + the weather seed roll |
 | `Services/PriorityEngine.cs` | **pure** | Availability + sorting, gated behind `IWeatherProvider` |
 | `Services/NodeQuery.cs` | **pure** | Filters, the per-item index, picker sorting |
+| `Services/ItemInfo.cs` | Lumina, textures | Item icons and descriptions, from the game client |
 | `Models/` | **pure** | `GatherNode`, `WishlistEntry` |
 | `Windows/` | ImGui | Node list, item picker |
 | `Windows/UiShared.cs` | ImGui | Colours, duration formatting, sort-spec bridge |
@@ -115,13 +116,51 @@ offers *Stop tracking*.
 **Wishlist tab** — one row per *item*, not per node. The dataset is node-shaped,
 so the same item appears in several zones with several windows; `NodeQuery`
 collapses that into one row per item, with the zone count and the union of its
-windows. Filter by text, job, zone, level band, timed-only, or narrow to what
-you already track. `Track all shown` applies to exactly the rows the filters
-left, which is what makes "every level 80 botany item" a two-click operation.
+windows.
+
+Items are split across **All / Miner / Botanist** sub-tabs — 517 mining and 631
+botany out of 1,050, because **98 items have both mining and botany nodes** and
+so appear on both tabs. That overlap is why `GatherItem` carries a `Jobs` flag
+set rather than one `NodeType`: collapsing it to a single job hides each of
+those items from one of the two tabs.
+
+Each tab owns its sort order and its own filtered list, so sorting
+Miner by level doesn't disturb how Botanist was left, and switching between
+them is instant. The `Job` column hides itself on the single-job tabs, where it
+has nothing to say. `All` is kept because searching for an item whose job you
+don't know is a real thing you do.
+
+The filter row sits *above* the tabs and applies to all of them — a search you
+had to retype on every tab switch would be worse than no tabs. It holds text,
+zone, a level range you type into, timed-only, and tracked-only. `Track all
+shown` applies to exactly the rows the filters left on the current tab, which
+is what makes "every level 80 botany item" a two-click operation.
 
 At 1,050 rows the picker is clipped with `ImGuiListClipper` and its
 filter/sort result is cached behind a key of its inputs, so scrolling submits
 only the visible slice and a still frame does no work at all.
+
+The level boxes are clamped when you finish editing rather than on each
+keystroke — clamping live means backspacing the field to empty snaps it to 1,
+and the next two digits you type land on the wrong side of the limit.
+Filtering reads a clamped view in the meantime, so a half-typed number never
+blanks the list, and a min above the max reads as a range rather than as
+nothing.
+
+Both lists show the item's game icon, and hovering a row gives the item's own
+in-game description plus its gathering requirements — perception needed for the
+full yield, and the node's star rating.
+
+**None of that is fetched over the network.** The client already has the icons
+and the localised text on disk, so `ItemInfo` reads them through Dalamud's
+`ITextureProvider` and the `Item` sheet. XIVAPI would trade that for latency, a
+cache, a rate limit, and an offline failure mode in exchange for the same
+bytes. The only thing baked into `nodes.json` is the two-byte `iconId`, because
+every visible row needs it; descriptions are read live for the single row under
+the cursor.
+
+Icons load asynchronously, so a row reserves the space whether or not the
+texture has arrived — otherwise the whole list twitches on first paint.
 
 Sort state deliberately lives in ImGui's own `.ini`, not in `Configuration`.
 ImGui already persists table column sorting, and a second copy in our config

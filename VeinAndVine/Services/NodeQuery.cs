@@ -48,10 +48,35 @@ public sealed record GatherItem
 {
     public required uint ItemId { get; init; }
     public required string ItemName { get; init; }
+
+    /// <summary>
+    /// The job of the item's first node. Display and sorting only - use
+    /// <see cref="Jobs"/> to decide whether a job can gather it.
+    /// </summary>
     public required NodeType Type { get; init; }
+
+    /// <summary>
+    /// Every job that can gather this item, which is not always one: 98 items
+    /// in the current dataset have both mining and botany nodes. Collapsing
+    /// that to a single <see cref="Type"/> would hide each of them from one of
+    /// the two job tabs.
+    /// </summary>
+    public required JobFilter Jobs { get; init; }
 
     /// <summary>Lowest level at which the item can be gathered from any of its nodes.</summary>
     public required int JobLevelRequired { get; init; }
+
+    /// <summary>Item sheet icon id. Zero when the dataset predates it.</summary>
+    public required uint IconId { get; init; }
+
+    /// <summary>
+    /// The gentlest requirements across the item's nodes - the easiest node is
+    /// the one you would actually go to, so quoting the harshest would put
+    /// someone off an item they can already gather.
+    /// </summary>
+    public required int PerceptionRequired { get; init; }
+
+    public required int Stars { get; init; }
 
     /// <summary>Every zone the item appears in, alphabetical.</summary>
     public required IReadOnlyList<string> Zones { get; init; }
@@ -139,7 +164,7 @@ public sealed record NodeFilter
 
     public bool Matches(GatherItem item)
     {
-        if (!MatchesJob(item.Type) || !MatchesLevel(item.JobLevelRequired))
+        if ((Jobs & item.Jobs) == 0 || !MatchesLevel(item.JobLevelRequired))
             return false;
 
         if (TimedOnly && !item.IsTimed)
@@ -215,9 +240,14 @@ public static class NodeQuery
                     ItemId = group.Key,
                     ItemName = first.ItemName,
                     Type = first.Type,
+                    Jobs = group.Aggregate(
+                        JobFilter.None, (jobs, n) => jobs | n.Type.ToJobFilter()),
                     // The lowest level any of its nodes needs - that's the
                     // level at which the item actually becomes reachable.
                     JobLevelRequired = group.Min(n => n.JobLevelRequired),
+                    IconId = first.IconId,
+                    PerceptionRequired = group.Min(n => n.PerceptionRequired),
+                    Stars = group.Min(n => n.Stars),
                     Zones = group
                         .Select(n => n.ZoneName)
                         .Distinct(StringComparer.Ordinal)
@@ -250,9 +280,11 @@ public static class NodeQuery
             NodeSort.Level => descending
                 ? items.OrderByDescending(i => i.JobLevelRequired)
                 : items.OrderBy(i => i.JobLevelRequired),
+            // By the job set, so the both-jobs items group together instead of
+            // being scattered through whichever half they were typed as.
             NodeSort.Job => descending
-                ? items.OrderByDescending(i => i.Type)
-                : items.OrderBy(i => i.Type),
+                ? items.OrderByDescending(i => i.Jobs)
+                : items.OrderBy(i => i.Jobs),
             NodeSort.Zone => descending
                 ? items.OrderByDescending(i => i.ZoneSummary, StringComparer.OrdinalIgnoreCase)
                 : items.OrderBy(i => i.ZoneSummary, StringComparer.OrdinalIgnoreCase),

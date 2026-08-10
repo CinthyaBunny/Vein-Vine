@@ -23,6 +23,9 @@ sheets. See [Regenerating](#regenerating) below.
     "jobLevelRequired": 60,        // int
 
     // Optional
+    "iconId": 26586,               // uint - Item sheet icon; 0 = none
+    "perceptionRequired": 4000,    // int  - for the full yield; 0 = none
+    "stars": 3,                    // int  - node star rating, 0-4
     "gatheringPointBaseId": 425,   // uint - provenance; see below
     "timeWindows": [               // omit or [] for an always-up node
       { "startHour": 0,  "endHour": 2  },
@@ -55,6 +58,14 @@ sheets. See [Regenerating](#regenerating) below.
   sheet, and because `(gatheringPointBaseId, itemId)` is the only unique key: the
   same item appears on several nodes, and one node yields several items. The UI
   keys its rows on that pair.
+- **`iconId` is baked in, the item's description is not.** The icon id is two
+  bytes and is needed for every visible row, so keeping it here means the list
+  draws without a sheet read per row. Descriptions are long and localised, so
+  they're read live from the `Item` sheet for the one row under the cursor. Both
+  come out of the game client; nothing is fetched over the network.
+- `stars` reaches **4**, not 3 — only on the level 90 collectable nodes, of
+  which there are six. `perceptionRequired` is 0 on most nodes and only appears
+  alongside a star rating.
 - `requiredWeather` strings are matched against the Weather sheet's display
   name, so they must match the in-game spelling exactly (`"Clear Skies"`, not
   `"clear"`). Gathering nodes are time-gated rather than weather-gated, so the
