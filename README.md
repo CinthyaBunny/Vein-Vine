@@ -89,6 +89,7 @@ column is a function of its inputs and can be unit tested with no game running.
 | `Models/` | **pure** | `GatherNode`, `WishlistEntry` |
 | `Windows/MainWindow.cs` | ImGui | The one window: tab bar, Display and Appearance |
 | `Windows/NodeListTab.cs` | ImGui | The node list, and the map flag |
+| `Windows/NodeListWindow.cs` | ImGui | Optional docked panel hosting the same node list |
 | `Windows/UiShared.cs` | ImGui | Colours, duration formatting, sort-spec bridge |
 | `tools/NodeGen/` | Lumina, build-time | Regenerates `Data/nodes.json` from game sheets |
 
@@ -193,6 +194,34 @@ but leaves ImGui's title bar and resize grip alone, so it reads as a blend
 rather than a true native window. It also degrades safely — if any of the four
 textures fail to load, the normal ImGui background is drawn instead of a broken
 frame.
+
+### Docking the node list (experimental)
+
+`Node list` on the Appearance tab moves the list out of its tab and into a
+panel welded to the main window's left edge. The Nodes tab disappears while
+docked — two copies of the same table, one of them stale-looking, is worse than
+one — and both share a single `NodeListTab` instance, so sort state can't drift
+between them.
+
+The geometry is deliberately lopsided:
+
+| Dimension | Owner |
+|---|---|
+| Position | The host — recomputed every frame, so the panel follows it around |
+| Height | The host — pinned by `SetNextWindowSizeConstraints` with equal min and max |
+| Width | You — drag the left border; the right edge stays welded |
+
+Height is pinned with a *constraint* rather than by forcing the size. Forcing it
+would overwrite the very field ImGui's resize handler is trying to change, and
+the two end up fighting inside a single `Begin`; a constraint just clamps
+whatever the drag produces. The width read back each frame feeds the next
+frame's position, which is what keeps the right edge glued while the left edge
+travels.
+
+The panel hangs off the host's `IsDrawing`, not its `IsOpen` — a window that is
+open but collapsed has no rect to pin to, and the panel would otherwise strand
+itself wherever it last saw one. Width is written to the config when the drag
+ends, not during it, since each save serialises the whole file.
 
 Font and palette are pushed from `PreDraw` and popped in `PostDraw`, not inside
 `Draw` — the window background, border and title bar are drawn by `ImGui.Begin`

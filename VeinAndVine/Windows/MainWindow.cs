@@ -78,21 +78,41 @@ public sealed class MainWindow : Window, IDisposable
         [JobFilter.Botanist] = new JobTab(),
     };
 
-    private readonly NodeListTab nodeList;
+    /// <summary>
+    /// The node list itself. Shared with <see cref="NodeListWindow"/> so the
+    /// tab and the docked panel are the same object with the same sort state,
+    /// rather than two lists that drift apart.
+    /// </summary>
+    public NodeListTab NodeList { get; }
 
     /// <summary>Which tab to bring forward on the next draw, if any.</summary>
     private Tab? requestedTab;
+
+    /// <summary>
+    /// Where the window actually ended up last frame, for the docked node list
+    /// to pin itself to. Only meaningful while <see cref="IsDrawing"/> is true.
+    /// </summary>
+    public Vector2 LastPosition { get; private set; }
+
+    public Vector2 LastSize { get; private set; }
+
+    /// <summary>
+    /// True when the window drew a body last frame - open, not collapsed, not
+    /// clipped away. The docked panel hangs off this rather than off IsOpen,
+    /// which stays true while collapsed.
+    /// </summary>
+    public bool IsDrawing { get; private set; }
 
     public MainWindow(Plugin plugin) : base("Vein & Vine###VeinAndVineMain")
     {
         this.plugin = plugin;
         configuration = plugin.Configuration;
-        nodeList = new NodeListTab(plugin);
+        NodeList = new NodeListTab(plugin);
 
         SizeConstraints = new WindowSizeConstraints
         {
             MinimumSize = new Vector2(560, 380),
-            MaximumSize = new Vector2(1400, 1200),
+            MaximumSize = new Vector2(2000, 3000),
         };
     }
 
@@ -112,6 +132,10 @@ public sealed class MainWindow : Window, IDisposable
     {
         plugin.UiStyle.PushWindowStyle();
         Flags = plugin.UiStyle.ExtraWindowFlags;
+
+        // Cleared here and set again in Draw, which only runs when the window
+        // actually has a body this frame.
+        IsDrawing = false;
     }
 
     public override void PostDraw() => plugin.UiStyle.PopWindowStyle();
@@ -121,6 +145,10 @@ public sealed class MainWindow : Window, IDisposable
         // First thing in the window, so everything else lands on top of it.
         plugin.UiStyle.DrawChrome();
 
+        LastPosition = ImGui.GetWindowPos();
+        LastSize = ImGui.GetWindowSize();
+        IsDrawing = true;
+
         if (!ImGui.BeginTabBar("##veinandvine_tabs"))
             return;
 
@@ -129,7 +157,12 @@ public sealed class MainWindow : Window, IDisposable
         var requested = requestedTab;
         requestedTab = null;
 
-        DrawTab("Nodes", Tab.Nodes, requested, nodeList.Draw);
+        // The Nodes tab steps aside when the list has its own docked panel -
+        // two copies of the same table, one of them stale-looking, is worse
+        // than one.
+        if (configuration.NodeListPlacement == NodeListPlacement.Tabbed)
+            DrawTab("Nodes", Tab.Nodes, requested, NodeList.Draw);
+
         DrawTab("Wishlist", Tab.Wishlist, requested, DrawWishlistTab);
         DrawTab("Display", Tab.Display, requested, DrawDisplayTab);
         DrawTab("Appearance", Tab.Appearance, requested, DrawAppearanceTab);
@@ -196,6 +229,21 @@ public sealed class MainWindow : Window, IDisposable
             configuration.Save();
         }
 
+        var placement = configuration.NodeListPlacement;
+        if (DrawChoice("Node list", ref placement,
+                [NodeListPlacement.Tabbed, NodeListPlacement.DockedLeft],
+                ["First tab", "Docked to the left"],
+                "Where the node list lives.\n\n" +
+                "Docked gives it its own panel welded to this window's left edge. It\n" +
+                "follows this window around and matches its height, but you set its\n" +
+                "width by dragging its left border - so the list can be as wide as it\n" +
+                "needs without making this window wider.\n\n" +
+                "Experimental."))
+        {
+            configuration.NodeListPlacement = placement;
+            configuration.Save();
+        }
+
         ImGui.Spacing();
         ImGui.Separator();
         ImGui.Spacing();
@@ -204,31 +252,41 @@ public sealed class MainWindow : Window, IDisposable
     }
 
     /// <summary>
-    /// One labelled radio row per appearance axis. Radio buttons rather than a
-    /// combo because there are only two choices each and both are worth seeing
-    /// without opening anything.
+    /// One labelled dropdown per appearance axis.
+    ///
+    /// A dropdown rather than a row of radio buttons because these lists are
+    /// expected to grow - more fonts, more palettes - and radios spread
+    /// sideways until they wrap, whereas a combo costs the same width at two
+    /// options as at ten.
     /// </summary>
     private static bool DrawChoice<T>(string label, ref T current, T[] values, string[] names, string help)
         where T : struct, Enum
     {
         var changed = false;
+        var scale = ImGuiHelpers.GlobalScale;
 
         ImGui.AlignTextToFramePadding();
         ImGui.TextUnformatted(label);
         UiShared.Tooltip(help);
 
-        ImGui.SameLine(120f * ImGuiHelpers.GlobalScale);
+        ImGui.SameLine(130f * scale);
 
-        for (var i = 0; i < values.Length; i++)
+        var selected = Array.IndexOf(values, current);
+        var preview = selected >= 0 ? names[selected] : "(unset)";
+
+        ImGui.SetNextItemWidth(200f * scale);
+        if (ImGui.BeginCombo($"##{label}", preview))
         {
-            if (i > 0)
-                ImGui.SameLine();
-
-            if (ImGui.RadioButton($"{names[i]}##{label}{i}", current.Equals(values[i])))
+            for (var i = 0; i < values.Length; i++)
             {
+                if (!ImGui.Selectable(names[i], i == selected))
+                    continue;
+
                 current = values[i];
                 changed = true;
             }
+
+            ImGui.EndCombo();
         }
 
         ImGui.SameLine();

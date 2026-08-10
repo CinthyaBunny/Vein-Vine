@@ -15,8 +15,25 @@ rest of the steps.
 
 ## [Unreleased]
 
+### Added
+
+- **The node list can be docked to the main window's left edge** instead of
+  living in a tab — `Appearance` → `Node list`. The panel follows the window
+  around and matches its height, but its width is yours: drag its left border
+  and it widens leftwards into free space rather than shoving the window it is
+  attached to. The Nodes tab steps aside while docked, and both share one
+  `NodeListTab`, so their sort state cannot drift apart.
+
+  Experimental, and the geometry is the interesting part: height is pinned with
+  a size *constraint* rather than by forcing the size, because forcing it would
+  overwrite the field ImGui's own resize handler is trying to change.
+
 ### Changed
 
+- The Appearance settings are dropdowns rather than rows of radio buttons.
+  Radios spread sideways until they wrap; a combo costs the same width at two
+  options as at ten, which is what these lists need as more fonts and palettes
+  get added.
 - **The two windows are now one, tabbed.** The node list is the first tab of
   what used to be the settings window; `Wishlist`, `Display` and `Appearance`
   sit behind it. Two windows meant hunting for the second one every time you

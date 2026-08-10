@@ -59,6 +59,7 @@ public sealed class Plugin : IDalamudPlugin
     // the second one every time you wanted to track something.
     private readonly WindowSystem windowSystem = new("VeinAndVine");
     private readonly MainWindow mainWindow;
+    private readonly NodeListWindow nodeListWindow;
 
     public Plugin(IDalamudPluginInterface pluginInterface)
     {
@@ -76,7 +77,14 @@ public sealed class Plugin : IDalamudPlugin
         RebuildTrackedIndex();
 
         mainWindow = new MainWindow(this);
+
+        // Added after the main window, and the order matters: the docked panel
+        // positions itself from where the main window landed this frame, so the
+        // main window has to have drawn first.
+        nodeListWindow = new NodeListWindow(this, mainWindow, mainWindow.NodeList);
+
         windowSystem.AddWindow(mainWindow);
+        windowSystem.AddWindow(nodeListWindow);
 
         Service.PluginInterface.UiBuilder.Draw += DrawUi;
         Service.PluginInterface.UiBuilder.OpenConfigUi += ToggleConfigUi;  // cog icon in the installer
@@ -109,6 +117,7 @@ public sealed class Plugin : IDalamudPlugin
 
         windowSystem.RemoveAllWindows();
         mainWindow.Dispose();
+        nodeListWindow.Dispose();
 
         // Owns a font handle, which holds a slot in Dalamud's font atlas.
         UiStyle.Dispose();

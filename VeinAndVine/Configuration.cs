@@ -48,6 +48,15 @@ public class Configuration : IPluginConfiguration
     public UiThemeChoice Theme { get; set; } = UiThemeChoice.GameDark;
     public UiChromeChoice Chrome { get; set; } = UiChromeChoice.GameFrame;
 
+    /// <summary>Whether the node list is a tab or its own docked panel.</summary>
+    public NodeListPlacement NodeListPlacement { get; set; } = NodeListPlacement.Tabbed;
+
+    /// <summary>
+    /// Width of the docked node list. Its height and position come from the
+    /// main window, so this is the only part of its geometry worth keeping.
+    /// </summary>
+    public float DockedNodeListWidth { get; set; } = 420f;
+
     /// <summary>
     /// The job toggles as the filter the engine wants. A method, not a
     /// property, so Dalamud's serializer doesn't write a derived value into the

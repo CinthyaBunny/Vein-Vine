@@ -25,6 +25,19 @@ public enum UiThemeChoice
     GameDark,
 }
 
+/// <summary>Where the node list lives.</summary>
+public enum NodeListPlacement
+{
+    /// <summary>The first tab of the main window.</summary>
+    Tabbed,
+
+    /// <summary>
+    /// Its own panel pinned to the main window's left edge, matching its
+    /// height and following it around, but with its own width.
+    /// </summary>
+    DockedLeft,
+}
+
 /// <summary>Which window frame the plugin's windows wear.</summary>
 public enum UiChromeChoice
 {
