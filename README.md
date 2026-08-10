@@ -185,8 +185,49 @@ placeholders, publish `latest.zip` as a release asset, and users add the raw
 `repo.json` URL under `/xlsettings` → **Experimental** → **Custom Plugin
 Repositories**.
 
-Keep `<Version>` in the csproj, `AssemblyVersion` in `repo.json`, and the release
-tag in lockstep.
+## Releasing
+
+The version lives in two files that nothing keeps in step: `<Version>` in the
+csproj, which DalamudPackager stamps into the manifest inside `latest.zip`, and
+`AssemblyVersion` in `repo.json`, which the in-game installer compares against
+what the user already has. Drift between them fails *quietly* — the installer
+either never offers the update, or offers one that appears not to apply.
+
+Two things stop that. A **Release build refuses to run** when they disagree
+(`VerifyRepoManifestVersion` in the csproj; Debug builds are untouched, since
+they're never shipped). And [`tools/bump-version.ps1`](tools/bump-version.ps1)
+is the one thing that moves them:
+
+```powershell
+.\tools\bump-version.ps1 -Version 0.1.0.0            # bump, build, review
+.\tools\bump-version.ps1 -Version 0.1.0.0 -Commit    # ...and commit + tag
+.\tools\bump-version.ps1 -Version 0.1.0.0 -DryRun    # show, write nothing
+```
+
+It updates both version fields, promotes the changelog's `[Unreleased]` section
+into a dated release, copies that text into both plugin manifests so it shows
+up in-game, and builds Release so the guard runs and you're left with the
+`latest.zip` to attach. It refuses to go backwards, refuses to release with an
+empty `[Unreleased]`, and resolves every file before writing any of them.
+
+Nothing is ever pushed. `-Commit` also tags `v<version>`; without it you get the
+commands to run yourself.
+
+Note that **version bumps belong to releases, not commits.** Dalamud only
+compares `AssemblyVersion` to decide whether a user sees an update, so bumping
+per commit burns numbers on work nobody can install.
+
+## Changelog
+
+[`CHANGELOG.md`](CHANGELOG.md) is the index of what changed between versions,
+in [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) format. Write
+entries into `## [Unreleased]` as you go rather than reconstructing them from a
+diff at release time; `bump-version.ps1` promotes that section and leaves a
+fresh empty one behind.
+
+The release notes are flattened to plain text on their way into the manifests —
+`### Added` becomes `Added:`, wrapped bullets are rejoined, and markdown
+emphasis is dropped, since the installer renders none of it.
 
 ## Still stubbed
 

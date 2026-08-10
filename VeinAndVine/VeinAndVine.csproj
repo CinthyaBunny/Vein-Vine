@@ -89,4 +89,44 @@
     <None Include="Data\nodes.json" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
+  <!--
+    The version lives in two files that nothing keeps in step: <Version> above,
+    which DalamudPackager stamps into the manifest inside latest.zip, and
+    "AssemblyVersion" in repo.json, which the in-game installer compares against
+    what the user already has.
+
+    Letting them drift fails quietly and confusingly - the installer either
+    never offers the update, or offers one that appears not to apply - so a
+    Release build refuses to produce a shippable zip when they disagree. Debug
+    builds are left alone; they are never shipped, and blocking the inner loop
+    over a manifest is not worth it.
+
+    The file's text is produced by a nested function call rather than being
+    interpolated into a property first. That matters: the description contains
+    an apostrophe ("FFXIV's"), which would terminate the single-quoted argument
+    if the content were passed as a literal. A lookbehind keeps the match
+    anchored to the key, so the value is read from the right field and not from
+    the first version-shaped string that happens to appear in the file.
+  -->
+  <Target Name="VerifyRepoManifestVersion" BeforeTargets="BeforeBuild" Condition="'$(Configuration)' == 'Release'">
+    <PropertyGroup>
+      <RepoManifestPath>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\repo.json'))</RepoManifestPath>
+    </PropertyGroup>
+
+    <Error Condition="!Exists('$(RepoManifestPath)')"
+           Text="repo.json not found at '$(RepoManifestPath)'. It is the repository manifest the in-game installer reads; restore it before building a release." />
+
+    <PropertyGroup>
+      <RepoManifestVersion>$([System.Text.RegularExpressions.Regex]::Match($([System.IO.File]::ReadAllText('$(RepoManifestPath)')), '(?&lt;=&quot;AssemblyVersion&quot;\s*:\s*&quot;)[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+').Value)</RepoManifestVersion>
+    </PropertyGroup>
+
+    <Error Condition="'$(RepoManifestVersion)' == ''"
+           Text="Could not read a four-part &quot;AssemblyVersion&quot; from '$(RepoManifestPath)'. Expected a line like: &quot;AssemblyVersion&quot;: &quot;$(Version)&quot;" />
+
+    <Error Condition="'$(RepoManifestVersion)' != '$(Version)'"
+           Text="Version mismatch: the csproj says $(Version) but repo.json says $(RepoManifestVersion). The zip and the repository manifest must agree, or the in-game installer will not offer the update. Move both with: .\tools\bump-version.ps1 -Version &lt;new version&gt;" />
+
+    <Message Importance="normal" Text="Version check: csproj and repo.json both at $(Version)." />
+  </Target>
+
 </Project>
