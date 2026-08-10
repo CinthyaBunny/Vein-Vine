@@ -170,14 +170,43 @@ texture has arrived — otherwise the whole list twitches on first paint.
 
 ### Wearing the game's clothes
 
-The **Appearance** tab has three independent switches, all sourced from the
-client rather than from bundled assets:
+The **Appearance** tab draws everything from the client rather than from bundled
+assets:
 
-| Switch | What it uses |
+| Setting | What it uses |
 |---|---|
 | Font | **Axis**, via `FontAtlas.NewGameFontHandle` — the typeface the game's own UI draws with, and the single biggest contributor to looking native |
-| Colours | All eight of the game's UI themes, read from its own `UIColor` sheet |
-| Window frame | `ui/uld/WindowA_BgNormal_{Corner,H,V,HV}.tex`, drawn as a nine-slice |
+| Theme | All eight of the game's UI themes, colouring the panel, its border, and every control inside it |
+
+**Theme is one setting, not two.** Picking one of the game's themes means
+wanting the whole look, and the border is drawn from that theme's own colours
+anyway, so separating the palette from the frame only allowed combinations
+nobody wanted.
+
+All 55 `ImGuiCol` slots are set, not just the obvious ones. The leftovers are
+what give a half-themed window away: a stock blue text selection or nav outline
+sitting in the middle of an otherwise game-coloured panel. Every border width is
+pinned too, rather than inherited from whatever the user's Dalamud style says.
+
+#### Why the window art isn't used
+
+An earlier version drew the game's own `WindowA_BgNormal_*` tiles as a
+nine-slice. It was dropped, for two reasons that only turned up by reading the
+pixels:
+
+- **The tiles are near-black neutral grey** (R≈G≈B≈48), and ImGui tints images
+  by *multiplying*, which can only darken. No tint could ever produce a light
+  panel for Light, Clear White or Clear Pink.
+- **The set isn't a nine-slice.** `Corner` is a 32×96 strip holding the panel's
+  entire vertical profile — transparent padding, a rounded cap, a long gradient
+  body, another cap — and it's horizontally symmetric. Treating it as one
+  quadrant of a 2×2 atlas made every "corner" 16×48, which is where the heavy
+  dark band across the top of each window came from.
+
+A themed `WindowBg` plus a one-pixel `Border` gets closer to how a game panel
+actually reads at its edges, works identically across all eight themes, and
+removed the texture loading, the readiness gating, and a failure mode where the
+window could come out transparent.
 
 The colour themes are **Dark, Light, Classic FF, Clear Blue, Clear White, Clear
 Green, Clear Grey and Clear Pink** — all eight, named as the game names them in
@@ -192,32 +221,49 @@ agrees, since one of them is dark purple text on a white ground, which can only
 be Clear Pink. If a future Lumina names those columns properly, the plugin
 stops compiling — which is the right way for that to break.
 
-Each palette is derived from four anchors rather than hand-written, so there is
-one code path instead of six tables to keep in step:
+Each palette is derived from four anchors rather than hand-written slot by
+slot, so there is one code path instead of eight tables to keep in step:
 
 | Anchor | Source |
 |---|---|
 | Text | `UIColor` row 1 — inverts correctly, white on Dark, brown on Light |
 | Dimmed text | row 3 |
 | Accent | row 22 |
-| Ground | row 7, except Clear Blue and Clear Green |
+| Ground | matched by eye, per theme |
 
 Row 22 rather than the paler row 8 for the accent: row 8 is pure white under
 Classic FF, which would sink every border and checkmark into the text. Row 22
-stays distinct in all six and gives Classic FF its pale blue.
+stays distinct in all eight and gives Classic FF its pale blue.
 
-The ground is the one anchor that isn't always the sheet's. Clear Blue and
-Clear Green have no blue or green entry anywhere in all 204 rows — the game
-tints its window *textures* for that rather than storing a colour — so those
-two get a hand-picked ground and the rest use row 7.
+**The ground is the one anchor the sheet cannot supply.** Row 7 looks like the
+window colour and isn't — it's each theme's *darkest or lightest* tone. It is
+pure black for Dark, Clear Blue, Clear Green and Clear Grey alike, and pure
+white for both Clear White and Clear Pink, so using it collapsed four themes to
+identical black and two to identical white.
 
-The frame textures are loaded whole with hand-computed UVs rather than through
-`UldWrapper`'s part indices. The part tables are undocumented and shift between
-patches, whereas those four files each hold exactly one kind of tile — which
-the filenames make unambiguous.
+The game keeps the real panel colour as a tint on its window textures rather
+than as a sheet entry, so the grounds are **sampled from the game's own theme
+previews** in System Configuration — the most frequent pixel in the middle of
+each preview panel. Reference shots are in
+[`Alpha 0.0.1.x Photos/Theme Examples`](VeinAndVine/Alpha%200.0.1.x%20Photos/Theme%20Examples).
 
-All three are **on by default** — a plugin window sitting next to the game's own
-windows may as well look like one — and each drops back to Dalamud's default
+Measuring them mattered, because the themes are far more saturated than they
+look in memory:
+
+| Theme | Actual | Guessed first |
+|---|---|---|
+| Classic FF | `#190090` vivid blue-violet | `#12142A` dark navy |
+| Clear White | `#B3B7B9` mid grey | `#ECECEC` near-white |
+| Clear Pink | `#E7A7D6` strong pink | `#F0E3E8` blush |
+| Light | `#F5D4A9` warm peach | `#DEDACC` grey parchment |
+
+Every pairing is contrast-checked against its ground. All eight clear 4.5:1 for
+body text; dimmed text is nudged toward the full text colour if it falls under
+3:1, which only Clear Pink needed — its purple-grey on pink sat at 2.7:1, and
+dimmed text carries whole columns here.
+
+Both settings are **on by default** — a plugin window sitting next to the game's
+own windows may as well look like one — and each drops back to Dalamud's default
 with a click. An explicit choice outranks the default: only a config that
 predates these settings picks the game look up automatically.
 

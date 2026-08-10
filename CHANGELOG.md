@@ -17,6 +17,68 @@ rest of the steps.
 
 Nothing yet.
 
+## [0.0.1.2] - 2026-08-10
+
+The themes now actually match the game's, measured against it rather than
+guessed at.
+
+### Changed
+
+- **`Colours` and `Window frame` are now one `Theme` dropdown.** Picking one of
+  the game's themes means wanting the whole look, and the border is drawn from
+  that theme's own colours anyway, so keeping them apart only allowed
+  combinations nobody wanted.
+- **The window panel and border now follow the theme**, instead of every theme
+  wearing the same dark frame, and the border is a **hairline** rather than a
+  heavy band. Every border width is pinned by the theme too, rather than
+  inherited from the user's Dalamud style.
+- **The game's window art is no longer used.** Reading its pixels turned up two
+  problems: the tiles are near-black neutral grey and ImGui tints by
+  multiplying, which can only darken — so no tint could ever produce a light
+  panel for Light, Clear White or Clear Pink — and the set is not a nine-slice
+  at all. `Corner` is a 32×96 strip holding the panel's whole vertical profile,
+  so treating it as one quadrant of a 2×2 atlas made every corner 16×48, which
+  is where the thick dark band across the top of each window came from.
+
+  A themed background plus a one-pixel border reads closer to a real game panel
+  at its edges, behaves the same across all eight themes, and takes the texture
+  loading, the readiness gating and the transparent-window failure mode out with
+  it.
+- **The theme grounds are corrected**, and now sampled from the game's own
+  theme previews rather than guessed. `UIColor` row 7 looked like the window
+  colour but is each theme's darkest or lightest tone: pure black for Dark,
+  Clear Blue, Clear Green and Clear Grey alike, and pure white for both Clear
+  White and Clear Pink — so four themes rendered identically black and two
+  identically white.
+
+  The themes turn out to be far more saturated than they look in memory:
+  Classic FF is a vivid blue-violet, not a dark navy; Clear White is a mid
+  grey, not white; Clear Pink is a strong pink, not a blush; Light is a warm
+  peach, not a grey parchment.
+- Dimmed text is nudged toward the full text colour when it falls below 3:1
+  against the panel. Only Clear Pink needed it — purple-grey on pink sat at
+  2.7:1, and dimmed text carries the zone, level and window columns.
+- Table column separators are a faint text-tinted hairline instead of
+  accent-coloured. They were drawing a full-height gold rule between every
+  column, which no game list has.
+- **Every ImGui colour slot is themed**, not just the obvious ones — sliders,
+  separators, text selection, nav highlights, menu bars, drag-drop and the
+  modal dimming layers included. Those leftovers at Dalamud's defaults are what
+  gave a half-themed window away.
+
+### Fixed
+
+- 0.0.1.1 could render a completely transparent window: it switched ImGui's
+  background off as soon as the border textures had loaded, without checking
+  that the palette had been read. Dropping the texture path removes the
+  possibility rather than guarding it — the background is always drawn now.
+
+### Notes
+
+Reference screenshots of all eight in-game themes are kept in
+`Alpha 0.0.1.x Photos/Theme Examples`. The panel colours in `UiStyle` are
+sampled from them, so that folder is the source those values answer to.
+
 ## [0.0.1.1] - 2026-08-10
 
 Vein & Vine now wears the game's own clothes.

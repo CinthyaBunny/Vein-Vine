@@ -56,16 +56,6 @@ public enum NodeListPlacement
     DockedLeft,
 }
 
-/// <summary>Which window frame the plugin's windows wear.</summary>
-public enum UiChromeChoice
-{
-    /// <summary>ImGui's own background and border.</summary>
-    Dalamud,
-
-    /// <summary>The game's WindowA panel art, drawn as a nine-slice.</summary>
-    GameFrame,
-}
-
 /// <summary>
 /// Applies the game's own typeface, palette and window art to the plugin's
 /// windows, each independently switchable.
@@ -80,19 +70,6 @@ public enum UiChromeChoice
 /// </summary>
 public sealed class UiStyle : IDisposable
 {
-    /// <summary>
-    /// The game's WindowA panel, split across four dedicated tile textures.
-    ///
-    /// Deliberately loaded as whole textures with hand-computed UVs rather than
-    /// through UldWrapper's part indices: the part tables are undocumented and
-    /// move between patches, whereas these four files each hold exactly one
-    /// kind of tile, which the names make unambiguous.
-    /// </summary>
-    private const string CornerTexture = "ui/uld/WindowA_BgNormal_Corner.tex";
-    private const string HorizontalTexture = "ui/uld/WindowA_BgNormal_H.tex";
-    private const string VerticalTexture = "ui/uld/WindowA_BgNormal_V.tex";
-    private const string FillTexture = "ui/uld/WindowA_BgNormal_HV.tex";
-
     private readonly Configuration configuration;
 
     private IFontHandle? axisFont;
@@ -114,13 +91,10 @@ public sealed class UiStyle : IDisposable
     }
 
     /// <summary>
-    /// Extra window flags the current chrome needs. The game frame draws its
-    /// own background, so ImGui's would sit on top of it.
+    /// Panel and border are ImGui's own, themed - see the note on PushTheme.
+    /// Nothing extra is needed on the window itself.
     /// </summary>
-    public ImGuiWindowFlags ExtraWindowFlags =>
-        configuration.Chrome == UiChromeChoice.GameFrame && ChromeReady()
-            ? ImGuiWindowFlags.NoBackground
-            : ImGuiWindowFlags.None;
+    public ImGuiWindowFlags ExtraWindowFlags => ImGuiWindowFlags.None;
 
     /// <summary>
     /// Pushes the font and theme for one window. Call from PreDraw, before
@@ -160,11 +134,14 @@ public sealed class UiStyle : IDisposable
         var text = p.Text;
         var accent = p.Accent;
 
-        Color(ImGuiCol.WindowBg, Alpha(ground, 0.94f));
+        Color(ImGuiCol.WindowBg, Alpha(ground, 0.95f));
         Color(ImGuiCol.ChildBg, Alpha(ground, 0f));
         Color(ImGuiCol.PopupBg, Alpha(ground, 0.98f));
-        Color(ImGuiCol.Border, Alpha(accent, 0.65f));
-        Color(ImGuiCol.BorderShadow, new Vector4(0f, 0f, 0f, 0.40f));
+
+        // A single hairline. The game's panels are edged, not framed - the
+        // heavy border this used to draw was the loudest thing on screen.
+        Color(ImGuiCol.Border, Alpha(accent, 0.45f));
+        Color(ImGuiCol.BorderShadow, Alpha(ground, 0f));
 
         Color(ImGuiCol.Text, text);
         Color(ImGuiCol.TextDisabled, p.TextDim);
@@ -192,8 +169,12 @@ public sealed class UiStyle : IDisposable
         Color(ImGuiCol.TabUnfocusedActive, Mix(ground, accent, 0.12f));
 
         Color(ImGuiCol.TableHeaderBg, Mix(ground, text, 0.10f));
-        Color(ImGuiCol.TableBorderStrong, Alpha(accent, 0.70f));
-        Color(ImGuiCol.TableBorderLight, Alpha(accent, 0.40f));
+
+        // Faint and text-tinted, not accent-tinted. Accent-coloured borders
+        // drew a full-height gold rule between every column, which no game list
+        // has - its separators are barely-there hairlines.
+        Color(ImGuiCol.TableBorderStrong, Alpha(text, 0.22f));
+        Color(ImGuiCol.TableBorderLight, Alpha(text, 0.11f));
         Color(ImGuiCol.TableRowBg, Alpha(ground, 0f));
         Color(ImGuiCol.TableRowBgAlt, Alpha(text, 0.04f));
 
@@ -203,19 +184,51 @@ public sealed class UiStyle : IDisposable
         Color(ImGuiCol.ScrollbarGrabActive, Mix(ground, text, 0.38f));
 
         Color(ImGuiCol.CheckMark, accent);
+        Color(ImGuiCol.SliderGrab, Alpha(accent, 0.80f));
+        Color(ImGuiCol.SliderGrabActive, accent);
+
         Color(ImGuiCol.Separator, Alpha(accent, 0.55f));
+        Color(ImGuiCol.SeparatorHovered, Alpha(accent, 0.75f));
+        Color(ImGuiCol.SeparatorActive, accent);
+
         Color(ImGuiCol.ResizeGrip, Alpha(accent, 0.35f));
         Color(ImGuiCol.ResizeGripHovered, Alpha(accent, 0.65f));
         Color(ImGuiCol.ResizeGripActive, Alpha(accent, 0.85f));
 
-        // Game panels are square-cornered with a thin single border.
-        Var(ImGuiStyleVar.WindowRounding, 2f);
+        // The rest of the set. Left at Dalamud's defaults these are the bits
+        // that give a half-themed window away - a stock blue text selection or
+        // nav outline in the middle of an otherwise game-coloured panel.
+        Color(ImGuiCol.MenuBarBg, Mix(ground, text, 0.05f));
+        Color(ImGuiCol.TextSelectedBg, Alpha(accent, 0.35f));
+        Color(ImGuiCol.DragDropTarget, accent);
+
+        Color(ImGuiCol.NavHighlight, Alpha(accent, 0.80f));
+        Color(ImGuiCol.NavWindowingHighlight, Alpha(text, 0.70f));
+        Color(ImGuiCol.NavWindowingDimBg, Alpha(InvertTowards(ground), 0.20f));
+        Color(ImGuiCol.ModalWindowDimBg, Alpha(InvertTowards(ground), 0.35f));
+
+        Color(ImGuiCol.DockingPreview, Alpha(accent, 0.70f));
+        Color(ImGuiCol.DockingEmptyBg, ground);
+
+        Color(ImGuiCol.PlotLines, accent);
+        Color(ImGuiCol.PlotLinesHovered, Mix(accent, text, 0.40f));
+        Color(ImGuiCol.PlotHistogram, accent);
+        Color(ImGuiCol.PlotHistogramHovered, Mix(accent, text, 0.40f));
+
+        // Game panels are barely rounded and edged with a single hairline.
+        // Every border size is pinned to 1 or 0 rather than left to the user's
+        // Dalamud style, which is where the thick frames were coming from.
+        Var(ImGuiStyleVar.WindowRounding, 3f);
         Var(ImGuiStyleVar.ChildRounding, 2f);
         Var(ImGuiStyleVar.FrameRounding, 2f);
         Var(ImGuiStyleVar.PopupRounding, 2f);
         Var(ImGuiStyleVar.ScrollbarRounding, 2f);
         Var(ImGuiStyleVar.TabRounding, 2f);
+        Var(ImGuiStyleVar.GrabRounding, 2f);
+
         Var(ImGuiStyleVar.WindowBorderSize, 1f);
+        Var(ImGuiStyleVar.ChildBorderSize, 1f);
+        Var(ImGuiStyleVar.PopupBorderSize, 1f);
         Var(ImGuiStyleVar.FrameBorderSize, 0f);
 
         void Color(ImGuiCol target, Vector4 value)
@@ -283,11 +296,14 @@ public sealed class UiStyle : IDisposable
     /// vanish into the text. Row 22 stays distinct from the text in all six,
     /// and gives Classic FF the pale blue it is known for.
     ///
-    /// The background does not come from the sheet. Clear Blue and Clear Green
-    /// have no blue or green row anywhere in all 204 of them - the game tints
-    /// its window textures for that, rather than storing a colour - so those
-    /// two get a hand-picked ground and the rest use row 7, which is the tone
-    /// the game itself grounds each theme on.
+    /// The ground is not from the sheet, and cannot be. Row 7 - the obvious
+    /// candidate - turns out to be each theme's darkest or lightest tone rather
+    /// than its window colour: it is pure black for Dark, Clear Blue, Clear
+    /// Green and Clear Grey alike, and pure white for both Clear White and
+    /// Clear Pink. Using it made four themes identically black and two
+    /// identically white. The game keeps the real panel colour as a tint on its
+    /// window textures, not as a sheet entry, so <see cref="Ground"/> carries
+    /// values sampled from the game's own theme previews instead.
     /// </summary>
     private static Palette? BuildPalette(UiThemeChoice theme)
     {
@@ -297,21 +313,16 @@ public sealed class UiStyle : IDisposable
 
             if (!sheet.TryGetRow(1, out var textRow) ||
                 !sheet.TryGetRow(3, out var dimRow) ||
-                !sheet.TryGetRow(7, out var groundRow) ||
                 !sheet.TryGetRow(22, out var accentRow))
                 return null;
 
-            var ground = theme switch
-            {
-                UiThemeChoice.ClearBlue => new Vector4(0.055f, 0.090f, 0.165f, 1f),
-                UiThemeChoice.ClearGreen => new Vector4(0.047f, 0.114f, 0.075f, 1f),
-                _ => Rgba(Column(groundRow, theme)),
-            };
+            var ground = Ground(theme);
+            var text = Rgba(Column(textRow, theme));
 
             return new Palette(
                 ground,
-                Rgba(Column(textRow, theme)),
-                Rgba(Column(dimRow, theme)),
+                text,
+                Readable(Rgba(Column(dimRow, theme)), text, ground),
                 Rgba(Column(accentRow, theme)));
         }
         catch (Exception ex)
@@ -320,6 +331,31 @@ public sealed class UiStyle : IDisposable
             return null;
         }
     }
+
+    /// <summary>
+    /// Each theme's panel colour, sampled from the game's own theme previews in
+    /// System Configuration - the most frequent pixel in the middle of each
+    /// preview panel, which is the panel fill.
+    ///
+    /// Measured rather than judged, because judging them went badly: the
+    /// themes are far more saturated than they look in memory. Classic FF is a
+    /// vivid blue-violet, not a dark navy. Clear White is a mid grey, not
+    /// white. Clear Pink is a strong pink, not a blush. Light is a warm peach,
+    /// not a grey parchment.
+    ///
+    /// Reference shots live in Alpha 0.0.1.x Photos/Theme Examples.
+    /// </summary>
+    private static Vector4 Ground(UiThemeChoice theme) => theme switch
+    {
+        UiThemeChoice.Light => new Vector4(0.961f, 0.831f, 0.663f, 1f),      // #F5D4A9 warm peach
+        UiThemeChoice.ClassicFF => new Vector4(0.098f, 0.000f, 0.565f, 1f),  // #190090 blue-violet
+        UiThemeChoice.ClearBlue => new Vector4(0.090f, 0.188f, 0.400f, 1f),  // #173066
+        UiThemeChoice.ClearWhite => new Vector4(0.702f, 0.718f, 0.725f, 1f), // #B3B7B9 mid grey
+        UiThemeChoice.ClearGreen => new Vector4(0.165f, 0.392f, 0.090f, 1f), // #2A6417
+        UiThemeChoice.ClearGrey => new Vector4(0.208f, 0.220f, 0.235f, 1f),  // #35383C
+        UiThemeChoice.ClearPink => new Vector4(0.906f, 0.655f, 0.839f, 1f),  // #E7A7D6
+        _ => new Vector4(0.137f, 0.137f, 0.137f, 1f),                        // #232323 Dark
+    };
 
     /// <summary>
     /// Picks a theme's column out of a <c>UIColor</c> row.
@@ -357,6 +393,41 @@ public sealed class UiStyle : IDisposable
         ((packed >> 8) & 0xFF) / 255f,
         (packed & 0xFF) / 255f);
 
+    /// <summary>
+    /// Nudges dimmed text towards the full text colour until it is legible
+    /// against the panel.
+    ///
+    /// The sheet's dimmed entry is a colour the game uses over its own
+    /// backgrounds, which are not always the panel - under Clear Pink it is a
+    /// purple-grey on pink at 2.7:1, short of the 3:1 usually taken as the
+    /// floor for interface text. Dimmed text carries whole columns here (zone,
+    /// level, windows), so it has to clear that.
+    ///
+    /// Written as a guard rather than a correction to one theme: it does
+    /// nothing at all to the seven that already pass.
+    /// </summary>
+    private static Vector4 Readable(Vector4 dim, Vector4 text, Vector4 ground)
+    {
+        for (var step = 0; step < 8 && ContrastRatio(dim, ground) < 3f; step++)
+            dim = Mix(dim, text, 0.25f);
+
+        return dim;
+    }
+
+    /// <summary>WCAG relative-luminance contrast ratio, 1:1 to 21:1.</summary>
+    private static float ContrastRatio(Vector4 a, Vector4 b)
+    {
+        var la = Luminance(a);
+        var lb = Luminance(b);
+        return (MathF.Max(la, lb) + 0.05f) / (MathF.Min(la, lb) + 0.05f);
+    }
+
+    private static float Luminance(Vector4 c) =>
+        (0.2126f * Channel(c.X)) + (0.7152f * Channel(c.Y)) + (0.0722f * Channel(c.Z));
+
+    private static float Channel(float v) =>
+        v <= 0.03928f ? v / 12.92f : MathF.Pow((v + 0.055f) / 1.055f, 2.4f);
+
     /// <summary>Blends RGB towards <paramref name="towards"/>, keeping a's alpha.</summary>
     private static Vector4 Mix(Vector4 a, Vector4 towards, float amount) => new(
         a.X + ((towards.X - a.X) * amount),
@@ -366,6 +437,16 @@ public sealed class UiStyle : IDisposable
 
     private static Vector4 Alpha(Vector4 colour, float alpha) =>
         new(colour.X, colour.Y, colour.Z, alpha);
+
+    /// <summary>
+    /// Black over a light ground, white over a dark one. The dimming layers
+    /// behind modals need to darken a light theme and lighten a dark one, and
+    /// a fixed black would be invisible against Dark's near-black panels.
+    /// </summary>
+    private static Vector4 InvertTowards(Vector4 ground) =>
+        (0.2126f * ground.X) + (0.7152f * ground.Y) + (0.0722f * ground.Z) > 0.5f
+            ? new Vector4(0f, 0f, 0f, 1f)
+            : new Vector4(1f, 1f, 1f, 1f);
 
     /// <summary>
     /// Scopes the chosen font. Returns null when the default font is wanted, or
@@ -401,85 +482,4 @@ public sealed class UiStyle : IDisposable
         return axisFont;
     }
 
-    /// <summary>
-    /// Draws the game's window panel behind the current window's content. Call
-    /// it as the first thing in Draw, so everything else lands on top.
-    /// </summary>
-    public void DrawChrome()
-    {
-        if (configuration.Chrome != UiChromeChoice.GameFrame || !ChromeReady())
-            return;
-
-        var corner = Texture(CornerTexture);
-        var horizontal = Texture(HorizontalTexture);
-        var vertical = Texture(VerticalTexture);
-        var fill = Texture(FillTexture);
-
-        if (corner is null || horizontal is null || vertical is null || fill is null)
-            return;
-
-        var min = ImGui.GetWindowPos();
-        var max = min + ImGui.GetWindowSize();
-
-        // Each corner tile is one quadrant of the corner texture.
-        var cw = corner.Width / 2f;
-        var ch = corner.Height / 2f;
-
-        // Nothing sensible to draw if the window is smaller than its own frame.
-        if (max.X - min.X < cw * 2 || max.Y - min.Y < ch * 2)
-            return;
-
-        var drawList = ImGui.GetWindowDrawList();
-
-        var innerMin = new Vector2(min.X + cw, min.Y + ch);
-        var innerMax = new Vector2(max.X - cw, max.Y - ch);
-
-        // Centre fill first, then edges, then corners on top.
-        Image(fill, innerMin, innerMax, Vector2.Zero, Vector2.One);
-
-        Image(horizontal, new Vector2(innerMin.X, min.Y), new Vector2(innerMax.X, innerMin.Y),
-            new Vector2(0f, 0f), new Vector2(1f, 0.5f));
-        Image(horizontal, new Vector2(innerMin.X, innerMax.Y), new Vector2(innerMax.X, max.Y),
-            new Vector2(0f, 0.5f), new Vector2(1f, 1f));
-
-        Image(vertical, new Vector2(min.X, innerMin.Y), new Vector2(innerMin.X, innerMax.Y),
-            new Vector2(0f, 0f), new Vector2(0.5f, 1f));
-        Image(vertical, new Vector2(innerMax.X, innerMin.Y), new Vector2(max.X, innerMax.Y),
-            new Vector2(0.5f, 0f), new Vector2(1f, 1f));
-
-        Image(corner, min, innerMin, new Vector2(0f, 0f), new Vector2(0.5f, 0.5f));
-        Image(corner, new Vector2(innerMax.X, min.Y), new Vector2(max.X, innerMin.Y),
-            new Vector2(0.5f, 0f), new Vector2(1f, 0.5f));
-        Image(corner, new Vector2(min.X, innerMax.Y), new Vector2(innerMin.X, max.Y),
-            new Vector2(0f, 0.5f), new Vector2(0.5f, 1f));
-        Image(corner, innerMax, max, new Vector2(0.5f, 0.5f), new Vector2(1f, 1f));
-
-        void Image(Dalamud.Interface.Textures.TextureWraps.IDalamudTextureWrap wrap,
-                   Vector2 topLeft, Vector2 bottomRight, Vector2 uv0, Vector2 uv1) =>
-            ImGui.AddImage(drawList, wrap.Handle, topLeft, bottomRight, uv0, uv1);
-    }
-
-    /// <summary>True once every piece of the frame has finished loading.</summary>
-    private bool ChromeReady() =>
-        Texture(CornerTexture) is not null &&
-        Texture(HorizontalTexture) is not null &&
-        Texture(VerticalTexture) is not null &&
-        Texture(FillTexture) is not null;
-
-    /// <summary>
-    /// A game texture, or null while it loads. Dalamud owns and caches the
-    /// wrap, so this must not be disposed and is cheap to call per frame.
-    /// </summary>
-    private static Dalamud.Interface.Textures.TextureWraps.IDalamudTextureWrap? Texture(string path)
-    {
-        try
-        {
-            return Service.TextureProvider.GetFromGame(path).GetWrapOrDefault();
-        }
-        catch (Exception ex)
-        {
-            Service.Log.Warning(ex, $"Could not load the game texture {path}.");
-            return null;
-        }
-    }
 }

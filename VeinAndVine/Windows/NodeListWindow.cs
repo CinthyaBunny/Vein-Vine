@@ -111,7 +111,6 @@ public sealed class NodeListWindow : Window, IDisposable
 
     public override void Draw()
     {
-        plugin.UiStyle.DrawChrome();
         nodeList.Draw();
 
         DrawResizeGrip();

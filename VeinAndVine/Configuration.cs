@@ -44,9 +44,12 @@ public class Configuration : IPluginConfiguration
     // Anyone who has already chosen Dalamud keeps it - the value is written to
     // the config file, so an explicit choice outranks a changed default. Only
     // a config that predates these settings picks the new one up.
+    // Theme covers both the palette and the window frame: picking one of the
+    // game's themes means wanting the whole look, and the frame is drawn from
+    // the theme's own colours anyway, so splitting them only allowed
+    // combinations nobody wanted.
     public UiFontChoice Font { get; set; } = UiFontChoice.GameAxis;
     public UiThemeChoice Theme { get; set; } = UiThemeChoice.Dark;
-    public UiChromeChoice Chrome { get; set; } = UiChromeChoice.GameFrame;
 
     /// <summary>Whether the node list is a tab or its own docked panel.</summary>
     public NodeListPlacement NodeListPlacement { get; set; } = NodeListPlacement.Tabbed;

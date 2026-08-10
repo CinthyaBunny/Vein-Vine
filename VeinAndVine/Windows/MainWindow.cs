@@ -142,9 +142,6 @@ public sealed class MainWindow : Window, IDisposable
 
     public override void Draw()
     {
-        // First thing in the window, so everything else lands on top of it.
-        plugin.UiStyle.DrawChrome();
-
         LastPosition = ImGui.GetWindowPos();
         LastSize = ImGui.GetWindowSize();
         IsDrawing = true;
@@ -184,10 +181,9 @@ public sealed class MainWindow : Window, IDisposable
     private void DrawAppearanceTab()
     {
         ImGui.TextWrapped(
-            "Vein & Vine borrows the game's own look by default. The font, the palette " +
-            "and the window frame all come out of the client - nothing is downloaded - " +
-            "and each one is separate, so you can drop back to Dalamud's default for " +
-            "any of them.");
+            "Vein & Vine borrows the game's own look by default. The typeface, the " +
+            "colours and the window panel all come out of the client - nothing is " +
+            "downloaded - and either can drop back to Dalamud's default on its own.");
 
         ImGui.Spacing();
         ImGui.Separator();
@@ -205,7 +201,7 @@ public sealed class MainWindow : Window, IDisposable
         }
 
         var theme = configuration.Theme;
-        if (DrawChoice("Colours", ref theme,
+        if (DrawChoice("Theme", ref theme,
                 [
                     UiThemeChoice.Dalamud,
                     UiThemeChoice.Dark,
@@ -231,23 +227,11 @@ public sealed class MainWindow : Window, IDisposable
                 "All eight of the game's UI themes, named and ordered as they are in\n" +
                 "System Configuration, and coloured from the same UIColor sheet the\n" +
                 "game tints its own interface with.\n\n" +
+                "This covers the whole window: the panel and its border as well as\n" +
+                "every control inside it.\n\n" +
                 "Leave this on Dalamud default if you have themed Dalamud yourself."))
         {
             configuration.Theme = theme;
-            configuration.Save();
-        }
-
-        var chrome = configuration.Chrome;
-        if (DrawChoice("Window frame", ref chrome,
-                [UiChromeChoice.Dalamud, UiChromeChoice.GameFrame],
-                ["Dalamud default", "Game panel"],
-                "Draws the game's WindowA panel art behind the window, the same nine-slice\n" +
-                "every normal game window is built from.\n\n" +
-                "The most experimental of the three: it replaces the window background but\n" +
-                "leaves ImGui's title bar and resize grip in place, so it is a blend rather\n" +
-                "than a perfect match."))
-        {
-            configuration.Chrome = chrome;
             configuration.Save();
         }
 
