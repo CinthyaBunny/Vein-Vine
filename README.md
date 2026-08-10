@@ -176,14 +176,21 @@ client rather than from bundled assets:
 | Switch | What it uses |
 |---|---|
 | Font | **Axis**, via `FontAtlas.NewGameFontHandle` — the typeface the game's own UI draws with, and the single biggest contributor to looking native |
-| Colours | The game's six UI themes, read from its own `UIColor` sheet |
+| Colours | All eight of the game's UI themes, read from its own `UIColor` sheet |
 | Window frame | `ui/uld/WindowA_BgNormal_{Corner,H,V,HV}.tex`, drawn as a nine-slice |
 
-The colour themes are **Dark, Light, Classic FF, Clear Blue, Clear White and
-Clear Green** — named as the game names them in System Configuration (it really
-is "Classic FF"), in the game's own dropdown order. Those six are exactly the
-ones the `UIColor` sheet has a column for; the options screen also lists Clear
-Grey and Clear Pink, but the sheet carries no colours for them.
+The colour themes are **Dark, Light, Classic FF, Clear Blue, Clear White, Clear
+Green, Clear Grey and Clear Pink** — all eight, named as the game names them in
+System Configuration (it really is "Classic FF"), in the game's own dropdown
+order.
+
+`UIColor` has a column for every one, but Lumina has only named the first six.
+Clear Grey and Clear Pink come from its two unnamed columns. Two independent
+things say which is which: the sheet's named columns run in the same order as
+the game's dropdown, so the leftover pair is Grey then Pink; and the data
+agrees, since one of them is dark purple text on a white ground, which can only
+be Clear Pink. If a future Lumina names those columns properly, the plugin
+stops compiling — which is the right way for that to break.
 
 Each palette is derived from four anchors rather than hand-written, so there is
 one code path instead of six tables to keep in step:

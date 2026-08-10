@@ -214,6 +214,8 @@ public sealed class MainWindow : Window, IDisposable
                     UiThemeChoice.ClearBlue,
                     UiThemeChoice.ClearWhite,
                     UiThemeChoice.ClearGreen,
+                    UiThemeChoice.ClearGrey,
+                    UiThemeChoice.ClearPink,
                 ],
                 [
                     "Dalamud default",
@@ -223,12 +225,12 @@ public sealed class MainWindow : Window, IDisposable
                     "Clear Blue",
                     "Clear White",
                     "Clear Green",
+                    "Clear Grey",
+                    "Clear Pink",
                 ],
-                "The game's own UI themes, named as it names them in System\n" +
-                "Configuration, and coloured from the same UIColor sheet the game\n" +
-                "tints its interface with.\n\n" +
-                "Clear Grey and Clear Pink are missing because the sheet has no column\n" +
-                "for them - there is nothing to read their colours from.\n\n" +
+                "All eight of the game's UI themes, named and ordered as they are in\n" +
+                "System Configuration, and coloured from the same UIColor sheet the\n" +
+                "game tints its own interface with.\n\n" +
                 "Leave this on Dalamud default if you have themed Dalamud yourself."))
         {
             configuration.Theme = theme;

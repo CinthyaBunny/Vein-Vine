@@ -15,39 +15,44 @@ rest of the steps.
 
 ## [Unreleased]
 
+Nothing yet.
+
+## [0.0.1.1] - 2026-08-10
+
+Vein & Vine now wears the game's own clothes.
+
 ### Added
 
-- **The node list can be docked to the main window's left edge** instead of
-  living in a tab — `Appearance` → `Node list`. The panel follows the window
-  around and matches its height, but its width is yours: drag the grip in its
-  bottom-left corner and it widens leftwards into free space rather than
-  shoving the window it is attached to. The Nodes tab steps aside while docked,
-  and both share one `NodeListTab`, so their sort state cannot drift apart.
+- **An Appearance tab**, with four dropdowns. Everything it uses comes out of
+  the client — nothing is downloaded.
 
-  Experimental. The grip is hand-drawn and ImGui's own resizing switched off:
-  its grip sits on the bottom-right, which is the one corner that cannot move
-  when the right edge is welded to the host.
+  - **Font** — Axis, the typeface the game's own interface draws with. The
+    single biggest thing that makes a window read as native.
+  - **Colours** — all eight of the game's UI themes: Dark, Light, Classic FF,
+    Clear Blue, Clear White, Clear Green, Clear Grey and Clear Pink. Named and
+    ordered as they are in System Configuration, and coloured from the same
+    `UIColor` sheet the game tints its own interface with.
+  - **Window frame** — the WindowA nine-slice panel every normal game window is
+    built from.
+  - **Node list** — tabbed, or docked (see below).
+
+  The first three are on by default: a plugin window sitting next to the game's
+  own windows may as well look like one. Each drops back to Dalamud's default
+  with a click, and an explicit choice outranks the default, so anyone who has
+  already picked Dalamud keeps it.
+
+- **The node list can be docked to the main window's left edge** instead of
+  living in a tab. The panel follows the window around and matches its height,
+  but its width is yours: drag the grip in its bottom-left corner and it widens
+  leftwards into free space rather than shoving the window it is attached to.
+  The Nodes tab steps aside while docked, and both share one `NodeListTab`, so
+  their sort state cannot drift apart.
+
+- `Services/UiStyle.cs`, which owns the font handle, the palettes and the frame
+  art.
 
 ### Changed
 
-- **`Colours` now offers all six of the game's UI themes** — Dark, Light,
-  Classic FF, Clear Blue, Clear White and Clear Green — named as the game names
-  them in System Configuration, in its dropdown order, and coloured from the
-  same `UIColor` sheet the game tints its own interface with. (Clear Grey and
-  Clear Pink appear in the game's list but the sheet has no column for them, so
-  there is nothing to read.)
-
-  Each palette is derived from four anchors out of the sheet rather than
-  hand-written per theme, so the six stay consistent with one another. Two
-  details the data forced: the accent comes from row 22 rather than the paler
-  row 8, which is pure white under Classic FF and would sink every border into
-  the text; and Clear Blue and Clear Green get a hand-picked ground, because
-  neither has a blue or green entry anywhere in the sheet — the game tints its
-  window textures for that instead of storing a colour.
-- The Appearance settings are dropdowns rather than rows of radio buttons.
-  Radios spread sideways until they wrap; a combo costs the same width at two
-  options as at ten, which is what these lists need as more fonts and palettes
-  get added.
 - **The two windows are now one, tabbed.** The node list is the first tab of
   what used to be the settings window; `Wishlist`, `Display` and `Appearance`
   sit behind it. Two windows meant hunting for the second one every time you
@@ -58,24 +63,29 @@ rest of the steps.
   `Wishlist`. The window keeps its old ImGui id, so its saved position and size
   carry over.
 
-### Added
+### Notes
 
-- An **Appearance** tab with three independent switches for borrowing the
-  game's own look: **Font** (Axis, the game's UI typeface), **Colours** (its
-  dark blue panels, warm off-white text and muted gold borders), and **Window
-  frame** (the WindowA nine-slice panel every normal game window is built
-  from).
-- `Services/UiStyle.cs`, which owns the Axis font handle, the palette, and the
-  frame art. All three come out of the client — nothing is downloaded.
+Three things the game's data decided, rather than taste:
 
-  All three are on by default — a plugin window sitting next to the game's own
-  windows may as well look like one — and each drops back to Dalamud's default
-  with a click. An explicit choice outranks the default, so anyone who has
-  already picked Dalamud keeps it.
+- Palettes are derived from four anchors per theme rather than hand-written
+  eight times over. The accent comes from `UIColor` row 22 and not the paler
+  row 8, which is pure white under Classic FF and would sink every border into
+  the text. Clear Blue and Clear Green get a hand-picked ground, because
+  neither has a blue or green entry anywhere in the sheet — the game tints its
+  window *textures* for that instead of storing a colour.
+- Clear Grey and Clear Pink come from the two `UIColor` columns Lumina has not
+  named yet. The column order and the data agree on which is which, and if a
+  future Lumina names them the plugin stops compiling rather than silently
+  reading the wrong colours.
+- The docked panel's resize grip is hand-drawn, and ImGui's own resizing is
+  switched off. Its grip sits on the bottom-right, which is the one corner that
+  cannot move when the right edge is welded to the host.
 
-  The frame is the least finished of the three: it replaces the window
-  background but leaves ImGui's title bar and resize grip in place, so it reads
-  as a blend rather than a true native window.
+### Known gaps
+
+- The window frame replaces the background but leaves ImGui's title bar and
+  resize grip in place, so it reads as a blend rather than a true native
+  window. Docking is likewise a concept rather than a finished system.
 
 ## [0.0.0.3] - 2026-08-10
 

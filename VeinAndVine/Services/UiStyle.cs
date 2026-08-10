@@ -24,10 +24,9 @@ public enum UiFontChoice
 /// <see cref="ClassicFF"/>, which really is "Classic FF" and not "Classic
 /// FFXIV". The order matches the game's dropdown.
 ///
-/// These six are exactly the themes the <c>UIColor</c> sheet carries a column
-/// for. The game's options screen also lists Clear Grey and Clear Pink, but
-/// the sheet has no column for either, so there is nothing to read their
-/// colours from.
+/// All eight of the game's themes. <c>UIColor</c> carries a column for every
+/// one, though Lumina has only named the first six - see
+/// <see cref="UiStyle.Column"/> for how the last two are reached.
 /// </summary>
 public enum UiThemeChoice
 {
@@ -40,6 +39,8 @@ public enum UiThemeChoice
     ClearBlue,
     ClearWhite,
     ClearGreen,
+    ClearGrey,
+    ClearPink,
 }
 
 /// <summary>Where the node list lives.</summary>
@@ -320,6 +321,23 @@ public sealed class UiStyle : IDisposable
         }
     }
 
+    /// <summary>
+    /// Picks a theme's column out of a <c>UIColor</c> row.
+    ///
+    /// Clear Grey and Clear Pink come from Lumina's two unnamed columns. The
+    /// sheet's named columns run in the same order as the game's own theme
+    /// dropdown - Dark, Light, Classic FF, Clear Blue, Clear White, Clear
+    /// Green - and Grey and Pink are the two that follow, so the unnamed pair
+    /// is them.
+    ///
+    /// The data says the same thing independently, which is what makes it safe
+    /// to rely on: Unknown3 is dark purple text on a white ground, which is
+    /// Clear Pink and could not be anything else, while Unknown2 is neutral
+    /// greys on black.
+    ///
+    /// If a future Lumina names these properly this stops compiling, which is
+    /// the right way for it to break.
+    /// </summary>
     private static uint Column(UIColor row, UiThemeChoice theme) => theme switch
     {
         UiThemeChoice.Light => row.Light,
@@ -327,6 +345,8 @@ public sealed class UiStyle : IDisposable
         UiThemeChoice.ClearBlue => row.ClearBlue,
         UiThemeChoice.ClearWhite => row.ClearWhite,
         UiThemeChoice.ClearGreen => row.ClearGreen,
+        UiThemeChoice.ClearGrey => row.Unknown2,
+        UiThemeChoice.ClearPink => row.Unknown3,
         _ => row.Dark,
     };
 
