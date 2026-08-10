@@ -13,7 +13,11 @@ a week later. At release, rename that section to `## [x.y.z.w] - YYYY-MM-DD`
 and leave a fresh empty one behind. See [Releasing](README.md#releasing) for the
 rest of the steps.
 
-## [0.0.0.2]
+## [Unreleased]
+
+Nothing yet.
+
+## [0.0.0.2] - 2026-08-10
 
 ### Added
 
