@@ -82,13 +82,55 @@ column is a function of its inputs and can be unit tested with no game running.
 | `Services/NodeDatabase.cs` | filesystem | Loads `Data/nodes.json` |
 | `Services/MapUtil.cs` | Lumina sheets | World-space → map-coordinate conversion |
 | `Services/EorzeaTime.cs` | **pure** | Eorzea clock + the weather seed roll |
-| `Services/PriorityEngine.cs` | **pure** | Sorting, gated behind `IWeatherProvider` |
+| `Services/PriorityEngine.cs` | **pure** | Availability + sorting, gated behind `IWeatherProvider` |
+| `Services/NodeQuery.cs` | **pure** | Filters, the per-item index, picker sorting |
 | `Models/` | **pure** | `GatherNode`, `WishlistEntry` |
-| `Windows/` | ImGui | Node list, wishlist editor |
+| `Windows/` | ImGui | Node list, item picker |
+| `Windows/UiShared.cs` | ImGui | Colours, duration formatting, sort-spec bridge |
 | `tools/NodeGen/` | Lumina, build-time | Regenerates `Data/nodes.json` from game sheets |
 
 `PriorityEngine` depends on `IWeatherProvider`, not `WeatherService`, specifically
 so it can be tested against a fake clock.
+
+## The UI
+
+Two windows, one job each: the main window answers *what can I gather right
+now*, and the settings window's **Wishlist** tab answers *what do I care about*.
+
+Both are ImGui tables with sortable, resizable, hideable columns.
+
+**Main window** — one row per node, coloured green (up, and going to expire),
+amber (up within five minutes), grey (waiting), or ordinary text for a node
+that is simply always there. That fourth state matters: three quarters of the
+dataset is always up, and painting it the same green as a node with four
+minutes left would drown out the only rows worth hurrying for. For the same
+reason the summary counts only *timed* nodes as "up now", and the default sort
+puts what expires above what doesn't.
+
+Above the table: `Miner` / `Botanist`, `Timed only`, `Upcoming` (show nodes that
+aren't up yet), and `This zone` — all persisted. Double-clicking a row sets the
+map flag; so does the marker button at its right end, and right-click also
+offers *Stop tracking*.
+
+**Wishlist tab** — one row per *item*, not per node. The dataset is node-shaped,
+so the same item appears in several zones with several windows; `NodeQuery`
+collapses that into one row per item, with the zone count and the union of its
+windows. Filter by text, job, zone, level band, timed-only, or narrow to what
+you already track. `Track all shown` applies to exactly the rows the filters
+left, which is what makes "every level 80 botany item" a two-click operation.
+
+At 1,050 rows the picker is clipped with `ImGuiListClipper` and its
+filter/sort result is cached behind a key of its inputs, so scrolling submits
+only the visible slice and a still frame does no work at all.
+
+Sort state deliberately lives in ImGui's own `.ini`, not in `Configuration`.
+ImGui already persists table column sorting, and a second copy in our config
+would only get a chance to disagree with the arrows in the header.
+
+The filtering and sorting are all in the pure column — `NodeFilter.Matches`,
+`NodeQuery.SortItems`, `PriorityEngine.Sort` — so the parts that decide what
+you see and in what order can be exercised against the shipped dataset with no
+game running. The windows only draw.
 
 `tools/NodeGen` is in the solution so it keeps compiling against the model, but
 it is a standalone exe and is never shipped. It touches only the Dalamud-free
@@ -101,9 +143,20 @@ parts of the plugin (`Models`, the pure `MapUtil.WorldToMap` overload,
 refresh doesn't need a rebuild. See
 [`Data/nodes.schema.md`](VeinAndVine/Data/nodes.schema.md) for the format.
 
-It currently holds **419 timed nodes** — 333 distinct items across 46 zones,
-Lv50 through Lv100. Only timed nodes are included: the plugin exists to say when
-something is up, and an always-available node has nothing to report.
+It currently holds **1,587 nodes** — 1,050 distinct items across 47 zones, Lv1
+through Lv100, in a 577 KB file. Of those, **419 are timed** (unspoiled,
+legendary and ephemeral) and **1,168 are always up**.
+
+Always-up nodes earn their place even though they never need watching: without
+them the wishlist can only track the 333 timed items, so "where do I get iron
+ore" has no answer. They are reported as available with no countdown and shown
+as `Always`, and the `Timed only` toggle in both windows hides them when the
+question is "what's up right now" instead.
+
+**Spearfishing is excluded.** It is a gathering node in the sheets, but nothing
+here models bait or the tug, and neither window offers a Fisher filter — 168
+nodes that no UI could reach. One `if` in the generator, marked for when fishing
+is handled.
 
 The file is **generated, not hand-written** — run
 [`tools/NodeGen`](tools/NodeGen) to rebuild it from the game's own Excel sheets:

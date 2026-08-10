@@ -66,25 +66,54 @@ internal static class Program
         var skippedNoCoords = 0;
         var skippedNoItems = 0;
         var skippedNoTerritory = 0;
+        var skippedNoBase = 0;
+        var skippedFishing = 0;
+        var timedCount = 0;
 
         foreach (var point in points)
         {
-            if (!transients.TryGetRow(point.RowId, out var transient))
+            // A missing transient row just means the node has no timing
+            // mechanism, which is the normal case for the great majority of
+            // nodes - it is not a reason to drop it.
+            var windows = transients.TryGetRow(point.RowId, out var transient)
+                ? ReadWindows(transient, rarePops)
+                : [];
+
+            // Every row ref below is dereferenced defensively. Dropping the
+            // timed-node filter means walking rows that were previously never
+            // reached, and a fair number of them are placeholders whose refs
+            // point at nothing - Value would throw rather than yield a null row.
+            if (point.GatheringPointBase.ValueNullable is not { } pointBase)
+            {
+                skippedNoBase++;
                 continue;
+            }
 
-            var windows = ReadWindows(transient, rarePops);
-            if (windows.Count == 0)
-                continue;   // not a timed node; the plugin only tracks timed ones
+            var type = ToNodeType(pointBase.GatheringType.RowId);
 
-            var pointBase = point.GatheringPointBase.Value;
-            var territory = point.TerritoryType.Value;
-            var map = territory.Map.Value;
-            var zoneName = territory.PlaceName.Value.Name.ExtractText();
+            // Spearfishing is a gathering node in the sheets, but it needs bait
+            // and a tug the plugin models nothing of, and neither window
+            // exposes a Fisher filter - emitting it would ship rows no UI can
+            // reach. Flip this to include them once fishing is handled.
+            if (type == NodeType.Fishing)
+            {
+                skippedFishing++;
+                continue;
+            }
 
             // TerritoryType 0 and 1 are both null rows: no map, no place name.
             // A node without a territory can do neither the weather lookup nor
             // the map flag, so it would sit in the list permanently inactive.
             // Six legacy bases (the old Diadem nodes) only ever appear here.
+            if (point.TerritoryType.ValueNullable is not { } territory ||
+                territory.Map.ValueNullable is not { } map ||
+                territory.PlaceName.ValueNullable is not { } placeName)
+            {
+                skippedNoTerritory++;
+                continue;
+            }
+
+            var zoneName = placeName.Name.ExtractText();
             if (map.RowId == 0 || zoneName.Length == 0)
             {
                 skippedNoTerritory++;
@@ -102,7 +131,6 @@ internal static class Program
             var mapX = MapUtil.WorldToMap(coords.X, map.OffsetX, map.SizeFactor);
             var mapY = MapUtil.WorldToMap(coords.Y, map.OffsetY, map.SizeFactor);
 
-            var type = ToNodeType(pointBase.GatheringType.RowId);
             var resolvable = 0;
 
             foreach (var gatheringItemRef in pointBase.Item)
@@ -126,6 +154,9 @@ internal static class Program
                 if (!seen.Add((pointBase.RowId, item.RowId)))
                     continue;
 
+                if (windows.Count > 0)
+                    timedCount++;
+
                 nodes.Add(new GatherNode
                 {
                     ItemId = item.RowId,
@@ -148,7 +179,9 @@ internal static class Program
                 skippedNoItems++;
         }
 
-        Console.WriteLine($"emitted              : {nodes.Count} nodes");
+        Console.WriteLine($"emitted              : {nodes.Count} nodes ({timedCount} timed, {nodes.Count - timedCount} always up)");
+        Console.WriteLine($"skipped, spearfishing: {skippedFishing}");
+        Console.WriteLine($"skipped, no base     : {skippedNoBase}");
         Console.WriteLine($"skipped, no territory: {skippedNoTerritory}");
         Console.WriteLine($"skipped, no coords   : {skippedNoCoords}");
         Console.WriteLine($"skipped, no items    : {skippedNoItems}");
@@ -215,14 +248,20 @@ internal static class Program
     }
 
     /// <summary>
-    /// The node's longest window expressed in real minutes, rounded up.
+    /// The node's longest window expressed in real minutes, rounded up, or 0
+    /// for a node that never closes.
     ///
     /// PriorityEngine caps its "time remaining" readout at this, so rounding
     /// up matters: rounding down would clip the last few seconds off a window
-    /// that is genuinely still open.
+    /// that is genuinely still open. 0 means "no cap" - an always-up node has
+    /// no expiry to count down to, and any positive number here would invent
+    /// one.
     /// </summary>
     private static int LongestWindowRealMinutes(List<EorzeaHourWindow> windows)
     {
+        if (windows.Count == 0)
+            return 0;
+
         var longest = windows.Max(w => (w.EndHour - w.StartHour + 24) % 24);
         var realSeconds = longest * EorzeaTime.RealSecondsPerEorzeaHour;
         return (int)Math.Ceiling(realSeconds / 60.0);
@@ -297,8 +336,13 @@ internal static class Program
             if (n.MapX is < 1 or > 42 || n.MapY is < 1 or > 42)
                 problems.Add($"{id}: implausible map coords ({n.MapX}, {n.MapY})");
 
-            if (n.TimeWindows.Count == 0)
-                problems.Add($"{id}: no time windows - it would show as always available");
+            // No time windows is legitimate - that's an always-up node - but it
+            // must not also carry a spawn duration, or the plugin would count
+            // down to an expiry that never comes.
+            if (n.TimeWindows.Count == 0 && n.SpawnDurationMinutes != 0)
+                problems.Add($"{id}: always-up but has spawnDurationMinutes {n.SpawnDurationMinutes}");
+            if (n.TimeWindows.Count > 0 && n.SpawnDurationMinutes <= 0)
+                problems.Add($"{id}: timed but has no spawn duration");
 
             foreach (var w in n.TimeWindows)
             {
@@ -323,6 +367,8 @@ internal static class Program
             Console.WriteLine($"verify: OK - {nodes.Count} nodes parsed by the plugin's own loader, all invariants hold");
             Console.WriteLine($"        {nodes.Select(n => n.ItemId).Distinct().Count()} distinct items across " +
                               $"{nodes.Select(n => n.ZoneName).Distinct().Count()} zones");
+            Console.WriteLine($"        {nodes.Count(n => n.TimeWindows.Count > 0)} timed, " +
+                              $"{nodes.Count(n => n.TimeWindows.Count == 0)} always up");
             return true;
         }
 

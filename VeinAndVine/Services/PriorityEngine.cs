@@ -7,7 +7,10 @@ public sealed class PriorityResult
     public required GatherNode Node { get; init; }
     public required bool IsActive { get; init; }
 
-    /// <summary>How long the node stays up. Null when it isn't up.</summary>
+    /// <summary>
+    /// How long the node stays up. Null when it isn't up, and also null when it
+    /// never closes - see <see cref="IsAlwaysAvailable"/>.
+    /// </summary>
     public TimeSpan? TimeRemaining { get; init; }
 
     /// <summary>How long until it comes up. Null when it's already up or unknown.</summary>
@@ -17,6 +20,15 @@ public sealed class PriorityResult
 
     /// <summary>Why the node isn't up, for the UI to explain itself.</summary>
     public string? BlockedReason { get; init; }
+
+    /// <summary>
+    /// The node is simply always there - no window, no weather gate. Worth
+    /// distinguishing from "up right now": both are gatherable, but only the
+    /// timed one is going to stop being gatherable, and that difference is the
+    /// entire reason to look at this list.
+    /// </summary>
+    public bool IsAlwaysAvailable =>
+        Node.TimeWindows.Count == 0 && Node.RequiredWeather.Count == 0;
 }
 
 /// <summary>
@@ -33,8 +45,13 @@ public sealed class PriorityEngine(IWeatherProvider weather)
     public IReadOnlyList<PriorityResult> BuildPriorityList(
         IEnumerable<GatherNode> allNodes,
         IEnumerable<WishlistEntry> wishlist,
-        (float X, float Y, uint TerritoryTypeId)? playerPosition = null)
+        (float X, float Y, uint TerritoryTypeId)? playerPosition = null,
+        NodeFilter? filter = null,
+        NodeSort sort = NodeSort.Priority,
+        bool descending = false)
     {
+        filter ??= NodeFilter.Unfiltered;
+
         var wantedIds = wishlist
             .Where(w => w.Enabled)
             .Select(w => w.ItemId)
@@ -44,7 +61,7 @@ public sealed class PriorityEngine(IWeatherProvider weather)
         var hour = weather.CurrentEorzeaHour;
         var results = new List<PriorityResult>();
 
-        foreach (var node in allNodes.Where(n => wantedIds.Contains(n.ItemId)))
+        foreach (var node in allNodes.Where(n => wantedIds.Contains(n.ItemId) && filter.Matches(n)))
         {
             var blockedReason = GetBlockedReason(node, hour);
             var isActive = blockedReason is null;
@@ -68,14 +85,66 @@ public sealed class PriorityEngine(IWeatherProvider weather)
             });
         }
 
-        // Up now, soonest-to-expire first (grab it before it goes), then
-        // nearest. Nodes waiting on weather or time sort last, by how soon
-        // they open.
-        return results
-            .OrderByDescending(r => r.IsActive)
-            .ThenBy(r => r.TimeRemaining ?? TimeSpan.MaxValue)
-            .ThenBy(r => r.TimeUntilActive ?? TimeSpan.MaxValue)
-            .ThenBy(r => r.DistanceFromPlayer ?? float.MaxValue)
+        return Sort(results, sort, descending);
+    }
+
+    /// <summary>
+    /// Orders an already-built list. Public and static because the UI resorts
+    /// on a column-header click without rebuilding - rebuilding would re-read
+    /// the clock mid-frame, and re-deriving availability to answer "sort by
+    /// name" is work for nothing.
+    /// </summary>
+    public static IReadOnlyList<PriorityResult> Sort(
+        IEnumerable<PriorityResult> results,
+        NodeSort sort,
+        bool descending = false)
+    {
+        if (sort == NodeSort.Priority)
+        {
+            // Up now, soonest-to-expire first (grab it before it goes), then
+            // nearest. Nodes waiting on weather or time sort last, by how soon
+            // they open.
+            var byPriority = results
+                .OrderByDescending(r => r.IsActive)
+                .ThenBy(r => r.TimeRemaining ?? TimeSpan.MaxValue)
+                .ThenBy(r => r.TimeUntilActive ?? TimeSpan.MaxValue)
+                .ThenBy(r => r.DistanceFromPlayer ?? float.MaxValue)
+                .ThenBy(r => r.Node.ItemName, StringComparer.OrdinalIgnoreCase)
+                .ToList();
+
+            if (descending)
+                byPriority.Reverse();
+
+            return byPriority;
+        }
+
+        IOrderedEnumerable<PriorityResult> ordered = sort switch
+        {
+            NodeSort.Job => descending
+                ? results.OrderByDescending(r => r.Node.Type)
+                : results.OrderBy(r => r.Node.Type),
+            NodeSort.Level => descending
+                ? results.OrderByDescending(r => r.Node.JobLevelRequired)
+                : results.OrderBy(r => r.Node.JobLevelRequired),
+            NodeSort.Zone => descending
+                ? results.OrderByDescending(r => r.Node.ZoneName, StringComparer.OrdinalIgnoreCase)
+                : results.OrderBy(r => r.Node.ZoneName, StringComparer.OrdinalIgnoreCase),
+            // Nodes in another zone have no distance, and sink either way -
+            // "furthest first" still shouldn't be led by rows with no answer.
+            NodeSort.Distance => descending
+                ? results.OrderByDescending(r => r.DistanceFromPlayer ?? -1f)
+                : results.OrderBy(r => r.DistanceFromPlayer ?? float.MaxValue),
+            _ => descending
+                ? results.OrderByDescending(r => r.Node.ItemName, StringComparer.OrdinalIgnoreCase)
+                : results.OrderBy(r => r.Node.ItemName, StringComparer.OrdinalIgnoreCase),
+        };
+
+        // Within an equal key, keep what's up now at the top and then hold a
+        // fixed order, so rows don't shuffle under the cursor every frame.
+        return ordered
+            .ThenByDescending(r => r.IsActive)
+            .ThenBy(r => r.Node.ItemName, StringComparer.OrdinalIgnoreCase)
+            .ThenBy(r => r.Node.GatheringPointBaseId)
             .ToList();
     }
 
@@ -115,10 +184,19 @@ public sealed class PriorityEngine(IWeatherProvider weather)
         if (node.RequiredWeather.Count > 0)
             limits.Add(EorzeaTime.GetWeatherWindowEnd(now) - now);
 
+        // Nothing bounds it, so nothing is going to close: the node has neither
+        // a window nor a weather gate. Any number here would be an invented
+        // deadline, and the UI says "Always" instead.
         if (limits.Count == 0)
-            return TimeSpan.FromMinutes(node.SpawnDurationMinutes);
+            return null;
 
-        var seconds = System.Math.Min(limits.Min(), node.SpawnDurationMinutes * 60L);
+        var seconds = limits.Min();
+
+        // A duration of 0 in the dataset means "no cap", which is how always-up
+        // nodes are written - guard so it can never zero out a real countdown.
+        if (node.SpawnDurationMinutes > 0)
+            seconds = System.Math.Min(seconds, node.SpawnDurationMinutes * 60L);
+
         return TimeSpan.FromSeconds(seconds);
     }
 

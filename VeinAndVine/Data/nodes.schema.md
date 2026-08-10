@@ -24,12 +24,12 @@ sheets. See [Regenerating](#regenerating) below.
 
     // Optional
     "gatheringPointBaseId": 425,   // uint - provenance; see below
-    "timeWindows": [               // omit or [] for no time restriction
+    "timeWindows": [               // omit or [] for an always-up node
       { "startHour": 0,  "endHour": 2  },
       { "startHour": 12, "endHour": 14 }
     ],
     "requiredWeather": ["Clear Skies", "Fair Skies"],  // omit or [] for no weather gate
-    "spawnDurationMinutes": 6      // defaults to 60
+    "spawnDurationMinutes": 6      // 0 = never expires; defaults to 60
   }
 ]
 ```
@@ -44,6 +44,10 @@ sheets. See [Regenerating](#regenerating) below.
   spawn two or three times per Eorzea day. A node is up if *any* of its windows
   contains the current Eorzea hour; the countdown uses whichever window is open,
   and "opens at" uses whichever comes round next.
+- **An empty `timeWindows` means the node is always up**, and that is the common
+  case — roughly three quarters of the dataset. Such a node is reported as
+  available with no countdown, and the UI shows "Always" rather than inventing a
+  deadline. The `Timed only` filter in both windows hides them.
 - `startHour` is inclusive, `endHour` exclusive, and a window may wrap past
   midnight: `{"startHour": 22, "endHour": 4}` is handled correctly.
 - `gatheringPointBaseId` is the GatheringPointBase row the node came from. It
@@ -58,7 +62,11 @@ sheets. See [Regenerating](#regenerating) below.
   engine supports it.
 - `spawnDurationMinutes` is **real** minutes, and only caps the countdown — the
   windows are what actually decide availability. The generator sets it to the
-  node's longest window rounded up (a 3 Eorzea-hour window is 8m45s real, so 9).
+  node's longest window rounded up (a 3 Eorzea-hour window is 8m45s real, so 9),
+  and to **0 for an always-up node**, meaning "no cap". 0 and an empty
+  `timeWindows` have to agree: the generator rejects a node that has one without
+  the other, because either combination would make the plugin count down to an
+  expiry that never arrives.
 - Comments and trailing commas are allowed — the loader enables both.
 - A missing or malformed file logs a warning and yields an empty database. It
   will not stop the plugin from loading.
@@ -76,8 +84,11 @@ It finds the game via XIVLauncher's `launcherConfigV3.json` and overwrites
 dotnet run --project tools/NodeGen -c Release -- "<path>\game\sqpack" out.json
 ```
 
-The generator emits **timed nodes only** — the plugin exists to tell you when
-something is up, and an always-available node has nothing to report. Sources:
+The generator emits every miner and botanist node it can fully resolve, timed or
+not. **Spearfishing is skipped**: it is a gathering node in the sheets, but it
+needs bait and a tug that nothing here models, and neither window offers a
+Fisher filter — so emitting it would ship rows no UI can reach. The skip is one
+`if` in `Build`, marked for when fishing is handled. Sources:
 
 | Sheet | Supplies |
 |---|---|
@@ -91,6 +102,11 @@ something is up, and an always-available node has nothing to report. Sources:
 
 After writing, it re-reads the file through the plugin's own
 `NodeDatabase.Parse` and fails the run if any node has a null territory, a zero
-map id, out-of-range coordinates, an empty window list, or a duplicate key.
-Ordering is stable (zone, level, item name, base id) so a post-patch
-regeneration produces a readable diff.
+map id, out-of-range coordinates, a spawn duration that disagrees with its
+window list, or a duplicate key. Ordering is stable (zone, level, item name,
+base id) so a post-patch regeneration produces a readable diff.
+
+Because the great majority of `GatheringPoint` rows are placeholders whose refs
+point at nothing, every row dereference in `Build` goes through `ValueNullable`
+rather than `Value`. The timed-node filter used to hide those rows; without it,
+`Value` throws.
