@@ -78,22 +78,24 @@ link quotes, so they read straight across to the in-game map without the flag
 having to be placed first. They are unsortable, an ordering on them meaning
 nothing, and the column can be hidden like any other.
 
-While a window is being waited on, the always-up rows **in that same zone** are
-tinted: those are the ones worth collecting while standing there anyway. The
-mark is scoped to the single leading node rather than to any timed node, and
-that scoping is what makes it mean anything — 955 of the dataset's 1,168
-always-up nodes share a zone with *some* timed node, so the looser reading would
-light up most of the list and say nothing.
+Always-up rows **in the zone you are standing in** are tinted. That is the one
+thing about a row that never expires still worth saying: it can be collected
+now, without travelling for it. Timed rows are left alone, their colour already
+reporting whether they are worth acting on.
 
-Which node is leading is a fact about the data rather than about the current
-sort: whichever is up with the least time left, or if none is up, whichever
-opens first. Sorting by name re-orders the list without moving the mark. The
-row's tooltip names the node it is keeping company with, so the colour never has
-to be decoded.
+The mark keys off the player's territory rather than off anything in the list.
+An earlier version keyed it off the zone of the leading timed node — "what else
+is near the thing I am waiting for" — which sounds similar and is not: it marks
+rows in a zone you may be nowhere near, and it moves as windows open and close.
+Standing somewhere is a fact about you, and it is the one that decides whether a
+node costs a journey.
 
-Marked rather than reordered, deliberately. Being near the window you are
-waiting on is a note about a row, not a claim that it has become more urgent
-than the rows above it.
+It is suppressed while `This zone` is on, where every row would qualify and a
+mark every row carries is not a mark. The row's tooltip says why it is lit, so
+the colour never has to be decoded.
+
+Marked rather than reordered, deliberately. Being underfoot is a note about a
+row, not a claim that it outranks the rows above it.
 
 The toolbar carries a **clock**, because the list quietly mixes two of them: the
 `Windows` column is Eorzea hours while `4m30s left` and `in 12m` are real

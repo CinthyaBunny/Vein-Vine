@@ -154,23 +154,6 @@ public sealed class PriorityEngine(IWeatherProvider weather)
             .ToList();
     }
 
-    /// <summary>
-    /// The timed node the list is currently about: whichever is up with the
-    /// least time left, or if none is up, whichever opens first. Null when
-    /// nothing tracked is timed at all.
-    ///
-    /// Deliberately independent of how the list is sorted. It answers "which
-    /// window am I waiting on", which is a fact about the data rather than
-    /// about whichever column header was clicked last.
-    /// </summary>
-    public static PriorityResult? LeadingTimed(IEnumerable<PriorityResult> results) =>
-        results
-            .Where(r => !r.IsAlwaysAvailable)
-            .OrderByDescending(r => r.IsActive)
-            .ThenBy(r => r.TimeRemaining ?? TimeSpan.MaxValue)
-            .ThenBy(r => r.TimeUntilActive ?? TimeSpan.MaxValue)
-            .FirstOrDefault();
-
     /// <summary>Null when the node is available; otherwise a short explanation.</summary>
     private string? GetBlockedReason(GatherNode node, int eorzeaHour)
     {

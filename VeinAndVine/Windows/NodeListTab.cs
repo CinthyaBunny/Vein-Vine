@@ -75,7 +75,7 @@ public sealed class NodeListTab
             return;
         }
 
-        DrawTable(visible);
+        DrawTable(visible, player?.TerritoryTypeId);
     }
 
     private void DrawNoDataset()
@@ -198,7 +198,7 @@ public sealed class NodeListTab
             : $"  -  {results.Count} node(s) from {trackedCount} tracked item(s)");
     }
 
-    private void DrawTable(IReadOnlyList<PriorityResult> results)
+    private void DrawTable(IReadOnlyList<PriorityResult> results, uint? playerTerritory)
     {
         var height = ImGui.GetContentRegionAvail().Y;
         if (height <= 0)
@@ -251,11 +251,10 @@ public sealed class NodeListTab
         {
             var ordered = PriorityEngine.Sort(results, sort, sortDescending);
 
-            // Taken from the whole visible set rather than from the sorted
-            // order, so the marking below does not move when a column header
-            // is clicked - the window being waited on does not change because
-            // the list was re-sorted by name.
-            var leadingTimed = PriorityEngine.LeadingTimed(results);
+            // Nothing worth pointing out when the list is already restricted to
+            // the current zone: every row would qualify, and a mark every row
+            // carries is not a mark.
+            var hereTerritory = plugin.Configuration.CurrentZoneOnly ? null : playerTerritory;
 
             // Only the priority order groups always-up nodes apart. An explicit
             // column sort does what its header says and nothing else, so it gets
@@ -278,7 +277,7 @@ public sealed class NodeListTab
                 }
 
                 previousGroup = result.IsAlwaysAvailable;
-                DrawRow(result, leadingTimed);
+                DrawRow(result, hereTerritory);
             }
         }
         finally
@@ -300,29 +299,25 @@ public sealed class NodeListTab
         ImGui.TextDisabled(label);
     }
 
-    private void DrawRow(PriorityResult result, PriorityResult? leadingTimed)
+    private void DrawRow(PriorityResult result, uint? hereTerritory)
     {
         var node = result.Node;
 
         ImGui.TableNextRow();
 
-        // An always-up node in the same zone as the window being waited on is
-        // worth picking up while you are standing there anyway. Marked rather
-        // than reordered: it is a note about the row, not a claim that it has
-        // become more urgent than the rows above it.
+        // An always-up node in the zone you are standing in can be collected
+        // now, without travelling for it - which is the one thing about a row
+        // that never expires still worth saying. Timed rows are left alone:
+        // their colour already reports whether they are worth acting on.
         //
-        // Scoped to the leading node rather than to any timed node on purpose.
-        // 955 of the dataset's 1,168 always-up nodes share a zone with some
-        // timed node, so the looser reading would light up most of the list and
-        // say nothing.
-        var companionTo =
+        // Marked rather than reordered. Being underfoot is a note about a row,
+        // not a claim that it outranks the rows above it.
+        var isHere =
             result.IsAlwaysAvailable &&
-            leadingTimed is { } leader &&
-            node.TerritoryTypeId == leader.Node.TerritoryTypeId
-                ? leader.Node.ItemName
-                : null;
+            hereTerritory is { } here &&
+            node.TerritoryTypeId == here;
 
-        if (companionTo is not null)
+        if (isHere)
             ImGui.TableSetBgColor(ImGuiTableBgTarget.RowBg1, ImGui.GetColorU32(ImGuiCol.Header, 0.45f));
 
         // Keyed on the node, not the item: the same item is gatherable from
@@ -375,7 +370,7 @@ public sealed class NodeListTab
             ImGui.PopStyleColor();
 
         if (rowHovered)
-            DrawRowTooltip(result, companionTo);
+            DrawRowTooltip(result, isHere);
 
         ImGui.TableNextColumn();
         ImGui.TextDisabled(UiShared.JobLabel(node.Type));
@@ -431,7 +426,7 @@ public sealed class NodeListTab
         ImGui.TextDisabled(result.BlockedReason ?? "Not up");
     }
 
-    private void DrawRowTooltip(PriorityResult result, string? companionTo)
+    private void DrawRowTooltip(PriorityResult result, bool isHere)
     {
         var node = result.Node;
 
@@ -453,8 +448,8 @@ public sealed class NodeListTab
 
         // Says why the row is marked, so the highlight is not a colour you have
         // to work out for yourself.
-        if (companionTo is not null)
-            ImGui.TextDisabled($"Same zone as {companionTo}, the window you're waiting on.");
+        if (isHere)
+            ImGui.TextDisabled("In the zone you're standing in - no travelling needed.");
 
         ImGui.Separator();
         ImGui.TextDisabled("Double-click to flag it on the map.");
