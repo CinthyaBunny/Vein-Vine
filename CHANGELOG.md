@@ -7,14 +7,6 @@ Versions are four-part `major.minor.patch.build`, because Dalamud requires a
 four-part `AssemblyVersion` and the in-game installer compares them to decide
 whether a user is offered an update.
 
-**Add entries to `## [Unreleased]` as you go**, not at release time — the notes
-are far more accurate written next to the change than reconstructed from a diff
-a week later. At release, rename that section to `## [x.y.z.w] - YYYY-MM-DD`
-and leave a fresh empty one behind. See [Releasing](README.md#releasing) for the
-rest of the steps.
-
-## [Unreleased]
-
 <details>
 <summary><strong>v0.0.1.3b</strong> - 2026-08-10</summary>
 
@@ -161,12 +153,14 @@ rest of the steps.
   pair, which also makes a changing set of tabs free: the Nodes tab comes and
   goes as the list is docked or undocked.
 
-  </details>
+</details>
 
-## [0.0.1.2] - 2026-08-10
 
-The themes now actually match the game's, measured against it rather than
-guessed at.
+<details>
+<summary><strong>v0.0.1.2</strong> - 2026-08-10</summary>
+
+- **The themes now actually match the game's, measured against it rather than
+guessed at.**
 
 ### Changed
 
@@ -225,7 +219,10 @@ Reference screenshots of all eight in-game themes are kept in
 `Alpha 0.0.1.x Photos/Theme Examples`. The panel colours in `UiStyle` are
 sampled from them, so that folder is the source those values answer to.
 
-## [0.0.1.1] - 2026-08-10
+</detail>
+
+<detail>
+<summary><strong>v0.0.1.1</strong> - 2026-08-10</summary>
 
 Vein & Vine now wears the game's own clothes.
 
@@ -295,7 +292,10 @@ Three things the game's data decided, rather than taste:
   resize grip in place, so it reads as a blend rather than a true native
   window. Docking is likewise a concept rather than a finished system.
 
-## [0.0.0.3] - 2026-08-10
+</detail>
+
+<detail>
+<summary><strong>v0.0.0.3</strong> - 2026-08-10</summary>
 
 ### Added
 
@@ -340,7 +340,11 @@ Three things the game's data decided, rather than taste:
 - Both list tables release `EndTable` in a `finally`, so a throw from a single
   row costs a log line rather than the game client.
 
-## [0.0.0.2] - 2026-08-10
+</detail>
+
+
+<detail>
+<summary><strong>v0.0.0.2</strong> - 2026-08-10</summary>
 
 ### Added
 
@@ -395,8 +399,10 @@ Three things the game's data decided, rather than taste:
 - Spearfishing is still excluded from the dataset (168 nodes): nothing models
   bait or the tug, and neither window offers a Fisher filter.
 - The ImGui layer has not been exercised against a running client.
+</detail>
 
-## [0.0.0.1] - 2026-08-10
+<detail>
+<summary><strong>v0.0.0.1</strong> - 2026-08-10</summary>
 
 Initial version.
 
@@ -420,3 +426,4 @@ Initial version.
   schema document.
 - `repo.json`, the third-party repository manifest.
 - `.gitattributes` pinning the tree to LF.
+</detail>
