@@ -24,7 +24,8 @@ rest of the steps.
 
 </details>
 
-## [0.0.1.3] - 2026-08-10
+<details>
+<summary><strong>v0.0.1.3</strong> - 2026-08-10</summary>
 
 ### Added
 
@@ -159,6 +160,8 @@ rest of the steps.
   The strip is one call returning the selected index rather than a begin/end
   pair, which also makes a changing set of tabs free: the Nodes tab comes and
   goes as the list is docked or undocked.
+
+  </details>
 
 ## [0.0.1.2] - 2026-08-10
 
