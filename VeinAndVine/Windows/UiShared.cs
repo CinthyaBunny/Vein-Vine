@@ -57,16 +57,44 @@ internal static class UiShared
     public static void PopRowPadding() => ImGui.PopStyleVar();
 
     /// <summary>
-    /// Height of a list row: its icons, its buttons, and a row-spanning hit box
-    /// that should cover the row rather than a band across its top.
-    ///
-    /// Computed rather than read off the current frame height so it gives the
-    /// same answer either side of <see cref="PushRowPadding"/>. Columns are
-    /// sized before the push happens, and a measurement that changed depending
-    /// on where it was asked would be a trap.
+    /// How much taller the row being waited on is than the rest. Emphasis by
+    /// height rather than by colour, the colours already being spoken for by
+    /// what a node is doing.
     /// </summary>
-    public static float RowIconSize() =>
-        ImGui.GetFontSize() + (ImGui.GetStyle().FramePadding.Y * RowPaddingScale * 1.6f);
+    private static readonly float LeadingRowScale = 1.35f;
+
+    /// <summary>
+    /// Stacks extra height onto the row being waited on. Call inside
+    /// <see cref="PushRowPadding"/>, whose padding it multiplies, and pair with
+    /// <see cref="PopRowPadding"/>.
+    /// </summary>
+    public static void PushLeadingRowPadding()
+    {
+        var padding = ImGui.GetStyle().FramePadding;
+        ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, new Vector2(padding.X, padding.Y * LeadingRowScale));
+    }
+
+    /// <summary>
+    /// The height a row will have once <see cref="PushRowPadding"/> is in
+    /// effect, for sizing columns - which happens before the push.
+    ///
+    /// Only valid *outside* the push. It reads the style's frame padding, and
+    /// inside the push that value has already been scaled, so asking there
+    /// would scale it a second time. Inside a row, the row's height is simply
+    /// <c>ImGui.GetFrameHeight()</c>, which is what every widget in it already
+    /// measures itself against.
+    /// </summary>
+    public static float PredictedRowHeight(bool leading = false)
+    {
+        var padding = ImGui.GetStyle().FramePadding.Y * RowPaddingScale;
+
+        if (leading)
+            padding *= LeadingRowScale;
+
+        // Doubled because frame padding applies above and below. This is the
+        // frame-height formula, not a second scale - RowPaddingScale is the knob.
+        return ImGui.GetFontSize() + (padding * 2f);
+    }
 
     // Clock tuning, gathered so it can be adjusted by eye without reading the
     // drawing below - the same reason GameTabBar keeps its shape constants

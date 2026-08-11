@@ -79,7 +79,8 @@ One window, four tabs.
 
 **Nodes** — one row per node, coloured by how urgent it is: green for up and
 expiring, amber for up within five minutes, grey for waiting, ordinary text for
-a node that is simply always there. Nodes with no window are grouped below the
+a node that is simply always there. The row you're waiting on is drawn taller
+than the rest. Nodes with no window are grouped below the
 timed ones under an `Always available` band, so they can't sit between the node
 expiring now and the one worth travelling for. Always-up nodes in the zone you're
 standing in are tinted, since those cost no travelling. The job column shows the

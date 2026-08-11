@@ -81,9 +81,21 @@ number in `UiShared` makes both lists larger or smaller.
 Routing it through the frame height rather than scaling icons directly is what
 keeps a row aligned as it grows. Scaling an icon on its own makes it bigger and
 leaves the text and buttons beside it riding the ceiling of a taller row, since
-table cells align to the top. The row height is computed rather than read off
-the current frame, so it gives the same answer either side of the push —
-columns have to be sized before the push happens.
+table cells align to the top.
+
+Inside a row the height is simply the frame height, which is what every widget
+in it already measures against. Columns have to be sized *before* the padding is
+pushed, so there is a separate reading for that — and it is valid only outside
+the push, since inside it the style's own padding has already been scaled and
+would be scaled a second time.
+
+**The row being waited on is drawn taller than the rest.** Because everything in
+a row measures from the frame, widening the padding for that one row is the
+entire change: its icons, its button and its hit box follow without being told.
+Emphasis by height rather than by colour, the colours being spoken for already
+by what a node is doing. Only ascending priority order has a "first" worth
+emphasising — reversed, the leading timed row is the *least* urgent one, and
+under a column sort it is whatever the alphabet put there.
 
 The job column draws **the game's own gathering icon**, with `MIN` / `BTN` kept
 as a setting for when the column is narrow enough that three letters read better
@@ -571,11 +583,7 @@ Eorzea hour that reaches, so the two halves of the mixed-units problem are only
 half solved. Showing both would let GP recovery be planned against the window
 rather than against a stopwatch.
 
-**Give the leading row its own emphasis.** Row padding is now roomier across
-both lists, which was the general half of "the UI is a little small". What
-remains is making the row actually being waited on stand out from the rest.
-ImGui sizes table rows uniformly, so that means drawing that one row taller
-deliberately rather than adjusting the table.
+*(Nothing else here is ready without new plumbing — see the sections below.)*
 
 ### Needs plumbing that does not exist yet
 

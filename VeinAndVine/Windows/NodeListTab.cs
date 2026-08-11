@@ -218,7 +218,7 @@ public sealed class NodeListTab
         // once the roomier row padding is in effect.
         ImGui.TableSetupColumn("Job",
             ImGuiTableColumnFlags.WidthFixed,
-            Math.Max(38f * scale, UiShared.RowIconSize() + (ImGui.GetStyle().CellPadding.X * 2f)),
+            Math.Max(38f * scale, UiShared.PredictedRowHeight(leading: true) + (ImGui.GetStyle().CellPadding.X * 2f)),
             UiShared.SortId(NodeSort.Job));
         ImGui.TableSetupColumn("Lv",
             ImGuiTableColumnFlags.WidthFixed, 28f * scale, UiShared.SortId(NodeSort.Level));
@@ -241,7 +241,7 @@ public sealed class NodeListTab
         // clipping its right edge.
         ImGui.TableSetupColumn("##flag",
             ImGuiTableColumnFlags.WidthFixed | ImGuiTableColumnFlags.NoSort | ImGuiTableColumnFlags.NoHeaderLabel,
-            UiShared.RowIconSize() + (ImGui.GetStyle().CellPadding.X * 2f));
+            UiShared.PredictedRowHeight(leading: true) + (ImGui.GetStyle().CellPadding.X * 2f));
 
         ImGui.TableSetupScrollFreeze(0, 1);
         ImGui.TableHeadersRow();
@@ -276,6 +276,12 @@ public sealed class NodeListTab
             // the always-up band first.
             bool? previousGroup = null;
 
+            // Only ascending priority has a "first" worth emphasising. Reversed,
+            // the leading timed row is the least urgent one; under a column sort
+            // it is whatever the alphabet put there.
+            var emphasise = grouped && !sortDescending;
+            var seenTimed = false;
+
             foreach (var result in ordered)
             {
                 if (grouped && previousGroup is { } previous && previous != result.IsAlwaysAvailable)
@@ -286,7 +292,20 @@ public sealed class NodeListTab
                 }
 
                 previousGroup = result.IsAlwaysAvailable;
+
+                var leading = emphasise && !seenTimed && !result.IsAlwaysAvailable;
+                seenTimed |= !result.IsAlwaysAvailable;
+
+                // Everything in a row measures from the frame, so widening the
+                // padding for one row is enough - the icons, the flag button and
+                // the hit box all follow without being told.
+                if (leading)
+                    UiShared.PushLeadingRowPadding();
+
                 DrawRow(result, hereTerritory);
+
+                if (leading)
+                    UiShared.PopRowPadding();
             }
         }
         finally
@@ -362,7 +381,7 @@ public sealed class NodeListTab
             ImGuiSelectableFlags.SpanAllColumns |
             ImGuiSelectableFlags.AllowItemOverlap |
             ImGuiSelectableFlags.AllowDoubleClick,
-            new Vector2(0, UiShared.RowIconSize()));
+            new Vector2(0, ImGui.GetFrameHeight()));
 
         var rowHovered = ImGui.IsItemHovered();
         if (rowHovered && ImGui.IsMouseDoubleClicked(ImGuiMouseButton.Left))
@@ -373,7 +392,7 @@ public sealed class NodeListTab
         DrawRowContextMenu(result);
 
         ImGui.SetCursorPos(rowStart);
-        UiShared.DrawItemIcon(plugin, node.IconId, UiShared.RowIconSize());
+        UiShared.DrawItemIcon(plugin, node.IconId, ImGui.GetFrameHeight());
 
         if (color is { } textColor)
             ImGui.PushStyleColor(ImGuiCol.Text, textColor);
@@ -444,7 +463,7 @@ public sealed class NodeListTab
             return;
         }
 
-        UiShared.DrawIcon(plugin, iconId, UiShared.RowIconSize());
+        UiShared.DrawIcon(plugin, iconId, ImGui.GetFrameHeight());
         UiShared.Tooltip($"{node.Method}");
     }
 

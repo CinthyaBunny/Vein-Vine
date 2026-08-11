@@ -841,7 +841,7 @@ public sealed class MainWindow : Window
 
         if (ImGui.Selectable("##row", isTracked,
                 ImGuiSelectableFlags.SpanAllColumns | ImGuiSelectableFlags.AllowItemOverlap,
-                new Vector2(0, UiShared.RowIconSize())))
+                new Vector2(0, ImGui.GetFrameHeight())))
         {
             plugin.SetTracked(item.ItemId, item.ItemName, !isTracked);
         }
@@ -860,7 +860,7 @@ public sealed class MainWindow : Window
         // Icon sized to the row rather than to the text, so the row reads as one
         // horizontal band instead of three things at three heights.
         ImGui.SameLine(0, ImGui.GetStyle().ItemInnerSpacing.X);
-        UiShared.DrawItemIcon(plugin, item.IconId, UiShared.RowIconSize());
+        UiShared.DrawItemIcon(plugin, item.IconId, ImGui.GetFrameHeight());
 
         ImGui.AlignTextToFramePadding();
         ImGui.TextUnformatted(item.ItemName);
