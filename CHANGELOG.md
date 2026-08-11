@@ -219,9 +219,9 @@ Reference screenshots of all eight in-game themes are kept in
 `Alpha 0.0.1.x Photos/Theme Examples`. The panel colours in `UiStyle` are
 sampled from them, so that folder is the source those values answer to.
 
-</detail>
+</details>
 
-<detail>
+<details>
 <summary><strong>v0.0.1.1</strong> - 2026-08-10</summary>
 
 Vein & Vine now wears the game's own clothes.
@@ -292,9 +292,9 @@ Three things the game's data decided, rather than taste:
   resize grip in place, so it reads as a blend rather than a true native
   window. Docking is likewise a concept rather than a finished system.
 
-</detail>
+</details>
 
-<detail>
+<details>
 <summary><strong>v0.0.0.3</strong> - 2026-08-10</summary>
 
 ### Added
@@ -340,10 +340,10 @@ Three things the game's data decided, rather than taste:
 - Both list tables release `EndTable` in a `finally`, so a throw from a single
   row costs a log line rather than the game client.
 
-</detail>
+</details>
 
 
-<detail>
+<details>
 <summary><strong>v0.0.0.2</strong> - 2026-08-10</summary>
 
 ### Added
@@ -399,9 +399,9 @@ Three things the game's data decided, rather than taste:
 - Spearfishing is still excluded from the dataset (168 nodes): nothing models
   bait or the tug, and neither window offers a Fisher filter.
 - The ImGui layer has not been exercised against a running client.
-</detail>
+</details>
 
-<detail>
+<details>
 <summary><strong>v0.0.0.1</strong> - 2026-08-10</summary>
 
 Initial version.
@@ -426,4 +426,4 @@ Initial version.
   schema document.
 - `repo.json`, the third-party repository manifest.
 - `.gitattributes` pinning the tree to LF.
-</detail>
+</details>
