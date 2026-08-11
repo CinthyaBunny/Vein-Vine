@@ -441,6 +441,190 @@ here models bait or the tug, and neither window offers a Fisher filter — 168
 nodes that no UI could reach. One `if` in the generator, marked for when fishing
 is handled.
 
+## Proposed — not yet built
+
+Ideas from using node trackers of the
+[ffxiv-gathering.com](https://www.ffxiv-gathering.com/70.php) kind, where the
+lesson is to show the columns that serve the task rather than everything the
+sheets hold. Each is graded by what already exists, because several are much
+closer than they look and two are further away.
+
+### Ready now — the data is already in the dataset
+
+**Split always-up nodes from timed ones.** The strongest of these, and the
+dataset makes the case: `Fire Crystal` alone has **38 nodes, 31 of them always
+up**. Tracking one such item buries the timed rows that are the reason to have
+the window open, and an always-up row sitting between the current node and the
+next one invites walking to it instead of pre-positioning for the node that is
+about to open. `PriorityResult.IsAlwaysAvailable` already distinguishes them, so
+this is a separator or a second section in `DrawTable`, not new data.
+
+**Zone and coordinates as columns.** Every one of the 1,587 nodes carries
+`zoneName`, `mapX` and `mapY`, and the row tooltip already prints them. Promoting
+them to columns is presentation only. The related idea — highlighting an
+always-up node that shares a zone with the current timed one — is a group-by on
+`territoryTypeId` over the visible rows.
+
+**A job icon instead of `MIN` / `BTN`.** Every node has an `iconId` and the
+window already draws item icons through `ITextureProvider`; class-job icons come
+from the same provider. Worth having as a setting rather than a silent swap,
+since the three-letter form is denser when the column is narrow.
+
+**An Eorzea clock in the list.** This is the mixed-units problem: the `Windows`
+column is Eorzea hours, while `x left` and `in y` are real minutes, and nothing
+on screen says so. A clock in the header is the cheapest fix, and pairing each
+countdown with the Eorzea hour it lands on would let you plan GP recovery
+against the window rather than against a stopwatch. One caveat: `GetEorzeaMinute`
+was deleted earlier today as unused, so an `HH:MM` readout needs it restored —
+it is in git history and is four lines.
+
+**Whole-row click to track, with the row highlighted when tracked.** Agreed on
+the checkbox: a 13-pixel target is the wrong affordance for the most frequent
+action in the window. `ImGui.Selectable` with `SpanAllColumns` already does
+exactly this in the node list, so the pattern is in the codebase; the picker
+just does not use it yet. Keeping the checkbox as a visual state indicator while
+making the whole row the hit target is the smaller change.
+
+**More padding on the leading row.** Straightforward, though ImGui tables size
+rows uniformly, so this means either drawing that row taller deliberately or
+giving the whole table more `CellPadding`.
+
+### Needs plumbing that does not exist yet
+
+**Gating on what the character can actually gather.** Worth splitting in two,
+because the dataset is lopsided here:
+
+| Gate | Coverage | Verdict |
+|---|---|---|
+| Gathering level | **1,587 / 1,587** | Do this one |
+| Perception | **52 / 1,587** | Marginal |
+
+Level is the real access gate, it is on every node, and the plugin already reads
+it — greying rows above the character's level is close to free once the level is
+known. Perception is only present on 52 nodes, and those values (2,990–5,090)
+are full-yield and collectability thresholds rather than a can-you-reach-it
+check, so a "can I gather this" built on perception would be silent on 97% of
+the list. Show perception where it exists, as now; gate on level.
+
+Both need the character's own stats, which the plugin currently never reads —
+it has no player-attribute access at all, by design. That is a new dependency on
+FFXIVClientStructs player state and should be verified against a live client
+before being promised.
+
+**Nearest aetheryte.** Two different features wearing one name, and they differ
+in kind:
+
+- *Showing* which aetheryte is closest is read-only and fine. It needs aetheryte
+  coordinates (the `Aetheryte` sheet joined to `MapMarker`) and, to avoid naming
+  one the player has not unlocked, Dalamud's `IAetheryteList` — a service removed
+  earlier today as unused, which would come back for this.
+- *Teleporting* from the window is a different thing. *This plugin does not move
+  the player* — that is its stated contract, and the map flag is deliberately the
+  only game-state change it makes. A teleport button widens that contract, and
+  usually means an optional IPC dependency on the Teleporter plugin.
+
+The click-saving the idea is really after comes from the second. That is a
+product decision rather than a technical one, and it should be made explicitly
+rather than arrived at.
+
+**Starting from a crafted item.** The largest of these and the one that changes
+the shape of the wishlist. It needs the `Recipe` sheet to expand a craft into
+ingredients, a filter down to the ingredients that are actually gatherable
+(present in `nodes.json`), and a decision about whether to recurse into
+sub-crafts. Quantity maths — *N* of the craft needs *M* of the mat — is
+arithmetic on `Recipe` amounts.
+
+The model half-anticipates this already: `WishlistEntry.DesiredQuantity` exists,
+defaults to 1, and **is currently read by nothing**. Wiring it up means the
+node list can say how many of a thing you still want rather than only that you
+want it, which is the point of entering a craft in the first place.
+
+Zero-click entry is the right target: pick the craft, and its gatherable
+materials arrive tracked, with quantities.
+
+### An in-game-style node map
+
+Draw the zone's own map inside the plugin with the node positions marked on it,
+the way the gathering log does and the way
+[Teamcraft's gathering-location view](https://ffxivteamcraft.com/gathering-location?query=Mint)
+does — map art plus the game's own node-type icons, rather than a coordinate
+pair and a flag.
+
+This is a different thing from what the plugin does today. `MapLinkPayload` hands
+off to the game's map and puts a flag on it; the plugin itself shows nothing.
+This would answer "where is this, and are these nodes near each other" without
+leaving the window.
+
+Worth noting that the game's log deliberately shows a *general area* for items
+you have not unlocked. The dataset here carries exact coordinates for every
+node, so this would show exact pins — closer to Teamcraft than to the log.
+
+**Most of the inputs already exist.** Checked against the shipped dataset and the
+Lumina sheet definitions rather than assumed:
+
+| Needed | Status |
+|---|---|
+| `mapId` per node | **1,587 / 1,587** |
+| `mapX` / `mapY`, already in map-coordinate space | **1,587 / 1,587**, spanning 4.0–39.5 and 3.9–40.8 |
+| `Map.SizeFactor`, `OffsetX`, `OffsetY` | present, and `MapUtil` already uses them |
+| Node-type icons | `GatheringType.IconMain` / `IconOff` — the game's own, and only four are needed |
+| A texture loader | `ITextureProvider`, already used for item icons |
+
+Three pieces are genuinely new: loading the map texture (they live under
+`ui/map/...`, derived from `Map.Id`, and read straight from the client — so the
+"nothing is downloaded" property holds); converting a map coordinate to a pixel
+on that texture, which is the same `SizeFactor` relationship `MapUtil` already
+uses, in the other direction; and pan / zoom / hover hit-testing, which is
+ordinary ImGui draw-list work with no API gap.
+
+**The scope is smaller than it first looks.** Of 1,050 items, **983 sit on a
+single map** and only 67 touch more than one (at most 13). So a one-map view
+with a small switcher for the minority covers 94% of cases — there is no need
+for a world-level aggregate view, which is the part that would have been hard.
+Only 47 maps exist in the dataset, and only one is on screen at a time.
+
+**Two risks worth taking seriously.**
+
+The first is that `MapUtil.WorldToMap` is still listed as unverified. A visual
+map is the best test of that formula anyone could build — a pin in the middle of
+a lake is unmissable where a number in a column is not — but it cuts both ways:
+if the transform is off, the first version of this feature looks broken rather
+than looking like a coordinate bug. Verify the transform against a known
+landmark *before* building a view on top of it, not after.
+
+The second is density. The Diadem carries **213 nodes on one map**, far beyond
+any other (the next is Coerthas Western Highlands at 60), so pin clustering or
+filtering to the tracked item is required rather than optional — at least for
+that one zone.
+
+Beyond those: map textures are large, so only the displayed map should be
+resident, and Dalamud's texture cache should own it exactly as `ItemInfo` already
+lets it own item icons. A few zones have layered maps (`Map.Hierarchy`,
+`PlaceNameSub`); the dataset pins one `mapId` per node so this is mostly handled
+already, but it is worth checking against the multi-level zones before assuming.
+
+This does not replace the map flag — that stays the way to actually navigate to
+a node. It also makes two of the ideas above fall out for free: "zone and
+coordinates as columns" becomes redundant once the position is visible, and
+"highlight always-up nodes sharing a zone with the current timed one" becomes
+something you can simply see.
+
+Largest of the interface proposals here. Smaller in data terms than starting
+from a crafted item, considerably larger in drawing code.
+
+### Open question
+
+**What `Upcoming` is for.** Fair challenge — and the answer is one of the other
+suggestions. It exists so a node that is not up yet still appears, with a
+countdown, which is precisely the "pre-position for the next window" workflow the
+aetheryte idea is about; without it the list can only ever show what is already
+open, and the summary line has to carry "Next: X in Y" alone.
+
+The reason it currently reads as pointless is likely the clutter it adds, which
+is the always-up problem above. Once timed and always-up rows are separated,
+the honest question is whether `Upcoming` should be a toggle at all or simply
+the default, with the separator doing the work the toggle was standing in for.
+
 ## API notes
 
 - `Service.ObjectTable.LocalPlayer` — moved off `IClientState` in API 15.
