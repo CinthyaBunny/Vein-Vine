@@ -204,7 +204,7 @@ public sealed class NodeListTab
         if (height <= 0)
             return;
 
-        if (!ImGui.BeginTable("##veinandvine_nodes", 7, UiShared.TableFlags, new Vector2(0, height)))
+        if (!ImGui.BeginTable("##veinandvine_nodes", 8, UiShared.TableFlags, new Vector2(0, height)))
             return;
 
         var scale = ImGuiHelpers.GlobalScale;
@@ -220,6 +220,13 @@ public sealed class NodeListTab
             ImGuiTableColumnFlags.WidthFixed, 28f * scale, UiShared.SortId(NodeSort.Level));
         ImGui.TableSetupColumn("Zone",
             ImGuiTableColumnFlags.WidthStretch, 2f, UiShared.SortId(NodeSort.Zone));
+        // Map coordinates, not world ones - the pair a chat map link quotes, so
+        // they can be read straight across to the in-game map. Unsortable
+        // because an ordering on them would not mean anything.
+        // Sized for the widest the dataset actually gets - "25.4, 20.4", ten
+        // characters - plus the cell padding, rather than for the format.
+        ImGui.TableSetupColumn("Coords",
+            ImGuiTableColumnFlags.WidthFixed | ImGuiTableColumnFlags.NoSort, 80f * scale);
         ImGui.TableSetupColumn("Status",
             ImGuiTableColumnFlags.WidthFixed | ImGuiTableColumnFlags.DefaultSort,
             110f * scale, UiShared.SortId(NodeSort.Priority));
@@ -353,6 +360,9 @@ public sealed class NodeListTab
 
         ImGui.TableNextColumn();
         ImGui.TextUnformatted(node.ZoneName);
+
+        ImGui.TableNextColumn();
+        ImGui.TextDisabled($"{node.MapX:F1}, {node.MapY:F1}");
 
         ImGui.TableNextColumn();
         DrawStatusCell(result, color);

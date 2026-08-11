@@ -73,6 +73,11 @@ having been quietly overridden. The band is found by watching for the boundary
 rather than by drawing two lists, so it lands correctly in descending order too,
 where the always-up group comes first.
 
+The zone is followed by the node's **map coordinates** — the pair a chat map
+link quotes, so they read straight across to the in-game map without the flag
+having to be placed first. They are unsortable, an ordering on them meaning
+nothing, and the column can be hidden like any other.
+
 The toolbar carries a **clock**, because the list quietly mixes two of them: the
 `Windows` column is Eorzea hours while `4m30s left` and `in 12m` are real
 minutes, and a window of `12-14` means nothing without knowing the time in the
@@ -513,10 +518,10 @@ closer than they look and two are further away.
 
 ### Ready now — the data is already in the dataset
 
-**Zone and coordinates as columns.** Every one of the 1,587 nodes carries
-`zoneName`, `mapX` and `mapY`, and the row tooltip already prints them. Promoting
-them to columns is presentation only. The related idea — highlighting an
-always-up node that shares a zone with the current timed one — is a group-by on
+**Highlight always-up nodes sharing a zone with the leading timed one.** The
+coordinates are now a column, so the remaining half of that idea is the one that
+makes them actionable: while waiting on a window, the always-up mats you could
+collect *in the same zone* are the ones worth knowing about. A group-by on
 `territoryTypeId` over the visible rows.
 
 **A job icon instead of `MIN` / `BTN`.** Every node has an `iconId` and the
