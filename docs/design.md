@@ -73,6 +73,22 @@ having been quietly overridden. The band is found by watching for the boundary
 rather than by drawing two lists, so it lands correctly in descending order too,
 where the always-up group comes first.
 
+The job column draws **the game's own gathering icon**, with `MIN` / `BTN` kept
+as a setting for when the column is narrow enough that three letters read better
+than a picture.
+
+The icon comes from `GatheringType.IconMain`, not from a job. `ClassJob` carries
+no icon column at all, so a miner's icon could only be reached by hardcoding an
+offset into the icon range and hoping it survived a patch; the gathering type
+has a real column with a real value in it. It also says more than a job would,
+separating mining from quarrying and logging from harvesting — the same split
+the wishlist sub-tabs make, and one `MIN` collapses. The tooltip names the
+method, that being the part a picture cannot spell.
+
+The picker keeps its text, because a row there summarises every node for an
+item and can genuinely be both jobs at once. `MIN+BTN` says that in a way two
+icons in a narrow column would not.
+
 The zone is followed by the node's **map coordinates** — the pair a chat map
 link quotes, so they read straight across to the in-game map without the flag
 having to be placed first. They are unsortable, an ordering on them meaning
@@ -536,11 +552,6 @@ sheets hold. Each is graded by what already exists, because several are much
 closer than they look and two are further away.
 
 ### Ready now — the data is already in the dataset
-
-**A job icon instead of `MIN` / `BTN`.** Every node has an `iconId` and the
-window already draws item icons through `ITextureProvider`; class-job icons come
-from the same provider. Worth having as a setting rather than a silent swap,
-since the three-letter form is denser when the column is narrow.
 
 **Pair each countdown with the Eorzea hour it lands on.** The toolbar clock now
 says what time it is, but a row still reports "in 12m" without saying which

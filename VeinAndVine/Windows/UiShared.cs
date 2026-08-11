@@ -234,14 +234,22 @@ internal static class UiShared
     /// </summary>
     public static void DrawItemIcon(Plugin plugin, uint iconId, float size)
     {
+        DrawIcon(plugin, iconId, size);
+        ImGui.SameLine(0, ImGui.GetStyle().ItemInnerSpacing.X);
+    }
+
+    /// <summary>
+    /// The same icon without the trailing SameLine, for a cell where it is the
+    /// only thing in it.
+    /// </summary>
+    public static void DrawIcon(Plugin plugin, uint iconId, float size)
+    {
         var icon = plugin.ItemInfo.GetIcon(iconId);
 
         if (icon is not null)
             ImGui.Image(icon.Handle, new Vector2(size, size));
         else
             ImGui.Dummy(new Vector2(size, size));
-
-        ImGui.SameLine(0, ImGui.GetStyle().ItemInnerSpacing.X);
     }
 
     public static void DrawItemTooltipHeader(Plugin plugin, uint itemId, uint iconId, string itemName)

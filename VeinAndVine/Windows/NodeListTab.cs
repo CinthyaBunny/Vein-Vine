@@ -373,7 +373,7 @@ public sealed class NodeListTab
             DrawRowTooltip(result, isHere);
 
         ImGui.TableNextColumn();
-        ImGui.TextDisabled(UiShared.JobLabel(node.Type));
+        DrawJobCell(node);
 
         ImGui.TableNextColumn();
         ImGui.TextDisabled($"{node.JobLevelRequired}");
@@ -397,6 +397,30 @@ public sealed class NodeListTab
         UiShared.Tooltip("Put a flag on the map here");
 
         ImGui.PopID();
+    }
+
+    /// <summary>
+    /// The job column: the game's icon for how the node is worked, or the
+    /// three-letter job when icons are off or the sheet has none.
+    ///
+    /// The icon says more than the text it replaces - it separates mining from
+    /// quarrying where "MIN" covers both - so the tooltip names the method
+    /// rather than the job, which is the part the picture cannot spell.
+    /// </summary>
+    private void DrawJobCell(GatherNode node)
+    {
+        var iconId = plugin.Configuration.ShowJobIcons
+            ? GatheringIcons.IconFor(node.Method)
+            : 0;
+
+        if (iconId == 0)
+        {
+            ImGui.TextDisabled(UiShared.JobLabel(node.Type));
+            return;
+        }
+
+        UiShared.DrawIcon(plugin, iconId, ImGui.GetTextLineHeight());
+        UiShared.Tooltip($"{node.Method}");
     }
 
     private void DrawStatusCell(PriorityResult result, Vector4? color)

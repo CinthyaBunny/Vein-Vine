@@ -35,6 +35,13 @@ public class Configuration : IPluginConfiguration
     /// <summary>The toolbar clock reads local time instead of Eorzea time.</summary>
     public bool ClockShowsLocalTime { get; set; } = false;
 
+    /// <summary>
+    /// The node list's job column draws the game's gathering icon rather than
+    /// MIN / BTN. A setting rather than a straight swap because three letters
+    /// stay legible at a column width an icon does not.
+    /// </summary>
+    public bool ShowJobIcons { get; set; } = true;
+
     // Appearance. The game's own look is the default: this is a plugin for a
     // game, shown next to that game's windows, and matching them is the less
     // surprising of the two options. Each axis is still one click from

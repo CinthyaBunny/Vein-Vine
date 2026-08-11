@@ -1094,6 +1094,18 @@ public sealed class MainWindow : Window
             configuration.Save();
         }
 
+        var jobIcons = configuration.ShowJobIcons;
+        if (ImGui.Checkbox("Job column shows gathering icons", ref jobIcons))
+        {
+            configuration.ShowJobIcons = jobIcons;
+            configuration.Save();
+        }
+
+        UiShared.Tooltip(
+            "The game's own icon for how a node is worked, which separates\n" +
+            "mining from quarrying where MIN covers both. Turn this off for\n" +
+            "the three-letter job, which stays legible in a narrower column.");
+
         ImGui.Separator();
 
         var (hour, minute) = EorzeaTime.CurrentEorzeaClock();
