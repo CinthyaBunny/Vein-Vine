@@ -73,10 +73,17 @@ having been quietly overridden. The band is found by watching for the boundary
 rather than by drawing two lists, so it lands correctly in descending order too,
 where the always-up group comes first.
 
-Rows are drawn with **roomier vertical frame padding** than the rest of the
-window, and everything in them measures from that: the icons, the flag button,
-the row-spanning hit box, and text centred with `AlignTextToFramePadding`. One
-number in `UiShared` makes both lists larger or smaller.
+Rows are drawn on **their own metrics** — roomier vertical frame padding, and
+their own text size — and everything in them measures from that: the icons, the
+flag button, the row-spanning hit box, and text centred with
+`AlignTextToFramePadding`.
+
+Both are settings, on the Appearance tab under *List rows*, and both are scoped
+to the rows rather than to the window. The rows are the part being read; the
+toolbar and the tab strip are furniture you look past, and growing them
+alongside would cost the list the space it just gained. Every read is clamped,
+because the config is a plain file on disk and a hand-edited 40x row scale would
+otherwise produce a list of one row with no way back to the screen that set it.
 
 Routing it through the frame height rather than scaling icons directly is what
 keeps a row aligned as it grows. Scaling an icon on its own makes it bigger and

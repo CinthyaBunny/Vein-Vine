@@ -279,7 +279,118 @@ public sealed class MainWindow : Window
         ImGui.Separator();
         ImGui.Spacing();
 
+        DrawRowSettings();
+
+        ImGui.Spacing();
+        ImGui.Separator();
+        ImGui.Spacing();
+
         ImGui.TextDisabled("Everything here affects only Vein & Vine's own windows.");
+    }
+
+    /// <summary>
+    /// The list rows, and only the list rows.
+    ///
+    /// Kept to the rows because they are the part being read - the toolbar and
+    /// the tab strip are furniture you look past. Scoping the text size here
+    /// rather than to the window is what lets the thing you are reading grow
+    /// without the chrome around it growing to match.
+    /// </summary>
+    private void DrawRowSettings()
+    {
+        ImGui.TextUnformatted("List rows");
+        ImGui.Spacing();
+
+        var text = configuration.RowTextScale;
+        if (DrawScale("Text size", ref text, Configuration.MinRowTextScale, Configuration.MaxRowTextScale,
+                "Text size inside the node list and the item picker.\n\n" +
+                "Only the rows: the toolbar, the tabs and this screen keep the\n" +
+                "size Dalamud draws them at.", out var commit))
+            configuration.RowTextScale = text;
+
+        if (commit)
+            configuration.Save();
+
+        var padding = configuration.RowPaddingScale;
+        if (DrawScale("Row height", ref padding, Configuration.MinRowPaddingScale, Configuration.MaxRowPaddingScale,
+                "How much room a row gets around its contents.\n\n" +
+                "Everything in a row measures from this - the icons, the map\n" +
+                "flag button and the clickable area all grow with it.", out commit))
+            configuration.RowPaddingScale = padding;
+
+        if (commit)
+            configuration.Save();
+
+        var leading = configuration.LeadingRowScale;
+        if (DrawScale("Leading row", ref leading, Configuration.MinLeadingRowScale, Configuration.MaxLeadingRowScale,
+                "Extra height for the node you're waiting on, so the row that\n" +
+                "matters most is the easiest one to find.\n\n" +
+                "Set to 1.00 to draw it like any other row.", out commit))
+            configuration.LeadingRowScale = leading;
+
+        if (commit)
+            configuration.Save();
+
+        ImGui.Spacing();
+
+        var jobIcons = configuration.ShowJobIcons;
+        if (ImGui.Checkbox("Job column shows gathering icons", ref jobIcons))
+        {
+            configuration.ShowJobIcons = jobIcons;
+            configuration.Save();
+        }
+
+        UiShared.Tooltip(
+            "The game's own icon for how a node is worked, which separates\n" +
+            "mining from quarrying where MIN covers both. Turn this off for\n" +
+            "the three-letter job, which stays legible in a narrower column.");
+
+        ImGui.Spacing();
+
+        if (ImGui.Button("Reset row settings"))
+        {
+            var defaults = new Configuration();
+            configuration.RowTextScale = defaults.RowTextScale;
+            configuration.RowPaddingScale = defaults.RowPaddingScale;
+            configuration.LeadingRowScale = defaults.LeadingRowScale;
+            configuration.ShowJobIcons = defaults.ShowJobIcons;
+            configuration.Save();
+        }
+
+        UiShared.Tooltip("Puts the four settings above back to their defaults.");
+    }
+
+    /// <summary>
+    /// A labelled slider for one row metric.
+    ///
+    /// <paramref name="commit"/> is true only on the frame the drag ends, which
+    /// is when the value is worth writing: each save serialises the whole config
+    /// to disk, and a slider dragged across its range would otherwise do that
+    /// once a frame. The value itself applies immediately, so the list resizes
+    /// under the cursor while being dragged.
+    /// </summary>
+    private static bool DrawScale(
+        string label, ref float value, float min, float max, string help, out bool commit)
+    {
+        var scale = ImGuiHelpers.GlobalScale;
+
+        ImGui.AlignTextToFramePadding();
+        ImGui.TextUnformatted(label);
+        UiShared.Tooltip(help);
+
+        ImGui.SameLine(130f * scale);
+        ImGui.SetNextItemWidth(200f * scale);
+
+        var changed = ImGui.SliderFloat($"##{label}", ref value, min, max, "%.2fx");
+
+        // Read straight after the slider, before anything else becomes the
+        // "current item".
+        commit = ImGui.IsItemDeactivatedAfterEdit();
+
+        ImGui.SameLine();
+        ImGuiComponents.HelpMarker(help);
+
+        return changed;
     }
 
     /// <summary>
@@ -781,7 +892,7 @@ public sealed class MainWindow : Window
 
         // After the header row, so the headers keep the window's ordinary
         // metrics while the rows below them get room to breathe.
-        UiShared.PushRowPadding();
+        UiShared.PushRowStyle(plugin);
 
         // The unfiltered index is over a thousand rows. Every row is the same
         // height, so the clipper can skip straight to the visible slice instead
@@ -811,7 +922,7 @@ public sealed class MainWindow : Window
         }
         finally
         {
-            UiShared.PopRowPadding();
+            UiShared.PopRowStyle(plugin);
             ImGui.EndTable();
         }
     }
@@ -1106,17 +1217,6 @@ public sealed class MainWindow : Window
             configuration.Save();
         }
 
-        var jobIcons = configuration.ShowJobIcons;
-        if (ImGui.Checkbox("Job column shows gathering icons", ref jobIcons))
-        {
-            configuration.ShowJobIcons = jobIcons;
-            configuration.Save();
-        }
-
-        UiShared.Tooltip(
-            "The game's own icon for how a node is worked, which separates\n" +
-            "mining from quarrying where MIN covers both. Turn this off for\n" +
-            "the three-letter job, which stays legible in a narrower column.");
 
         ImGui.Separator();
 

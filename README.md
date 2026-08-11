@@ -105,7 +105,9 @@ Botanist deliberately add up to more than All, because an item both jobs can
 gather is counted on each — hover any tab for the arithmetic.
 
 **Display** and **Appearance** — the toggles above the node list, and the game
-font, colour theme and node-list placement.
+font, colour theme and node-list placement. Appearance also carries **List
+rows**: text size, row height, how much taller the row you're waiting on is
+drawn, and whether the job column shows icons or `MIN`/`BTN`.
 
 Both lists are ImGui tables with sortable, resizable, hideable columns, and show
 each item's game icon with its in-game description on hover. Nothing is fetched

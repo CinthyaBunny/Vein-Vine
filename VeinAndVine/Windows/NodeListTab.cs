@@ -218,7 +218,7 @@ public sealed class NodeListTab
         // once the roomier row padding is in effect.
         ImGui.TableSetupColumn("Job",
             ImGuiTableColumnFlags.WidthFixed,
-            Math.Max(38f * scale, UiShared.PredictedRowHeight(leading: true) + (ImGui.GetStyle().CellPadding.X * 2f)),
+            Math.Max(38f * scale, UiShared.PredictedRowHeight(plugin, leading: true) + (ImGui.GetStyle().CellPadding.X * 2f)),
             UiShared.SortId(NodeSort.Job));
         ImGui.TableSetupColumn("Lv",
             ImGuiTableColumnFlags.WidthFixed, 28f * scale, UiShared.SortId(NodeSort.Level));
@@ -241,7 +241,7 @@ public sealed class NodeListTab
         // clipping its right edge.
         ImGui.TableSetupColumn("##flag",
             ImGuiTableColumnFlags.WidthFixed | ImGuiTableColumnFlags.NoSort | ImGuiTableColumnFlags.NoHeaderLabel,
-            UiShared.PredictedRowHeight(leading: true) + (ImGui.GetStyle().CellPadding.X * 2f));
+            UiShared.PredictedRowHeight(plugin, leading: true) + (ImGui.GetStyle().CellPadding.X * 2f));
 
         ImGui.TableSetupScrollFreeze(0, 1);
         ImGui.TableHeadersRow();
@@ -250,7 +250,7 @@ public sealed class NodeListTab
 
         // After the header row, so the headers keep the window's ordinary
         // metrics while the rows below them get room to breathe.
-        UiShared.PushRowPadding();
+        UiShared.PushRowStyle(plugin);
 
         // EndTable in a finally so a throw from a single row cannot unwind past
         // it. Dalamud would log the exception either way, but leaving ImGui's
@@ -299,18 +299,31 @@ public sealed class NodeListTab
                 // Everything in a row measures from the frame, so widening the
                 // padding for one row is enough - the icons, the flag button and
                 // the hit box all follow without being told.
+                //
+                // Popped in a finally of its own: the outer one below balances a
+                // single push, so a row throwing while this second one was up
+                // would leave ImGui's style stack short by one for the rest of
+                // the frame.
                 if (leading)
-                    UiShared.PushLeadingRowPadding();
+                    UiShared.PushLeadingRow(plugin);
 
-                DrawRow(result, hereTerritory);
-
-                if (leading)
-                    UiShared.PopRowPadding();
+                try
+                {
+                    DrawRow(result, hereTerritory);
+                }
+                finally
+                {
+                    // Only the nested padding comes off here. Popping the whole
+                    // row style would take the text scale with it and shrink
+                    // every row after this one.
+                    if (leading)
+                        UiShared.PopLeadingRow();
+                }
             }
         }
         finally
         {
-            UiShared.PopRowPadding();
+            UiShared.PopRowStyle(plugin);
             ImGui.EndTable();
         }
     }

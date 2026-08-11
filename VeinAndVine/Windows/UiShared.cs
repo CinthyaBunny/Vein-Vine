@@ -30,70 +30,87 @@ internal static class UiShared
     /// <summary>Anything opening within this long is coloured as "soon".</summary>
     public static readonly TimeSpan SoonThreshold = TimeSpan.FromMinutes(5);
 
-    /// <summary>
-    /// How much roomier a list row's vertical padding is than the rest of the
-    /// window's. The one lever for "the list is too small to read".
-    ///
-    /// It works through the frame height rather than by scaling icons directly,
-    /// which is what keeps a row aligned as it grows: icons, the flag button
-    /// and text centred with AlignTextToFramePadding all measure themselves
-    /// from the frame, so raising this moves them together. Scaling icons on
-    /// their own just leaves everything else riding the ceiling of a taller
-    /// row.
-    /// </summary>
-    private static readonly float RowPaddingScale = 2.2f;
+    // Row metrics come from the config rather than from constants here, so the
+    // settings screen can move them. Every read clamps: the config is a plain
+    // file on disk, and a hand-edited value has to be survivable.
+
+    private static float TextScale(Plugin plugin) => Math.Clamp(
+        plugin.Configuration.RowTextScale,
+        Configuration.MinRowTextScale,
+        Configuration.MaxRowTextScale);
+
+    private static float PaddingScale(Plugin plugin) => Math.Clamp(
+        plugin.Configuration.RowPaddingScale,
+        Configuration.MinRowPaddingScale,
+        Configuration.MaxRowPaddingScale);
+
+    private static float LeadingScale(Plugin plugin) => Math.Clamp(
+        plugin.Configuration.LeadingRowScale,
+        Configuration.MinLeadingRowScale,
+        Configuration.MaxLeadingRowScale);
 
     /// <summary>
-    /// Widens the frame padding for a list's rows. Pair with
-    /// <see cref="PopRowPadding"/>, and push it after the header row so the
-    /// headers keep the window's ordinary metrics.
+    /// Puts a list's rows on their own metrics: roomier frame padding, and the
+    /// configured text size. Pair with <see cref="PopRowStyle"/>, and push it
+    /// after the header row so the headers keep the window's own proportions.
+    ///
+    /// Both go through the frame rather than being applied to each widget.
+    /// Icons, the flag button and text centred with AlignTextToFramePadding all
+    /// measure themselves from the frame height, so scaling the frame carries
+    /// the row's contents with it; scaling any one of them alone just leaves
+    /// the others riding the ceiling of a taller row.
     /// </summary>
-    public static void PushRowPadding()
+    public static void PushRowStyle(Plugin plugin)
     {
         var padding = ImGui.GetStyle().FramePadding;
-        ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, new Vector2(padding.X, padding.Y * RowPaddingScale));
+        ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, new Vector2(padding.X, padding.Y * PaddingScale(plugin)));
+
+        var text = TextScale(plugin);
+        if (text != 1f)
+            ImGui.SetWindowFontScale(text);
     }
 
-    public static void PopRowPadding() => ImGui.PopStyleVar();
+    public static void PopRowStyle(Plugin plugin)
+    {
+        if (TextScale(plugin) != 1f)
+            ImGui.SetWindowFontScale(1f);
 
-    /// <summary>
-    /// How much taller the row being waited on is than the rest. Emphasis by
-    /// height rather than by colour, the colours already being spoken for by
-    /// what a node is doing.
-    /// </summary>
-    private static readonly float LeadingRowScale = 1.35f;
+        ImGui.PopStyleVar();
+    }
 
     /// <summary>
     /// Stacks extra height onto the row being waited on. Call inside
-    /// <see cref="PushRowPadding"/>, whose padding it multiplies, and pair with
-    /// <see cref="PopRowPadding"/>.
+    /// <see cref="PushRowStyle"/>, whose padding it multiplies, and pair with
+    /// <see cref="PopLeadingRow"/>.
     /// </summary>
-    public static void PushLeadingRowPadding()
+    public static void PushLeadingRow(Plugin plugin)
     {
         var padding = ImGui.GetStyle().FramePadding;
-        ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, new Vector2(padding.X, padding.Y * LeadingRowScale));
+        ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, new Vector2(padding.X, padding.Y * LeadingScale(plugin)));
     }
 
+    public static void PopLeadingRow() => ImGui.PopStyleVar();
+
     /// <summary>
-    /// The height a row will have once <see cref="PushRowPadding"/> is in
-    /// effect, for sizing columns - which happens before the push.
+    /// The height a row will have once <see cref="PushRowStyle"/> is in effect,
+    /// for sizing columns - which happens before the push.
     ///
-    /// Only valid *outside* the push. It reads the style's frame padding, and
-    /// inside the push that value has already been scaled, so asking there
-    /// would scale it a second time. Inside a row, the row's height is simply
-    /// <c>ImGui.GetFrameHeight()</c>, which is what every widget in it already
+    /// Only valid *outside* the push. It reads the style's frame padding and
+    /// the window's font size, both of which the push changes, so asking inside
+    /// would apply the scales a second time. Inside a row the height is simply
+    /// <c>ImGui.GetFrameHeight()</c>, which is what every widget there already
     /// measures itself against.
     /// </summary>
-    public static float PredictedRowHeight(bool leading = false)
+    public static float PredictedRowHeight(Plugin plugin, bool leading = false)
     {
-        var padding = ImGui.GetStyle().FramePadding.Y * RowPaddingScale;
+        var padding = ImGui.GetStyle().FramePadding.Y * PaddingScale(plugin);
 
         if (leading)
-            padding *= LeadingRowScale;
+            padding *= LeadingScale(plugin);
 
-        // Doubled because frame padding applies above and below. This is the
-        // frame-height formula, not a second scale - RowPaddingScale is the knob.
-        return ImGui.GetFontSize() + (padding * 2f);
+        // Doubled because frame padding applies above and below. That is the
+        // frame-height formula, not a third scale.
+        return (ImGui.GetFontSize() * TextScale(plugin)) + (padding * 2f);
     }
 
     // Clock tuning, gathered so it can be adjusted by eye without reading the

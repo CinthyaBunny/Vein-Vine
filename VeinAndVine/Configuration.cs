@@ -42,6 +42,32 @@ public class Configuration : IPluginConfiguration
     /// </summary>
     public bool ShowJobIcons { get; set; } = true;
 
+    // Row metrics. Bounds are declared beside the values because the config is
+    // a plain JSON file on disk: a hand-edited 40x row scale would produce a
+    // list of one row and no way back to this screen, so every read clamps.
+    public const float MinRowTextScale = 0.8f;
+    public const float MaxRowTextScale = 2.0f;
+    public const float MinRowPaddingScale = 1.0f;
+    public const float MaxRowPaddingScale = 4.0f;
+    public const float MinLeadingRowScale = 1.0f;
+    public const float MaxLeadingRowScale = 2.0f;
+
+    /// <summary>
+    /// Text size inside list rows, relative to the window's own. Scoped to the
+    /// rows rather than applied to the window, so the toolbar and tabs keep
+    /// their proportions while the thing being read gets bigger.
+    /// </summary>
+    public float RowTextScale { get; set; } = 1.0f;
+
+    /// <summary>
+    /// Row height, as a multiple of the window's frame padding. Everything in a
+    /// row measures from the frame, so this carries the icons and buttons too.
+    /// </summary>
+    public float RowPaddingScale { get; set; } = 2.2f;
+
+    /// <summary>How much taller the row being waited on is than the rest.</summary>
+    public float LeadingRowScale { get; set; } = 1.35f;
+
     // Appearance. The game's own look is the default: this is a plugin for a
     // game, shown next to that game's windows, and matching them is the less
     // surprising of the two options. Each axis is still one click from
