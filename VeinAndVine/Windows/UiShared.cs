@@ -66,7 +66,7 @@ internal static class UiShared
     /// on where it was asked would be a trap.
     /// </summary>
     public static float RowIconSize() =>
-        ImGui.GetFontSize() + (ImGui.GetStyle().FramePadding.Y * RowPaddingScale * 2f);
+        ImGui.GetFontSize() + (ImGui.GetStyle().FramePadding.Y * RowPaddingScale * 1.6f);
 
     // Clock tuning, gathered so it can be adjusted by eye without reading the
     // drawing below - the same reason GameTabBar keeps its shape constants
