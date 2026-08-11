@@ -7,14 +7,13 @@ Versions are four-part `major.minor.patch.build`, because Dalamud requires a
 four-part `AssemblyVersion` and the in-game installer compares them to decide
 whether a user is offered an update.
 
-<details>
+
 <summary><strong>v0.0.1.3b</strong> - 2026-08-10</summary>
 
 ### Changed
 
-- **Finalized Repository Push Functions** Completed integration for pushing code and complete builds to the github repository.
+- **Finalized Repository Push Functions.** Github now recieves pushes from VS Code commits
 
-</details>
 
 <details>
 <summary><strong>v0.0.1.3</strong> - 2026-08-10</summary>
@@ -75,20 +74,7 @@ whether a user is offered an update.
 
 ### Changed
 
-- **The level boxes refuse a bad keystroke instead of clamping afterwards.**
-  They were `InputInt`, which permits `+`, `-`, `.`, `*` and `/`, accepted any
-  number at all, and quietly rewrote it when you clicked away. They now decide
-  per keystroke whether the text the box *would* hold is still a gathering
-  level — the only way a 1–100 limit can hold, since every digit is legal alone
-  and still turns 10 into 105 — so there is no invalid state to clamp, and
-  nothing changes under you on the way out. Pasted text goes through the same
-  filter character by character.
-
-  The rule is pure and sits next to the range it enforces, so it is checked
-  exhaustively: every state the box can reach, through every printable key at
-  every cursor and selection position, is 54,910 keystrokes reaching exactly
-  101 states — the empty box and the hundred levels. Empty means "no bound from
-  this end" while you retype and fills itself back in when you leave.
+- **The level boxes have had their inputs sanitized**
 
 ### Fixed
 
@@ -131,11 +117,9 @@ whether a user is offered an update.
 
 ### Changed
 
-- **Buttons and fields are pill-shaped**, as they are in game. `FrameRounding`
-  is half the frame height, and since ImGui clamps rounding to half the shorter
-  side, one number gives a short button a full pill and a wide search field the
-  same end caps — the game's two shapes from a single setting.
-- **Tabs are the game's shape**, drawn by hand in `GameTabBar.cs`: elongated
+- **Buttons and fields are pill-shaped**, as they are in game.
+
+- **Tabs made custom shaped**, drawn by hand in `GameTabBar.cs`: elongated
   hexagons pointed at both ends, with the selected one recessed and darker as
   it is in game. ImGui's tab bar offers a corner radius and nothing else.
 
@@ -159,12 +143,9 @@ whether a user is offered an update.
 <details>
 <summary><strong>v0.0.1.2</strong> - 2026-08-10</summary>
 
-- **The themes now actually match the game's, measured against it rather than
-guessed at.**
-
 ### Changed
 
-- **`Colours` and `Window frame` are now one `Theme` dropdown.** Picking one of
+- **`Colours` and `Window frame` merged into `Theme` dropdown.** Picking one of
   the game's themes means wanting the whole look, and the border is drawn from
   that theme's own colours anyway, so keeping them apart only allowed
   combinations nobody wanted.
@@ -224,7 +205,7 @@ sampled from them, so that folder is the source those values answer to.
 <details>
 <summary><strong>v0.0.1.1</strong> - 2026-08-10</summary>
 
-Vein & Vine now wears the game's own clothes.
+### Vein & Vine now uses FFXIV's own Themes
 
 ### Added
 
@@ -374,7 +355,7 @@ Three things the game's data decided, rather than taste:
 
 ### Changed
 
-- **The dataset now covers every miner and botanist item, not only timed ones**
+- **Data Covers all mining and botany nodes, not just timed nodes**
   — 1,587 nodes and 1,050 items across 47 zones at Lv1-100, up from 419 nodes
   and 333 items at Lv50-100. Without the always-up nodes the wishlist could
   only track the 333 timed items, so "where do I get iron ore" had no answer.
