@@ -30,6 +30,44 @@ internal static class UiShared
     /// <summary>Anything opening within this long is coloured as "soon".</summary>
     public static readonly TimeSpan SoonThreshold = TimeSpan.FromMinutes(5);
 
+    /// <summary>
+    /// How much roomier a list row's vertical padding is than the rest of the
+    /// window's. The one lever for "the list is too small to read".
+    ///
+    /// It works through the frame height rather than by scaling icons directly,
+    /// which is what keeps a row aligned as it grows: icons, the flag button
+    /// and text centred with AlignTextToFramePadding all measure themselves
+    /// from the frame, so raising this moves them together. Scaling icons on
+    /// their own just leaves everything else riding the ceiling of a taller
+    /// row.
+    /// </summary>
+    private static readonly float RowPaddingScale = 2.0f;
+
+    /// <summary>
+    /// Widens the frame padding for a list's rows. Pair with
+    /// <see cref="PopRowPadding"/>, and push it after the header row so the
+    /// headers keep the window's ordinary metrics.
+    /// </summary>
+    public static void PushRowPadding()
+    {
+        var padding = ImGui.GetStyle().FramePadding;
+        ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, new Vector2(padding.X, padding.Y * RowPaddingScale));
+    }
+
+    public static void PopRowPadding() => ImGui.PopStyleVar();
+
+    /// <summary>
+    /// Height of a list row: its icons, its buttons, and a row-spanning hit box
+    /// that should cover the row rather than a band across its top.
+    ///
+    /// Computed rather than read off the current frame height so it gives the
+    /// same answer either side of <see cref="PushRowPadding"/>. Columns are
+    /// sized before the push happens, and a measurement that changed depending
+    /// on where it was asked would be a trap.
+    /// </summary>
+    public static float RowIconSize() =>
+        ImGui.GetFontSize() + (ImGui.GetStyle().FramePadding.Y * RowPaddingScale * 2f);
+
     // Clock tuning, gathered so it can be adjusted by eye without reading the
     // drawing below - the same reason GameTabBar keeps its shape constants
     // together. Where the clock sits is the caller's decision, so moving it

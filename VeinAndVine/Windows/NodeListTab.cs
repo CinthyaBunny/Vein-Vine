@@ -214,8 +214,12 @@ public sealed class NodeListTab
         // anywhere else would leave the columns before it out of the hit box.
         ImGui.TableSetupColumn("Item",
             ImGuiTableColumnFlags.WidthStretch | ImGuiTableColumnFlags.NoHide, 3f, UiShared.SortId(NodeSort.ItemName));
+        // Wide enough for either occupant: three letters, or a row-height icon
+        // once the roomier row padding is in effect.
         ImGui.TableSetupColumn("Job",
-            ImGuiTableColumnFlags.WidthFixed, 38f * scale, UiShared.SortId(NodeSort.Job));
+            ImGuiTableColumnFlags.WidthFixed,
+            Math.Max(38f * scale, UiShared.RowIconSize() + (ImGui.GetStyle().CellPadding.X * 2f)),
+            UiShared.SortId(NodeSort.Job));
         ImGui.TableSetupColumn("Lv",
             ImGuiTableColumnFlags.WidthFixed, 28f * scale, UiShared.SortId(NodeSort.Level));
         ImGui.TableSetupColumn("Zone",
@@ -232,16 +236,21 @@ public sealed class NodeListTab
             110f * scale, UiShared.SortId(NodeSort.Priority));
         ImGui.TableSetupColumn("Dist",
             ImGuiTableColumnFlags.WidthFixed, 46f * scale, UiShared.SortId(NodeSort.Distance));
-        // Frame height is the icon button's own size; the cell padding keeps
-        // the column border off it rather than clipping its right edge.
+        // Row height is the icon button's own size once the row padding is
+        // pushed; the cell padding keeps the column border off it rather than
+        // clipping its right edge.
         ImGui.TableSetupColumn("##flag",
             ImGuiTableColumnFlags.WidthFixed | ImGuiTableColumnFlags.NoSort | ImGuiTableColumnFlags.NoHeaderLabel,
-            ImGui.GetFrameHeight() + (ImGui.GetStyle().CellPadding.X * 2f));
+            UiShared.RowIconSize() + (ImGui.GetStyle().CellPadding.X * 2f));
 
         ImGui.TableSetupScrollFreeze(0, 1);
         ImGui.TableHeadersRow();
 
         UiShared.ReadSortSpecs(ref sort, ref sortDescending);
+
+        // After the header row, so the headers keep the window's ordinary
+        // metrics while the rows below them get room to breathe.
+        UiShared.PushRowPadding();
 
         // EndTable in a finally so a throw from a single row cannot unwind past
         // it. Dalamud would log the exception either way, but leaving ImGui's
@@ -282,6 +291,7 @@ public sealed class NodeListTab
         }
         finally
         {
+            UiShared.PopRowPadding();
             ImGui.EndTable();
         }
     }
@@ -345,10 +355,14 @@ public sealed class NodeListTab
         // looking at it.
         var rowStart = ImGui.GetCursorPos();
 
+        // Sized to the row rather than left at its default text height, which
+        // covered a band across the top and left the rest of the row dead to
+        // the double-click that sets the map flag.
         ImGui.Selectable("##row", false,
             ImGuiSelectableFlags.SpanAllColumns |
             ImGuiSelectableFlags.AllowItemOverlap |
-            ImGuiSelectableFlags.AllowDoubleClick);
+            ImGuiSelectableFlags.AllowDoubleClick,
+            new Vector2(0, UiShared.RowIconSize()));
 
         var rowHovered = ImGui.IsItemHovered();
         if (rowHovered && ImGui.IsMouseDoubleClicked(ImGuiMouseButton.Left))
@@ -359,11 +373,14 @@ public sealed class NodeListTab
         DrawRowContextMenu(result);
 
         ImGui.SetCursorPos(rowStart);
-        UiShared.DrawItemIcon(plugin, node.IconId, ImGui.GetTextLineHeight());
+        UiShared.DrawItemIcon(plugin, node.IconId, UiShared.RowIconSize());
 
         if (color is { } textColor)
             ImGui.PushStyleColor(ImGuiCol.Text, textColor);
 
+        // The icon is now taller than the text, so the name has to be centred
+        // against it or it rides the top of the row.
+        ImGui.AlignTextToFramePadding();
         ImGui.TextUnformatted(node.ItemName);
 
         if (color is not null)
@@ -372,22 +389,30 @@ public sealed class NodeListTab
         if (rowHovered)
             DrawRowTooltip(result, isHere);
 
+        // Table cells align to the top, so every text cell in a row this tall
+        // has to be centred against the frame or it rides the ceiling while the
+        // icons beside it sit in the middle.
         ImGui.TableNextColumn();
         DrawJobCell(node);
 
         ImGui.TableNextColumn();
+        ImGui.AlignTextToFramePadding();
         ImGui.TextDisabled($"{node.JobLevelRequired}");
 
         ImGui.TableNextColumn();
+        ImGui.AlignTextToFramePadding();
         ImGui.TextUnformatted(node.ZoneName);
 
         ImGui.TableNextColumn();
+        ImGui.AlignTextToFramePadding();
         ImGui.TextDisabled($"{node.MapX:F1}, {node.MapY:F1}");
 
         ImGui.TableNextColumn();
+        ImGui.AlignTextToFramePadding();
         DrawStatusCell(result, color);
 
         ImGui.TableNextColumn();
+        ImGui.AlignTextToFramePadding();
         ImGui.TextDisabled(result.DistanceFromPlayer is { } dist ? $"{dist:F0}y" : "-");
 
         ImGui.TableNextColumn();
@@ -419,7 +444,7 @@ public sealed class NodeListTab
             return;
         }
 
-        UiShared.DrawIcon(plugin, iconId, ImGui.GetTextLineHeight());
+        UiShared.DrawIcon(plugin, iconId, UiShared.RowIconSize());
         UiShared.Tooltip($"{node.Method}");
     }
 

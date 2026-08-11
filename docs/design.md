@@ -73,6 +73,18 @@ having been quietly overridden. The band is found by watching for the boundary
 rather than by drawing two lists, so it lands correctly in descending order too,
 where the always-up group comes first.
 
+Rows are drawn with **roomier vertical frame padding** than the rest of the
+window, and everything in them measures from that: the icons, the flag button,
+the row-spanning hit box, and text centred with `AlignTextToFramePadding`. One
+number in `UiShared` makes both lists larger or smaller.
+
+Routing it through the frame height rather than scaling icons directly is what
+keeps a row aligned as it grows. Scaling an icon on its own makes it bigger and
+leaves the text and buttons beside it riding the ceiling of a taller row, since
+table cells align to the top. The row height is computed rather than read off
+the current frame, so it gives the same answer either side of the push —
+columns have to be sized before the push happens.
+
 The job column draws **the game's own gathering icon**, with `MIN` / `BTN` kept
 as a setting for when the column is narrow enough that three letters read better
 than a picture.
@@ -559,9 +571,11 @@ Eorzea hour that reaches, so the two halves of the mixed-units problem are only
 half solved. Showing both would let GP recovery be planned against the window
 rather than against a stopwatch.
 
-**More padding on the leading row.** Straightforward, though ImGui tables size
-rows uniformly, so this means either drawing that row taller deliberately or
-giving the whole table more `CellPadding`.
+**Give the leading row its own emphasis.** Row padding is now roomier across
+both lists, which was the general half of "the UI is a little small". What
+remains is making the row actually being waited on stand out from the rest.
+ImGui sizes table rows uniformly, so that means drawing that one row taller
+deliberately rather than adjusting the table.
 
 ### Needs plumbing that does not exist yet
 

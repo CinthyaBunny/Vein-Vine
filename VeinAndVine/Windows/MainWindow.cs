@@ -779,6 +779,10 @@ public sealed class MainWindow : Window
 
         UiShared.ReadSortSpecs(ref tab.Sort, ref tab.Descending);
 
+        // After the header row, so the headers keep the window's ordinary
+        // metrics while the rows below them get room to breathe.
+        UiShared.PushRowPadding();
+
         // The unfiltered index is over a thousand rows. Every row is the same
         // height, so the clipper can skip straight to the visible slice instead
         // of submitting widgets that get scissored away.
@@ -807,6 +811,7 @@ public sealed class MainWindow : Window
         }
         finally
         {
+            UiShared.PopRowPadding();
             ImGui.EndTable();
         }
     }
@@ -836,7 +841,7 @@ public sealed class MainWindow : Window
 
         if (ImGui.Selectable("##row", isTracked,
                 ImGuiSelectableFlags.SpanAllColumns | ImGuiSelectableFlags.AllowItemOverlap,
-                new Vector2(0, ImGui.GetFrameHeight())))
+                new Vector2(0, UiShared.RowIconSize())))
         {
             plugin.SetTracked(item.ItemId, item.ItemName, !isTracked);
         }
@@ -852,10 +857,10 @@ public sealed class MainWindow : Window
         if (ImGui.Checkbox("##track", ref isTracked))
             plugin.SetTracked(item.ItemId, item.ItemName, isTracked);
 
-        // Icon sized to the checkbox rather than the text, so the row reads as
-        // one horizontal band instead of three things at three heights.
+        // Icon sized to the row rather than to the text, so the row reads as one
+        // horizontal band instead of three things at three heights.
         ImGui.SameLine(0, ImGui.GetStyle().ItemInnerSpacing.X);
-        UiShared.DrawItemIcon(plugin, item.IconId, ImGui.GetFrameHeight());
+        UiShared.DrawItemIcon(plugin, item.IconId, UiShared.RowIconSize());
 
         ImGui.AlignTextToFramePadding();
         ImGui.TextUnformatted(item.ItemName);
@@ -871,18 +876,25 @@ public sealed class MainWindow : Window
             ImGui.EndTooltip();
         }
 
+        // Centred against the frame for the same reason the node list's cells
+        // are: a table cell aligns to the top, and these rows are taller than
+        // one line of text.
         ImGui.TableNextColumn();
+        ImGui.AlignTextToFramePadding();
         ImGui.TextDisabled(UiShared.JobLabel(item.Jobs));
 
         ImGui.TableNextColumn();
+        ImGui.AlignTextToFramePadding();
         ImGui.TextDisabled($"{item.JobLevelRequired}");
 
         ImGui.TableNextColumn();
+        ImGui.AlignTextToFramePadding();
         ImGui.TextUnformatted(item.ZoneSummary);
         if (item.Zones.Count > 1)
             UiShared.Tooltip(string.Join("\n", item.Zones));
 
         ImGui.TableNextColumn();
+        ImGui.AlignTextToFramePadding();
         ImGui.TextDisabled(item.WindowSummary);
 
         ImGui.PopID();
