@@ -41,7 +41,7 @@ internal static class UiShared
     /// their own just leaves everything else riding the ceiling of a taller
     /// row.
     /// </summary>
-    private static readonly float RowPaddingScale = 1.6f;
+    private static readonly float RowPaddingScale = 2.2f;
 
     /// <summary>
     /// Widens the frame padding for a list's rows. Pair with
