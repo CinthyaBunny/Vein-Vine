@@ -4,7 +4,7 @@
   "Author": "CinthyaBunny",
   "Punchline": "Priority-sorted gathering node tracker. No automation.",
   "Description": "Shows a priority-sorted list of active and upcoming gathering nodes from your wishlist, using FFXIV's deterministic weather and Eorzea clock.\n\nRead-only by design: it never moves your character and never gathers for you. The only action it takes is placing a map flag, which you still have to walk to.",
-  "RepoUrl": "",
+  "RepoUrl": "https://github.com/CinthyaBunny/Vein-Vine",
   "ApplicableVersion": "any",
   "DalamudApiLevel": 15,
   "LoadRequiredState": 0,
