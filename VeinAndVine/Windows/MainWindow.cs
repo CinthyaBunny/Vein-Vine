@@ -302,7 +302,7 @@ public sealed class MainWindow : Window
         ImGui.Spacing();
 
         var text = configuration.RowTextScale;
-        if (DrawScale("Text size", ref text, Configuration.MinRowTextScale, Configuration.MaxRowTextScale,
+        if (DrawPercent("Text size", ref text, Configuration.MinRowTextScale, Configuration.MaxRowTextScale,
                 "Text size inside the node list and the item picker.\n\n" +
                 "Only the rows: the toolbar, the tabs and this screen keep the\n" +
                 "size Dalamud draws them at.", out var commit))
@@ -312,7 +312,7 @@ public sealed class MainWindow : Window
             configuration.Save();
 
         var padding = configuration.RowPaddingScale;
-        if (DrawScale("Row height", ref padding, Configuration.MinRowPaddingScale, Configuration.MaxRowPaddingScale,
+        if (DrawPercent("Row height", ref padding, Configuration.MinRowPaddingScale, Configuration.MaxRowPaddingScale,
                 "How much room a row gets around its contents.\n\n" +
                 "Everything in a row measures from this - the icons, the map\n" +
                 "flag button and the clickable area all grow with it.", out commit))
@@ -322,10 +322,10 @@ public sealed class MainWindow : Window
             configuration.Save();
 
         var leading = configuration.LeadingRowScale;
-        if (DrawScale("Leading row", ref leading, Configuration.MinLeadingRowScale, Configuration.MaxLeadingRowScale,
+        if (DrawPercent("Leading row", ref leading, Configuration.MinLeadingRowScale, Configuration.MaxLeadingRowScale,
                 "Extra height for the node you're waiting on, so the row that\n" +
                 "matters most is the easiest one to find.\n\n" +
-                "Set to 1.00 to draw it like any other row.", out commit))
+                "Set to 100% to draw it like any other row.", out commit))
             configuration.LeadingRowScale = leading;
 
         if (commit)
@@ -369,7 +369,7 @@ public sealed class MainWindow : Window
     /// once a frame. The value itself applies immediately, so the list resizes
     /// under the cursor while being dragged.
     /// </summary>
-    private static bool DrawScale(
+    private static bool DrawPercent(
         string label, ref float value, float min, float max, string help, out bool commit)
     {
         var scale = ImGuiHelpers.GlobalScale;
@@ -378,10 +378,18 @@ public sealed class MainWindow : Window
         ImGui.TextUnformatted(label);
         UiShared.Tooltip(help);
 
+        // Whole percents rather than the multiplier the drawing actually uses.
+        // "125%" is a size people already have a feel for where "1.25x" needs
+        // translating, and an integer keeps a decimal point out of the box that
+        // nobody wants to type.
+        var minPercent = (int)MathF.Round(min * 100f);
+        var maxPercent = (int)MathF.Round(max * 100f);
+        var percent = (int)MathF.Round(value * 100f);
+
         ImGui.SameLine(130f * scale);
         ImGui.SetNextItemWidth(150f * scale);
 
-        var changed = ImGui.SliderFloat($"##{label}_slider", ref value, min, max, "%.2fx");
+        var changed = ImGui.SliderInt($"##{label}_slider", ref percent, minPercent, maxPercent, "%d%%");
 
         // Read straight after each widget, before the next becomes the "current
         // item". Either control can be the one that finishes an edit.
@@ -392,22 +400,25 @@ public sealed class MainWindow : Window
         ImGui.SameLine();
         ImGui.SetNextItemWidth(70f * scale);
 
-        if (ImGui.InputFloat($"##{label}_input", ref value, 0f, 0f, "%.2f"))
+        if (ImGui.InputInt($"##{label}_input", ref percent, 0, 0))
             changed = true;
 
         if (ImGui.IsItemDeactivatedAfterEdit())
         {
             // Typing bypasses the slider's own limits, so the range is enforced
             // here rather than trusted. Clamped on commit rather than per
-            // keystroke: clamping live turns "1" into the minimum before the
-            // second digit of "1.5" can be typed.
-            value = Math.Clamp(value, min, max);
+            // keystroke: clamping live turns "5" into the minimum before the
+            // second digit of "50" can be typed.
+            percent = Math.Clamp(percent, minPercent, maxPercent);
             changed = true;
             commit = true;
         }
 
         ImGui.SameLine();
         ImGuiComponents.HelpMarker(help);
+
+        if (changed)
+            value = percent / 100f;
 
         return changed;
     }

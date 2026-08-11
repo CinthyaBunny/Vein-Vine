@@ -60,12 +60,12 @@ public class Configuration : IPluginConfiguration
 
     /// <summary>
     /// The frame-padding multiplier that counts as normal, i.e. what the
-    /// settings screen calls 1.00x.
+    /// settings screen shows as 100%.
     ///
     /// A row wants appreciably more room around its contents than the window's
     /// own frame padding gives a button, so the neutral point is not 1. Folding
     /// that into a constant here keeps it out of the setting, where a default
-    /// of "2x" would invite the reasonable question of two times what.
+    /// of 220% would invite the reasonable question of a percentage of what.
     /// </summary>
     public const float BaseRowPadding = 2.0f;
 
@@ -84,7 +84,7 @@ public class Configuration : IPluginConfiguration
     public float RowPaddingScale { get; set; } = 1.0f;
 
     /// <summary>How much taller the row being waited on is than the rest.</summary>
-    public float LeadingRowScale { get; set; } = 1.35f;
+    public float LeadingRowScale { get; set; } = 1.25f;
 
     // Appearance. The game's own look is the default: this is a plugin for a
     // game, shown next to that game's windows, and matching them is the less

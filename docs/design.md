@@ -80,10 +80,14 @@ flag button, the row-spanning hit box, and text centred with
 
 Both are settings, on the Appearance tab under *List rows*, each with a slider
 for finding a value by eye and a box for typing one you already know — the box
-also being how you read back exactly what a drag landed on. `1.00x` is an
-ordinary row in both cases; the frame padding a row actually wants is roughly
-double the window's own, and that factor is a constant rather than part of the
-setting, since a default reading "2x" invites the question of two times what.
+also being how you read back exactly what a drag landed on. They are shown as
+whole percentages, 100% being an ordinary row: a size people already have a feel
+for, where a multiplier needs translating, and an integer keeps a decimal point
+out of a box nobody wants to type one into.
+
+The frame padding a row actually wants is roughly double the window's own, and
+that factor is a constant rather than part of the setting — a default reading
+220% would invite the question of a percentage of what.
 
 Both are scoped to the rows rather than to the window. The rows are the part being read; the
 toolbar and the tab strip are furniture you look past, and growing them
