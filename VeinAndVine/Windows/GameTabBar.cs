@@ -49,8 +49,17 @@ public static class GameTabBar
     /// <summary>
     /// Draws the strip and returns the selected index, which is
     /// <paramref name="selected"/> unless a tab was clicked this frame.
+    ///
+    /// <paramref name="tooltips"/> is positional against
+    /// <paramref name="labels"/>; a null list, a short one, or an empty entry
+    /// all mean that tab has nothing to say.
     /// </summary>
-    public static int Draw(Plugin plugin, string id, IReadOnlyList<string> labels, int selected)
+    public static int Draw(
+        Plugin plugin,
+        string id,
+        IReadOnlyList<string> labels,
+        int selected,
+        IReadOnlyList<string>? tooltips = null)
     {
         if (labels.Count == 0)
             return selected;
@@ -98,7 +107,12 @@ public static class GameTabBar
             ImGui.InvisibleButton($"##tab{i}", new Vector2(widths[i] - (hitInset * 2), height));
 
             if (ImGui.IsItemHovered())
+            {
                 hovered = i;
+
+                if (tooltips is not null && i < tooltips.Count && tooltips[i].Length > 0)
+                    ImGui.SetTooltip(tooltips[i]);
+            }
 
             if (ImGui.IsItemClicked())
                 clicked = i;

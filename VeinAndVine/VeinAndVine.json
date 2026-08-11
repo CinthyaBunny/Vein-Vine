@@ -22,5 +22,5 @@
     "jobs"
   ],
   "IconUrl": "",
-  "Changelog": "Housekeeping release. Nothing you can see has changed.\n\nFixed:\n- Fixed an issue where there were multiple instances of final build files.\n- Fixed an issue where release notes were not handed off to the ingame installer.\n- Fixed a version mismatching issue.\n- Fixed an issue where the main window reset its own window settings every frame.\n- Fixed two different brightness calculations being used to decide whether a theme is light or dark. Both agreed on all eight themes, so nothing looked wrong, but they could have disagreed on a theme added later.\n\nChanged:\n- Dead and duplicated code removed."
+  "Changelog": "Added:\n- Hovering a wishlist tab now explains its number. Miner and Botanist add up to more than All, because an item both jobs can gather is counted on each tab — 98 of them, mostly shards and crystals, which come off mining and botany nodes alike. The tab now says so, along with how it splits between its own sub-tabs. The same explanation was previously only on the footer at the bottom of the list, which is not where you look when the numbers at the top are what puzzle you."
 }

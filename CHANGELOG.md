@@ -19,7 +19,21 @@ and the reasoning behind a fix to the code and the commit history. Where a
 change has no visible effect, say so briefly rather than explaining it.
 
 
-## <strong>v0.0.1.4</strong> - 2026-08-10
+## <strong>v0.0.1.5</strong> - 2026-08-10
+
+### Added
+
+- **Hovering a wishlist tab now explains its number.** Miner and Botanist add
+  up to more than All, because an item both jobs can gather is counted on each
+  tab — 98 of them, mostly shards and crystals, which come off mining and
+  botany nodes alike. The tab now says so, along with how it splits between its
+  own sub-tabs. The same explanation was previously only on the footer at the
+  bottom of the list, which is not where you look when the numbers at the top
+  are what puzzle you.
+
+
+<details>
+<summary><strong>v0.0.1.4</strong> - 2026-08-10</summary>
 
 Housekeeping release. Nothing you can see has changed.
 
@@ -42,6 +56,8 @@ Housekeeping release. Nothing you can see has changed.
 ### Changed
 
 - Dead and duplicated code removed.
+
+</details>
 
 
 <details>

@@ -3,7 +3,7 @@
   <PropertyGroup>
     <!-- Dalamud reads this as AssemblyVersion; it must be a 4-part version and
          must match the "AssemblyVersion" in repo.json for repo installs. -->
-    <Version>0.0.1.4</Version>
+    <Version>0.0.1.5</Version>
     <Authors>CinthyaBunny</Authors>
     <Company></Company>
     <Description>Priority-sorted gathering node tracker. No automation.</Description>

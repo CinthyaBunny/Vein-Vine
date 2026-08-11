@@ -360,8 +360,17 @@ public sealed class MainWindow : Window
             Labelled("Botanist", jobTabs[JobFilter.Botanist].Methods),
         ];
 
+        // Each tab explains its own scope, narrowing included, so a hovered tab
+        // describes the number printed on it rather than the job in full.
+        string[] tips =
+        [
+            TabTooltip(jobTabs[JobFilter.All].Methods),
+            TabTooltip(jobTabs[JobFilter.Miner].Methods),
+            TabTooltip(jobTabs[JobFilter.Botanist].Methods),
+        ];
+
         currentJob = jobs[GameTabBar.Draw(
-            plugin, "##veinandvine_picker_jobs", labels, Array.IndexOf(jobs, currentJob))];
+            plugin, "##veinandvine_picker_jobs", labels, Array.IndexOf(jobs, currentJob), tips)];
 
         ImGui.Separator();
 
@@ -402,15 +411,19 @@ public sealed class MainWindow : Window
             : ["All", "Logging", "Harvesting"];
 
         var labels = new string[names.Length];
+        var tips = new string[names.Length];
         for (var i = 0; i < names.Length; i++)
+        {
             labels[i] = Labelled(names[i], methods[i]);
+            tips[i] = TabTooltip(methods[i]);
+        }
 
         var selected = Array.IndexOf(methods, tab.Methods);
         if (selected < 0)
             selected = 0;
 
         tab.Methods = methods[GameTabBar.Draw(
-            plugin, $"##veinandvine_methods_{job}", labels, selected)];
+            plugin, $"##veinandvine_methods_{job}", labels, selected, tips)];
 
         ImGui.Spacing();
     }
@@ -860,7 +873,7 @@ public sealed class MainWindow : Window
             ? $"{shown.Count:N0} shown  -  {trackedCount:N0} tracked overall"
             : $"{shown.Count:N0} of {unfiltered:N0} shown  -  {trackedCount:N0} tracked overall");
 
-        UiShared.Tooltip(CountExplanation(jobs, tab.Methods, shown.Count, unfiltered));
+        UiShared.Tooltip(CountExplanation(tab.Methods, shown.Count, unfiltered));
 
         ImGui.SameLine();
         ImGui.BeginDisabled(shown.Count == 0);
@@ -884,54 +897,94 @@ public sealed class MainWindow : Window
     }
 
     /// <summary>
-    /// Spells out how this tab's count decomposes into its children's.
+    /// The parent/child groupings behind the picker's two strips.
     ///
-    /// The parts overlap on purpose - an item gatherable two ways is genuinely
-    /// in both child tabs - so the labels on the strip add up to more than the
-    /// parent's, and a reader with no way to see the overlap can only read that
-    /// as a miscount. Stating it turns three numbers that look inconsistent
-    /// into one subtraction that balances.
+    /// Every one of them overlaps: an item gatherable two ways is genuinely in
+    /// both children, so each pair of labels adds up to more than the parent's.
+    /// That is the single thing about these counts that reads as a bug, and it
+    /// is why the same reconciliation is offered on every tab.
     /// </summary>
-    private string CountExplanation(JobFilter jobs, MethodFilter methods, int shown, int unfiltered)
+    private static readonly (MethodFilter Parent, string ParentName,
+        MethodFilter First, string FirstName,
+        MethodFilter Second, string SecondName)[] TabFamilies =
+    [
+        (MethodFilter.All, "All", MethodFilter.AllMiner, "Miner", MethodFilter.AllBotanist, "Botanist"),
+        (MethodFilter.AllMiner, "Miner", MethodFilter.Mining, "Mining", MethodFilter.Quarrying, "Quarrying"),
+        (MethodFilter.AllBotanist, "Botanist", MethodFilter.Logging, "Logging", MethodFilter.Harvesting, "Harvesting"),
+    ];
+
+    /// <summary>
+    /// What a tab holds and why its number does not add up with the tab beside
+    /// it. Shown on the strip, which is where someone puzzling over the numbers
+    /// is actually looking - the footer's tooltip said much of this already,
+    /// but nobody hovers a greyed-out line at the bottom to find out why the
+    /// labels at the top disagree.
+    /// </summary>
+    private string TabTooltip(MethodFilter scope) =>
+        $"{CountOf(scope):N0} item(s) on this tab." + SharedWithSibling(scope) + Reconciliation(scope);
+
+    /// <summary>
+    /// The overlap with the tab beside this one, from the child's side. Empty
+    /// for a parent scope, and for a child that shares nothing.
+    /// </summary>
+    private string SharedWithSibling(MethodFilter scope)
     {
-        var text = shown == unfiltered
-            ? $"All {shown:N0} item(s) on this tab.\n"
-            : $"{shown:N0} of this tab's {unfiltered:N0} item(s) survive the filters above.\n";
-
-        var (whole, first, second, firstName, secondName) = (jobs, methods) switch
+        foreach (var family in TabFamilies)
         {
-            (JobFilter.All, _) =>
-                (MethodFilter.All, MethodFilter.AllMiner, MethodFilter.AllBotanist, "miner", "botanist"),
-            (JobFilter.Miner, MethodFilter.AllMiner) =>
-                (MethodFilter.AllMiner, MethodFilter.Mining, MethodFilter.Quarrying, "mining", "quarrying"),
-            (JobFilter.Botanist, MethodFilter.AllBotanist) =>
-                (MethodFilter.AllBotanist, MethodFilter.Logging, MethodFilter.Harvesting, "logging", "harvesting"),
-            _ => (MethodFilter.None, MethodFilter.None, MethodFilter.None, string.Empty, string.Empty),
-        };
+            var isFirst = family.First == scope;
+            if (!isFirst && family.Second != scope)
+                continue;
 
-        // A leaf tab has nothing under it to reconcile against.
-        if (whole == MethodFilter.None)
-            return text.TrimEnd();
+            var shared = CountOf(family.First) + CountOf(family.Second) - CountOf(family.Parent);
+            if (shared <= 0)
+                return string.Empty;
 
-        var total = CountOf(whole);
-        var a = CountOf(first);
-        var b = CountOf(second);
-        var both = a + b - total;
+            return $"\n\n{shared:N0} of them are also on {(isFirst ? family.SecondName : family.FirstName)}. " +
+                   $"An item you can get both ways is counted on each tab, so the two do not add up " +
+                   $"to {family.ParentName}.";
+        }
 
-        // Guarded rather than assumed: the subtraction only balances while
-        // every item belongs to at least one child tab, and printing a sum that
-        // visibly doesn't add up would be worse than printing no sum at all.
-        if (both >= 0)
+        return string.Empty;
+    }
+
+    /// <summary>
+    /// How a scope's count decomposes into the two tabs beneath it. Empty for a
+    /// leaf, which has nothing under it to reconcile against.
+    ///
+    /// Stating the overlap turns three numbers that look inconsistent into one
+    /// subtraction that balances.
+    /// </summary>
+    private string Reconciliation(MethodFilter scope)
+    {
+        var text = string.Empty;
+
+        foreach (var family in TabFamilies)
         {
+            if (family.Parent != scope)
+                continue;
+
+            var total = CountOf(scope);
+            var a = CountOf(family.First);
+            var b = CountOf(family.Second);
+            var both = a + b - total;
+
+            // Guarded rather than assumed: the subtraction only balances while
+            // every item belongs to at least one child tab, and printing a sum
+            // that visibly doesn't add up would be worse than printing none.
+            if (both < 0)
+                break;
+
             text += both > 0
-                ? $"\n{a:N0} {firstName} + {b:N0} {secondName} - {both:N0} gatherable both ways = {total:N0}."
-                : $"\n{a:N0} {firstName} + {b:N0} {secondName} = {total:N0}.";
+                ? $"\n\n{a:N0} {family.FirstName} + {b:N0} {family.SecondName} - " +
+                  $"{both:N0} gatherable both ways = {total:N0}."
+                : $"\n\n{a:N0} {family.FirstName} + {b:N0} {family.SecondName} = {total:N0}.";
+            break;
         }
 
         // Those two figures are the jobs in full, but a job tab is labelled
         // with whatever it is currently narrowed to. Left unsaid, the sum above
-        // would look like it disagrees with the strip right above it.
-        if (jobs == JobFilter.All)
+        // would look like it disagrees with the strip beside it.
+        if (scope == MethodFilter.All)
         {
             foreach (var (name, job) in new[] { ("Miner", JobFilter.Miner), ("Botanist", JobFilter.Botanist) })
             {
@@ -944,7 +997,20 @@ public sealed class MainWindow : Window
             }
         }
 
-        return text.TrimEnd();
+        return text;
+    }
+
+    /// <summary>
+    /// The footer's version: what the filters left, then the same
+    /// reconciliation the tabs offer.
+    /// </summary>
+    private string CountExplanation(MethodFilter methods, int shown, int unfiltered)
+    {
+        var text = shown == unfiltered
+            ? $"All {shown:N0} item(s) on this tab."
+            : $"{shown:N0} of this tab's {unfiltered:N0} item(s) survive the filters above.";
+
+        return text + Reconciliation(methods);
     }
 
     private void SetTrackedForAll(IReadOnlyList<GatherItem> shown, bool tracked)
