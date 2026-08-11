@@ -161,6 +161,21 @@ the colour never has to be decoded.
 Marked rather than reordered, deliberately. Being underfoot is a note about a
 row, not a claim that it outranks the rows above it.
 
+Each countdown carries **the Eorzea clock reading it runs out on** — `4m30s @
+14:23` — which is the other half of the mixed-units problem, and what lets a
+window be planned against rather than watched.
+
+It is derived from the countdown, not read off the node's window, because the
+two are not always the same moment: a countdown is capped by the node's spawn
+duration and by the weather window as well, so a window's own end hour is not
+necessarily when the row stops being true. The cell has room for the time and
+not for what it means, so the row's tooltip supplies the words — *Closes at
+14:23 Eorzea time* — including which way round it is.
+
+A plain `@` rather than an arrow. The game font has no dependable glyph for one,
+and a missing-glyph box in every row would be worse than the character it stood
+in for — the same reason the star rating is spelled out in words.
+
 The toolbar carries a **clock**, because the list quietly mixes two of them: the
 `Windows` column is Eorzea hours while `4m30s left` and `in 12m` are real
 minutes, and a window of `12-14` means nothing without knowing the time in the
@@ -599,15 +614,15 @@ lesson is to show the columns that serve the task rather than everything the
 sheets hold. Each is graded by what already exists, because several are much
 closer than they look and two are further away.
 
-### Ready now — the data is already in the dataset
+### Built
 
-**Pair each countdown with the Eorzea hour it lands on.** The toolbar clock now
-says what time it is, but a row still reports "in 12m" without saying which
-Eorzea hour that reaches, so the two halves of the mixed-units problem are only
-half solved. Showing both would let GP recovery be planned against the window
-rather than against a stopwatch.
+Everything here that needed only presentation has been done, and is described in
+the sections above rather than repeated here: the always-up band, map
+coordinates, the gathering icons, the row metrics, the toolbar clock, whole-row
+tracking, the leading row's emphasis, and the Eorzea time each countdown lands
+on.
 
-*(Nothing else here is ready without new plumbing — see the sections below.)*
+What follows still needs plumbing that does not exist.
 
 ### Needs plumbing that does not exist yet
 

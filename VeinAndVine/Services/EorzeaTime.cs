@@ -39,14 +39,21 @@ public static class EorzeaTime
     public static int GetCurrentEorzeaHour() => GetEorzeaHour(CurrentUnixSeconds());
 
     /// <summary>
-    /// The Eorzea clock now. Both halves come from one timestamp deliberately:
-    /// read separately they can straddle a tick and report 12:59 as 12:00.
+    /// The Eorzea clock at a real timestamp. Both halves come from the one
+    /// timestamp deliberately: read separately they can straddle a tick and
+    /// report 12:59 as 12:00.
     /// </summary>
-    public static (int Hour, int Minute) CurrentEorzeaClock()
-    {
-        var now = CurrentUnixSeconds();
-        return (GetEorzeaHour(now), GetEorzeaMinute(now));
-    }
+    public static (int Hour, int Minute) EorzeaClockAt(long unixSeconds) =>
+        (GetEorzeaHour(unixSeconds), GetEorzeaMinute(unixSeconds));
+
+    public static (int Hour, int Minute) CurrentEorzeaClock() => EorzeaClockAt(CurrentUnixSeconds());
+
+    /// <summary>
+    /// The Eorzea clock as it will read once <paramref name="ahead"/> of real
+    /// time has passed - what a countdown running out lands on.
+    /// </summary>
+    public static (int Hour, int Minute) EorzeaClockIn(TimeSpan ahead) =>
+        EorzeaClockAt(CurrentUnixSeconds() + (long)ahead.TotalSeconds);
 
     public static long GetWeatherWindowStart(long unixSeconds) =>
         unixSeconds - FloorMod(unixSeconds, RealSecondsPerWeatherWindow);

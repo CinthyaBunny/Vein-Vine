@@ -79,8 +79,9 @@ One window, four tabs.
 
 **Nodes** — one row per node, coloured by how urgent it is: green for up and
 expiring, amber for up within five minutes, grey for waiting, ordinary text for
-a node that is simply always there. The row you're waiting on is drawn taller
-than the rest. Nodes with no window are grouped below the
+a node that is simply always there. Countdowns carry the Eorzea time they run
+out on — `4m30s @ 14:23` — since the countdown is real minutes and the windows
+are Eorzea hours. The row you're waiting on is drawn taller than the rest. Nodes with no window are grouped below the
 timed ones under an `Always available` band, so they can't sit between the node
 expiring now and the one worth travelling for. Always-up nodes in the zone you're
 standing in are tinted, since those cost no travelling. The job column shows the

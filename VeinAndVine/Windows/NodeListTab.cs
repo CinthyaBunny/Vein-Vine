@@ -231,9 +231,12 @@ public sealed class NodeListTab
         // characters - plus the cell padding, rather than for the format.
         ImGui.TableSetupColumn("Coords",
             ImGuiTableColumnFlags.WidthFixed | ImGuiTableColumnFlags.NoSort, 80f * scale);
+        // Holds a countdown and the Eorzea time it lands on - "12m30s @ 23:59"
+        // is the widest that gets, so the column is sized for that rather than
+        // for the countdown alone.
         ImGui.TableSetupColumn("Status",
             ImGuiTableColumnFlags.WidthFixed | ImGuiTableColumnFlags.DefaultSort,
-            110f * scale, UiShared.SortId(NodeSort.Priority));
+            142f * scale, UiShared.SortId(NodeSort.Priority));
         ImGui.TableSetupColumn("Dist",
             ImGuiTableColumnFlags.WidthFixed, 46f * scale, UiShared.SortId(NodeSort.Distance));
         // Row height is the icon button's own size once the row padding is
@@ -490,21 +493,50 @@ public sealed class NodeListTab
 
         if (result.IsActive)
         {
-            ImGui.TextColored(color ?? plugin.UiStyle.StatusUp, result.TimeRemaining is { } remaining
-                ? $"{UiShared.FormatDuration(remaining)} left"
-                : "Up now");
+            if (result.TimeRemaining is { } remaining)
+            {
+                ImGui.TextColored(color ?? plugin.UiStyle.StatusUp, UiShared.FormatDuration(remaining));
+                DrawEorzeaLanding(remaining);
+            }
+            else
+            {
+                ImGui.TextColored(color ?? plugin.UiStyle.StatusUp, "Up now");
+            }
+
             return;
         }
 
         if (result.TimeUntilActive is { } until)
         {
             ImGui.TextColored(color ?? plugin.UiStyle.StatusIdle, $"in {UiShared.FormatDuration(until)}");
+            DrawEorzeaLanding(until);
             return;
         }
 
         // No countdown: the node is weather-gated, and forecasting that isn't
         // wired up yet, so say what it's waiting on instead of guessing when.
         ImGui.TextDisabled(result.BlockedReason ?? "Not up");
+    }
+
+    /// <summary>
+    /// The Eorzea clock reading the countdown beside it runs out on, drawn dim
+    /// so the countdown keeps the cell's colour and with it its meaning.
+    ///
+    /// Derived from the countdown rather than read off the node's window,
+    /// because the two are not always the same moment: a countdown is capped by
+    /// the node's spawn duration and by the weather window too, so a window's
+    /// own end hour is not necessarily when the row stops being true.
+    ///
+    /// Plain "@" rather than an arrow - the game font has no dependable glyph
+    /// for one, and a missing-glyph box in every row would be worse than the
+    /// character it stood in for.
+    /// </summary>
+    private static void DrawEorzeaLanding(TimeSpan ahead)
+    {
+        var (hour, minute) = EorzeaTime.EorzeaClockIn(ahead);
+
+        ImGui.SameLine(0, ImGui.GetStyle().ItemInnerSpacing.X);
+        ImGui.TextDisabled($"@ {hour:00}:{minute:00}");
     }
 
     private void DrawRowTooltip(PriorityResult result, bool isHere)
@@ -526,6 +558,19 @@ public sealed class NodeListTab
 
         if (!result.IsActive && result.BlockedReason is { } reason)
             ImGui.TextDisabled(reason);
+
+        // The cell has room for "@ 14:23" and not for what it means, so the
+        // words go here: which way round it is, and which clock it is on.
+        if (result.IsActive && result.TimeRemaining is { } closesIn)
+            ImGui.TextDisabled($"Closes at {Clock(closesIn)} Eorzea time.");
+        else if (!result.IsActive && result.TimeUntilActive is { } opensIn)
+            ImGui.TextDisabled($"Opens at {Clock(opensIn)} Eorzea time.");
+
+        static string Clock(TimeSpan ahead)
+        {
+            var (hour, minute) = EorzeaTime.EorzeaClockIn(ahead);
+            return $"{hour:00}:{minute:00}";
+        }
 
         // Says why the row is marked, so the highlight is not a colour you have
         // to work out for yourself.
