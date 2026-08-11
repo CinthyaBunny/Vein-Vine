@@ -87,6 +87,7 @@ set the map flag; so does the marker button at its right end, and right-click
 also offers *Stop tracking*.
 
 **Wishlist** — pick the items to track, one row per item rather than per node.
+Click anywhere on a row to track or untrack it; tracked rows stay highlighted.
 Split across `All / Miner / Botanist`, each single-job tab carrying a second
 strip for the finer split (`Mining / Quarrying`, `Logging / Harvesting`). Above
 them: search, zone, a level range, timed-only and tracked-only, plus `Track all

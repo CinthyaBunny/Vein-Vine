@@ -817,7 +817,38 @@ public sealed class MainWindow : Window
         ImGui.PushID((int)item.ItemId);
 
         ImGui.TableNextColumn();
+
         var isTracked = plugin.IsTracked(item.ItemId);
+
+        // Tracking is the most frequent action in this window, and a checkbox is
+        // the smallest target in the row. The whole row is the hit box; the
+        // checkbox stays because it is what makes the state readable at a
+        // glance, but it is no longer the only way to reach it.
+        //
+        // Submitted before the row's contents and drawn back over. A
+        // selectable's fill enters the draw list where it is submitted, so
+        // anything drawn earlier would sit underneath it.
+        //
+        // Sized to the frame rather than the text: this row is as tall as its
+        // checkbox, and a text-height band would leave the bottom of the row
+        // dead to the mouse.
+        var rowStart = ImGui.GetCursorPos();
+
+        if (ImGui.Selectable("##row", isTracked,
+                ImGuiSelectableFlags.SpanAllColumns | ImGuiSelectableFlags.AllowItemOverlap,
+                new Vector2(0, ImGui.GetFrameHeight())))
+        {
+            plugin.SetTracked(item.ItemId, item.ItemName, !isTracked);
+        }
+
+        ImGui.SetCursorPos(rowStart);
+
+        // Both this and the selectable above can fire on one click, which is
+        // harmless: they compute the same target state from the same captured
+        // value, and SetTracked ignores a write that changes nothing. Reading
+        // the tracked state once and using it for the highlight and the box
+        // alike is also what keeps the two from disagreeing on the frame a
+        // click lands.
         if (ImGui.Checkbox("##track", ref isTracked))
             plugin.SetTracked(item.ItemId, item.ItemName, isTracked);
 

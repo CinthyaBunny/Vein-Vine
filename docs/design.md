@@ -83,6 +83,18 @@ One row per *item*, not per node. The dataset is node-shaped, so the same item
 appears in several zones with several windows; `NodeQuery` collapses that into
 one row per item, with the zone count and the union of its windows.
 
+**A row is tracked by clicking anywhere on it.** Tracking is the most frequent
+action in the window and the checkbox is the smallest thing in the row, so the
+row itself is the target and the checkbox stays as the state readout rather than
+the only way in. A tracked row is filled in the theme's "this one" colour — the
+same one a selected row uses everywhere else — so the list can be read for what
+is already tracked without inspecting thirteen pixels per line.
+
+Both the row and the box can take a single click. That is harmless by
+construction: they compute the same target state from one reading of it, and
+`SetTracked` ignores a write that changes nothing. Reading it once also keeps
+the fill and the box from disagreeing on the frame a click lands.
+
 Items are split across **All / Miner / Botanist** sub-tabs — 517 mining and 631
 botany out of 1,050, because **98 items have both mining and botany nodes** and
 so appear on both tabs. That overlap is why `GatherItem` carries a `Jobs` flag
@@ -483,13 +495,6 @@ countdown with the Eorzea hour it lands on would let you plan GP recovery
 against the window rather than against a stopwatch. One caveat: `GetEorzeaMinute`
 was deleted earlier today as unused, so an `HH:MM` readout needs it restored —
 it is in git history and is four lines.
-
-**Whole-row click to track, with the row highlighted when tracked.** Agreed on
-the checkbox: a 13-pixel target is the wrong affordance for the most frequent
-action in the window. `ImGui.Selectable` with `SpanAllColumns` already does
-exactly this in the node list, so the pattern is in the codebase; the picker
-just does not use it yet. Keeping the checkbox as a visual state indicator while
-making the whole row the hit target is the smaller change.
 
 **More padding on the leading row.** Straightforward, though ImGui tables size
 rows uniformly, so this means either drawing that row taller deliberately or
