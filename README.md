@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Vein & Vine
 
 A read-only gathering companion for FFXIV. Shows a priority-sorted list of active
@@ -618,3 +619,6 @@ writing the manifests rather than passing a property.
 - `TerritoryType.WeatherRate` is a `RowRef<WeatherRate>`, so it navigates
   directly; `WeatherRate` holds parallel `Weather` / `Rate` collections forming a
   cumulative distribution.
+=======
+# Vein-Vine
+>>>>>>> 8d2357217d541b6af3f27ed5bedd11f0120aa7a4
