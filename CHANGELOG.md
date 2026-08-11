@@ -8,7 +8,7 @@ four-part `AssemblyVersion` and the in-game installer compares them to decide
 whether a user is offered an update.
 
 
-<summary><strong>v0.0.1.3b</strong> - 2026-08-10</summary>
+### <summary><strong>v0.0.1.3b</strong> - 2026-08-10</summary>
 
 ### Changed
 
