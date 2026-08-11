@@ -15,7 +15,141 @@ rest of the steps.
 
 ## [Unreleased]
 
-Nothing yet.
+## [0.0.1.3] - 2026-08-10
+
+### Added
+
+- **Sub-tabs under Miner and Botanist** for the finer split within each job:
+  `All / Mining / Quarrying` and `All / Logging / Harvesting`, named as the
+  game's `GatheringType` sheet names them. Each job tab remembers its own
+  narrowing, so pinning Miner to Quarrying leaves Botanist as you left it.
+
+  The dataset was throwing this away — the generator folded gathering types 0
+  and 1 into "Mining" and 2 and 3 into "Botany" — so nodes now carry a `method`
+  alongside their `type`. 426 Mining, 295 Quarrying, 363 Logging, 503
+  Harvesting.
+
+  As with the job tabs, an item that comes off more than one kind of node
+  appears under each: 16 items in each job are gatherable both ways, and would
+  otherwise have gone missing from one of the two sub-tabs.
+
+  Narrowing to a method rebuilds the item index rather than filtering it. A row
+  summarises the nodes behind it, so summarising all of them and then dropping
+  rows leaves the survivors describing nodes the tab has excluded. Across the
+  seven scopes the picker can show, 109 rows listed a zone that scope can't
+  reach, 28 quoted a level below any node it could actually use, and 15 had
+  their timed flag decided by the wrong nodes. `BuildItemIndex` now takes the
+  scope and applies it before the grouping; the window keeps one index per
+  scope, built on first use and dropped on reload.
+
+  The `All` job tab has no sub-strip. It already spans both jobs, so a five-way
+  method strip under it would just be a second job filter in a different hat.
+- The generator rejects a run where every node came out as `Mining`, which is
+  what a broken `GatheringType` link looks like, and one where a node's method
+  doesn't belong to its job.
+
+- **Every wishlist tab is labelled with its live row count** — `All (1,050)`,
+  `Miner (517)`, `Botanist (631)`, and the same on the method sub-tabs. The
+  counts are taken from the filtered list rather than from the population
+  behind it, so searching "ore" leaves the strip reading `All (143)`, `Miner
+  (118)`, `Botanist (27)`.
+
+  They reconcile at every level: a parent is its two children less the items in
+  both. `1,050 = 517 + 631 − 98` across the jobs, `517 = 331 + 202 − 16` across
+  the miner's methods. That overlap moves with the filters — under "ore" it is
+  2 and 1 — so it is counted, not remembered, and the footer's tooltip spells
+  the subtraction out rather than leaving three labels that appear not to add
+  up.
+
+  A tab's number is what you get for clicking it, narrowing included, so a
+  Miner tab pinned to Quarrying reads `Miner (202)`. That is the one case where
+  a label and the sum disagree — the sum uses the jobs in full, being what
+  `All` is made of — and the tooltip says which job is narrowed rather than
+  leaving the two to contradict each other.
+
+  Rows, labels and footer now share one definition of what is in a tab, so a
+  filter added later is reflected in all of them at once instead of leaving the
+  counts describing an older list.
+
+### Changed
+
+- **The level boxes refuse a bad keystroke instead of clamping afterwards.**
+  They were `InputInt`, which permits `+`, `-`, `.`, `*` and `/`, accepted any
+  number at all, and quietly rewrote it when you clicked away. They now decide
+  per keystroke whether the text the box *would* hold is still a gathering
+  level — the only way a 1–100 limit can hold, since every digit is legal alone
+  and still turns 10 into 105 — so there is no invalid state to clamp, and
+  nothing changes under you on the way out. Pasted text goes through the same
+  filter character by character.
+
+  The rule is pure and sits next to the range it enforces, so it is checked
+  exhaustively: every state the box can reach, through every printable key at
+  every cursor and selection position, is 54,910 keystrokes reaching exactly
+  101 states — the empty box and the hundred levels. Empty means "no bound from
+  this end" while you retype and fills itself back in when you leave.
+
+### Fixed
+
+- **The wishlist footer's total left out items shared between the jobs.** It
+  counted against `GatherItem.Type`, a single arbitrary job, rather than the
+  `Jobs` set the tabs themselves filter on — so Miner reported "of 492" while
+  listing 517 items, and Botanist "of 558" while listing 631. Both totals were
+  smaller than the list they were describing. It now counts against `Jobs`, and
+  off the sub-tab's own scoped index, so a narrowed tab compares itself to its
+  method rather than to the whole job.
+- The picker's empty state named the job when a sub-tab was what had emptied
+  the list, sending you off to check a filter that wasn't the one hiding rows.
+- **The node list's status colours were fixed constants**, so the green for "up
+  now" and the amber for "up soon" were the same on every theme. On Light they
+  were all but invisible — the amber was `#F2C759` on a `#F5D4A9` panel, which
+  is the same colour twice. They are now fitted to each theme: the hue is kept,
+  because green and amber carry the meaning, and only the lightness moves. On
+  the three light themes they invert to a deep green and a dark olive.
+- **Buttons, tabs, inputs and selected rows are now objects you can see**,
+  rather than tints of the panel that happened to keep their text readable.
+
+  Sampling the game's own previews shows its controls always stand off the
+  panel — lighter on the dark themes, darker on the light ones — and that it
+  flips the label colour to suit when it sinks one hard. ImGui has a single
+  text colour, so instead the lift is kept modest and the direction reversed
+  whenever the game's would cost the label its contrast.
+
+  Both constraints are now checked together, which is what caught the two
+  themes where only one direction works: Clear Pink, whose dark text leaves so
+  little headroom that a darker button is unreadable and a lighter one
+  invisible, and Classic FF, whose idle tab barely registered against its very
+  dark panel.
+
+  Every control also gets a 1px border pinned by the theme, so it has an edge
+  and not just a shade.
+
+  Measured across all eight themes and seven control states: body text
+  6.4–15.7:1, status colours 4.5–9.8:1, control fills 1.21–2.80:1 against their
+  panel, every label 4.5:1 or better.
+
+### Changed
+
+- **Buttons and fields are pill-shaped**, as they are in game. `FrameRounding`
+  is half the frame height, and since ImGui clamps rounding to half the shorter
+  side, one number gives a short button a full pill and a wide search field the
+  same end caps — the game's two shapes from a single setting.
+- **Tabs are the game's shape**, drawn by hand in `GameTabBar.cs`: elongated
+  hexagons pointed at both ends, with the selected one recessed and darker as
+  it is in game. ImGui's tab bar offers a corner radius and nothing else.
+
+  Point sharpness, the gap between tabs and the label padding are three
+  constants at the top of the file, so the strip can be retuned without
+  touching the drawing.
+
+  The shape is not the whole reason. The game uses a dark tab with a pale label
+  on every theme, light ones included — Light's tabs are near-black lettered in
+  cream on a peach panel — and ImGui cannot express that, because one `Text`
+  colour serves the panel and the tabs alike. Drawing the strip lets each tab
+  choose its own label.
+
+  The strip is one call returning the selected index rather than a begin/end
+  pair, which also makes a changing set of tabs free: the Nodes tab comes and
+  goes as the list is docked or undocked.
 
 ## [0.0.1.2] - 2026-08-10
 

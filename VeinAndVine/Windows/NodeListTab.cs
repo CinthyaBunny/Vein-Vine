@@ -177,14 +177,14 @@ public sealed class NodeListTab
     /// nodes - always-up ones would inflate it into a number that never
     /// changes and never means anything.
     /// </summary>
-    private static void DrawSummary(IReadOnlyList<PriorityResult> results, int trackedCount)
+    private void DrawSummary(IReadOnlyList<PriorityResult> results, int trackedCount)
     {
         var timedUp = results.Count(r => r.IsActive && !r.IsAlwaysAvailable);
         var always = results.Count(r => r.IsAlwaysAvailable);
 
         if (timedUp > 0)
         {
-            ImGui.TextColored(UiShared.ActiveColor, $"{timedUp} up now");
+            ImGui.TextColored(UiShared.ActiveColor(plugin), $"{timedUp} up now");
         }
         else
         {
@@ -193,7 +193,7 @@ public sealed class NodeListTab
                 .MinBy(r => r.TimeUntilActive!.Value);
 
             if (next?.TimeUntilActive is { } until)
-                ImGui.TextColored(UiShared.SoonColor,
+                ImGui.TextColored(UiShared.SoonColor(plugin),
                     $"Next: {next.Node.ItemName} in {UiShared.FormatDuration(until)}");
             else
                 ImGui.TextDisabled("Nothing timed to wait for");
@@ -275,9 +275,9 @@ public sealed class NodeListTab
         var color = result switch
         {
             { IsAlwaysAvailable: true } => (Vector4?)null,
-            { IsActive: true } => UiShared.ActiveColor,
-            { TimeUntilActive: { } until } when until <= UiShared.SoonThreshold => UiShared.SoonColor,
-            _ => UiShared.InactiveColor,
+            { IsActive: true } => UiShared.ActiveColor(plugin),
+            { TimeUntilActive: { } until } when until <= UiShared.SoonThreshold => UiShared.SoonColor(plugin),
+            _ => UiShared.InactiveColor(plugin),
         };
 
         ImGui.TableNextColumn();
@@ -340,7 +340,7 @@ public sealed class NodeListTab
         ImGui.PopID();
     }
 
-    private static void DrawStatusCell(PriorityResult result, Vector4? color)
+    private void DrawStatusCell(PriorityResult result, Vector4? color)
     {
         if (result.IsAlwaysAvailable)
         {
@@ -350,7 +350,7 @@ public sealed class NodeListTab
 
         if (result.IsActive)
         {
-            ImGui.TextColored(color ?? UiShared.ActiveColor, result.TimeRemaining is { } remaining
+            ImGui.TextColored(color ?? UiShared.ActiveColor(plugin), result.TimeRemaining is { } remaining
                 ? $"{UiShared.FormatDuration(remaining)} left"
                 : "Up now");
             return;
@@ -358,7 +358,7 @@ public sealed class NodeListTab
 
         if (result.TimeUntilActive is { } until)
         {
-            ImGui.TextColored(color ?? UiShared.InactiveColor, $"in {UiShared.FormatDuration(until)}");
+            ImGui.TextColored(color ?? UiShared.InactiveColor(plugin), $"in {UiShared.FormatDuration(until)}");
             return;
         }
 

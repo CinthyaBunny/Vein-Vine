@@ -12,14 +12,19 @@ namespace VeinAndVine.Windows;
 /// </summary>
 internal static class UiShared
 {
+    // The status colours are no longer constants: green on a cream panel is
+    // not the same green that works on a black one. They come from UiStyle,
+    // which keeps each theme's hue but fits its lightness to that theme's
+    // panel. See UiStyle.Legible.
+
     /// <summary>Up now.</summary>
-    public static readonly Vector4 ActiveColor = new(0.45f, 0.85f, 0.5f, 1f);
+    public static Vector4 ActiveColor(Plugin plugin) => plugin.UiStyle.StatusUp;
 
     /// <summary>Not up, but soon - worth walking towards.</summary>
-    public static readonly Vector4 SoonColor = new(0.95f, 0.78f, 0.35f, 1f);
+    public static Vector4 SoonColor(Plugin plugin) => plugin.UiStyle.StatusSoon;
 
-    /// <summary>Not up.</summary>
-    public static readonly Vector4 InactiveColor = new(0.62f, 0.62f, 0.62f, 1f);
+    /// <summary>Not up, or up permanently and so never urgent.</summary>
+    public static Vector4 InactiveColor(Plugin plugin) => plugin.UiStyle.StatusIdle;
 
     /// <summary>Anything opening within this long is coloured as "soon".</summary>
     public static readonly TimeSpan SoonThreshold = TimeSpan.FromMinutes(5);

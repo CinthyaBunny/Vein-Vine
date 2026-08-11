@@ -1,10 +1,29 @@
 namespace VeinAndVine.Models;
 
+/// <summary>The job that can work a node.</summary>
 public enum NodeType
 {
     Mining,
     Botany,
     Fishing,
+}
+
+/// <summary>
+/// How a node is actually worked, which is a finer split than the job: a miner
+/// mines and quarries, a botanist logs and harvests. Named as the game's own
+/// GatheringType sheet names them.
+///
+/// Kept alongside <see cref="NodeType"/> rather than replacing it, because the
+/// job is what the wishlist and the main window filter on and the method is
+/// only ever a refinement of it.
+/// </summary>
+public enum GatheringMethod
+{
+    Mining,
+    Quarrying,
+    Logging,
+    Harvesting,
+    Spearfishing,
 }
 
 /// <summary>
@@ -33,6 +52,13 @@ public sealed class GatherNode
     public required uint ItemId { get; init; }
     public required string ItemName { get; init; }
     public required NodeType Type { get; init; }
+
+    /// <summary>
+    /// The finer split within the job. Optional so a dataset written before
+    /// this existed still parses; such a file leaves every node reading as
+    /// Mining, which the generator's verify pass would catch.
+    /// </summary>
+    public GatheringMethod Method { get; init; }
     public required string ZoneName { get; init; }
 
     /// <summary>

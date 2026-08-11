@@ -90,6 +90,7 @@ column is a function of its inputs and can be unit tested with no game running.
 | `Windows/MainWindow.cs` | ImGui | The one window: tab bar, Display and Appearance |
 | `Windows/NodeListTab.cs` | ImGui | The node list, and the map flag |
 | `Windows/NodeListWindow.cs` | ImGui | Optional docked panel hosting the same node list |
+| `Windows/GameTabBar.cs` | ImGui | The hand-drawn hexagonal tab strip |
 | `Windows/UiShared.cs` | ImGui | Colours, duration formatting, sort-spec bridge |
 | `tools/NodeGen/` | Lumina, build-time | Regenerates `Data/nodes.json` from game sheets |
 
@@ -130,9 +131,81 @@ so appear on both tabs. That overlap is why `GatherItem` carries a `Jobs` flag
 set rather than one `NodeType`: collapsing it to a single job hides each of
 those items from one of the two tabs.
 
-Each tab owns its sort order and its own filtered list, so sorting
-Miner by level doesn't disturb how Botanist was left, and switching between
-them is instant. The `Job` column hides itself on the single-job tabs, where it
+Each single-job tab carries a **second strip** for the finer split the game
+makes within it — `All / Mining / Quarrying` under Miner, `All / Logging /
+Harvesting` under Botanist, named as the `GatheringType` sheet names them. The
+dataset used to throw this away, folding gathering types 0 and 1 into "Mining"
+and 2 and 3 into "Botany", so nodes now carry a `method` alongside their `type`.
+The same overlap applies one level down: 16 items per job come off both kinds of
+node and appear under both sub-tabs.
+
+`All` has no sub-strip. It already spans both jobs, so a five-way method strip
+under it would be a second job filter in a different hat.
+
+Narrowing to a method rebuilds the index rather than filtering it. A row is a
+*summary* of the nodes behind it — its zones, its level, whether it is timed at
+all — so summarising every node and then dropping rows describes an item by
+nodes the sub-tab has excluded: quarrying rows listing zones you can only mine
+in, and levels no quarrying node actually reaches. `BuildItemIndex` takes the
+`MethodFilter` and applies it before the grouping, and the window keeps one
+index per scope, built on first use and thrown away on reload. There are seven
+scopes and a build is a single pass over 1,587 nodes, so this costs nothing that
+a frame would notice.
+
+**Every tab is labelled with what it would show** — `All (1,050)`, `Miner (517)`,
+`Botanist (631)` — and the number on a tab is the number of rows you get for
+clicking it, narrowing included: a Miner tab pinned to Quarrying reads `Miner
+(202)`. Those counts come from the filtered list, not from the population
+behind it. Search "ore" and the strip reads `All (143)`, `Miner
+(118)`, `Botanist (27)`. There is one definition of "in this tab", `Matching`,
+and the rows, every label and the footer all run through it, so a filter added
+there moves all of them together instead of leaving the labels describing the
+list as it was two filters ago.
+
+The counts reconcile at every level: a parent equals its two children less the
+items in both. `1,050 = 517 + 631 − 98` across the jobs, `517 = 331 + 202 − 16`
+across the miner's methods. The overlap is not a constant — under a search for
+"ore" the job overlap falls to 2 and the miner overlap to 1 — which is exactly
+why it has to be counted rather than remembered. The footer's tooltip spells the
+subtraction out, because three labels that add up to more than their parent read
+as a miscount unless the difference is stated.
+
+A narrowed job is the one case where a label and the sum disagree — the sum uses
+the jobs in full, because that is what `All` is actually made of — so the
+tooltip says which job is narrowed and what its label is counting instead.
+
+Recounting is seven predicated passes over at most a thousand rows, on the
+frames where a filter actually moved. The footer keeps one figure that isn't on
+a label — the tab's population with the filters cleared — and only prints it
+once a filter has removed something, since "517 of 517" is noise.
+
+### The level boxes
+
+`Lv [1] to [100]` rejects at the keystroke rather than clamping at the commit.
+`NodeFilter.AcceptsLevelKeystroke` is handed the box's text, the selection and
+the character, and answers whether *the text the box would then hold* is still a
+gathering level — which is the only way 1–100 can hold, since every digit is
+legal on its own and still turns 10 into 105. ImGui runs pasted text through the
+same filter one character at a time, so pasting `abc` or `9999` is refused the
+way typing it is.
+
+The point is that there is then no invalid state: nothing to clamp, no error to
+show, and nothing rewritten under you when you click away — which is what a
+clamp does, and is hard to tell apart from the box eating your input. The rule
+is pure and lives next to the range it enforces, so the harness walks every
+state the box can reach through every printable key at every cursor and
+selection position: 54,910 keystrokes reaching **exactly 101 states — the empty
+box and the hundred levels**, with all hundred typeable.
+
+Empty is the one state the filter allows that isn't a level. It reads as "no
+bound from this end" while you retype, and fills back in when you leave the box.
+The boxes select-all on focus, without which a box reading `100` would refuse
+every digit you typed — each one making a number over the limit — and read as
+simply broken.
+
+Each tab owns its sort order, its own method narrowing and its own filtered
+list, so sorting Miner by level or pinning it to Quarrying doesn't disturb how
+Botanist was left, and switching between them is instant. The `Job` column hides itself on the single-job tabs, where it
 has nothing to say. `All` is kept because searching for an item whose job you
 don't know is a real thing you do.
 
@@ -257,10 +330,83 @@ look in memory:
 | Clear Pink | `#E7A7D6` strong pink | `#F0E3E8` blush |
 | Light | `#F5D4A9` warm peach | `#DEDACC` grey parchment |
 
-Every pairing is contrast-checked against its ground. All eight clear 4.5:1 for
-body text; dimmed text is nudged toward the full text colour if it falls under
-3:1, which only Clear Pink needed — its purple-grey on pink sat at 2.7:1, and
-dimmed text carries whole columns here.
+#### Everything is fitted to its theme, not just the panel
+
+A palette that only sets the background leaves the interesting colours wrong.
+Three guards handle the rest, all of them measuring rather than assuming:
+
+| Guard | What it protects |
+|---|---|
+| `Readable` | Dimmed text against the panel, floor 3:1 |
+| `Legible` | The node list's green and amber against the panel, floor 4.5:1 |
+| `Control` | Every control, on **two** fronts at once — visible against the panel (1.25:1) *and* readable underneath its label (4.5:1) |
+| `AccentControl` | The same, for the "this one" states — selected rows, the active tab |
+
+**`Legible` keeps the hue and moves only the lightness**, because green and
+amber *mean* something here — up now, up soon. On the dark themes they stay
+light; on Light, Clear White and Clear Pink they invert to a deep green and a
+dark olive. This one mattered: the amber was `#F2C759` on Light's `#F5D4A9`
+peach, which is the same colour twice.
+
+**`Control` is a two-sided constraint, and that is the whole point.** Sampling
+the game's previews shows its controls always stand off the panel — lighter on
+the dark themes, darker on the light ones — and that it flips the *label* to
+suit when it sinks a control hard. ImGui has a single `Text` colour, so that
+escape isn't available: the lift is kept modest, and if the game's direction
+would cost the label its contrast, the opposite direction is taken and pushed
+until the control is properly distinct.
+
+An earlier version solved only half of this — it mixed toward the text and
+pulled back whenever contrast suffered, which protected the label and quietly
+dissolved the thing the label sits on. Both constraints are now checked
+together, which caught Clear Pink (whose dark text leaves so little headroom
+that a darker button is unreadable and a lighter one is invisible) and Classic
+FF (whose idle tab barely registered against a very dark, saturated panel).
+
+Every control also gets a **1px border**, pinned by the theme rather than
+inherited from the user's Dalamud style, so a control is an object with an edge
+rather than just a slightly different shade.
+
+Measured across all eight themes and all seven control states: body text
+6.4–15.7:1, status colours 4.5–9.8:1, control fills 1.21–2.80:1 against their
+panel, and every label 4.5:1 or better on the control beneath it.
+
+#### Shapes
+
+`FrameRounding` is set to half the frame height. ImGui clamps rounding to half
+the shorter side, so one number turns a button into a full pill while leaving a
+wide search field as a rounded bar with the same end caps — which is the game's
+pair of shapes exactly.
+
+**Tabs are drawn by hand**, in [`GameTabBar.cs`](VeinAndVine/Windows/GameTabBar.cs).
+The game's are elongated hexagons — flat top and bottom, both ends drawn to a
+point at mid-height. ImGui's tab bar offers a corner radius and nothing else,
+so this builds the polygon with `PathLineTo` / `PathFillConvex` / `PathStroke`.
+
+Three constants at the top of the file carry the whole look — `SlantRatio` for
+how sharp the points are, `GapPixels` for the spacing between tabs, and
+`LabelPadding`. Gap is in unscaled pixels and multiplied by the UI scale, so it
+holds up on a scaled display; taking it negative tucks each tab's point into
+the notch of the next, the way the game packs its own strip.
+
+Doing so buys more than the outline. **The game uses a dark tab with a pale
+label on every theme**, including the light ones — Light's tabs are near-black
+lettered in cream, on a peach panel. ImGui could never express that, because a
+single `Text` colour has to serve the panel and the tabs alike. Drawing the
+strip means each tab picks its own label colour, so this follows the game
+rather than compromising with it. The selected tab is also the *darker* one,
+which is the opposite of most interfaces and is what the game does: the current
+tab is recessed and the rest stand proud of it.
+
+It isn't immediate-mode in ImGui's begin/end style. The whole strip is one call
+returning the index now selected, so the caller draws only the content it
+needs. That also makes a changing set of tabs free — the Nodes tab vanishes
+while the list is docked — where `BeginTabItem` would need the set fixed.
+
+The whole tab is clickable, points included, which is only safe while the gap
+keeps neighbours apart — the hit boxes narrow by half a slant automatically if
+`GapPixels` is taken negative. The selected tab is painted last either way, so
+the tab after it can't cut into its edge.
 
 Both settings are **on by default** — a plugin window sitting next to the game's
 own windows may as well look like one — and each drops back to Dalamud's default

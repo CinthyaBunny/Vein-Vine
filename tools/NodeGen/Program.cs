@@ -90,6 +90,7 @@ internal static class Program
             }
 
             var type = ToNodeType(pointBase.GatheringType.RowId);
+            var method = ToMethod(pointBase.GatheringType.RowId);
 
             // Spearfishing is a gathering node in the sheets, but it needs bait
             // and a tug the plugin models nothing of, and neither window
@@ -166,6 +167,7 @@ internal static class Program
                     ItemId = item.RowId,
                     ItemName = itemName,
                     Type = type,
+                    Method = method,
                     ZoneName = zoneName,
                     GatheringPointBaseId = pointBase.RowId,
                     TerritoryTypeId = territory.RowId,
@@ -281,6 +283,20 @@ internal static class Program
         _ => NodeType.Fishing,        // Spearfishing
     };
 
+    /// <summary>
+    /// The GatheringType row, kept as-is rather than folded into the job. The
+    /// ids and names come straight from the sheet: 0 Mining, 1 Quarrying,
+    /// 2 Logging, 3 Harvesting, and 4/5 both spearfishing.
+    /// </summary>
+    private static GatheringMethod ToMethod(uint gatheringType) => gatheringType switch
+    {
+        0 => GatheringMethod.Mining,
+        1 => GatheringMethod.Quarrying,
+        2 => GatheringMethod.Logging,
+        3 => GatheringMethod.Harvesting,
+        _ => GatheringMethod.Spearfishing,
+    };
+
     /// <summary>Map coordinates are shown to one decimal; store them that way.</summary>
     private static float Round(float value) => MathF.Round(value, 1);
 
@@ -361,6 +377,26 @@ internal static class Program
         }
 
         // Duplicate keys would collide in the UI, which keys rows on this pair.
+        // Every node reading as Mining means the GatheringType link came back
+        // empty and the whole column defaulted, which is invisible in the file
+        // itself - it just looks like a game with no quarries in it.
+        if (nodes.Count > 0 && nodes.TrueForAll(n => n.Method == GatheringMethod.Mining))
+            problems.Add("every node came out as Mining - the gathering method was not read");
+
+        foreach (var n in nodes)
+        {
+            var jobForMethod = n.Method switch
+            {
+                GatheringMethod.Mining or GatheringMethod.Quarrying => NodeType.Mining,
+                GatheringMethod.Logging or GatheringMethod.Harvesting => NodeType.Botany,
+                _ => NodeType.Fishing,
+            };
+
+            if (jobForMethod != n.Type)
+                problems.Add($"{n.ItemName} (base {n.GatheringPointBaseId}): " +
+                             $"method {n.Method} does not belong to job {n.Type}");
+        }
+
         var duplicates = nodes
             .GroupBy(n => (n.GatheringPointBaseId, n.ItemId))
             .Where(g => g.Count() > 1)
@@ -380,6 +416,11 @@ internal static class Program
             // Cosmetic rather than fatal - a node with no icon still works, it
             // just draws a gap. Reported so a wiring mistake that zeroed the
             // whole column would be obvious instead of silent.
+            Console.WriteLine("        " + string.Join(", ", nodes
+                .GroupBy(n => n.Method)
+                .OrderBy(g => g.Key)
+                .Select(g => $"{g.Count()} {g.Key}")));
+
             Console.WriteLine($"        {nodes.Count(n => n.IconId != 0)} with an icon, " +
                               $"{nodes.Count(n => n.Stars > 0)} starred, " +
                               $"{nodes.Count(n => n.PerceptionRequired > 0)} with a perception requirement");

@@ -23,6 +23,7 @@ sheets. See [Regenerating](#regenerating) below.
     "jobLevelRequired": 60,        // int
 
     // Optional
+    "method": "Quarrying",         // "Mining" | "Quarrying" | "Logging" | "Harvesting" | "Spearfishing"
     "iconId": 26586,               // uint - Item sheet icon; 0 = none
     "perceptionRequired": 4000,    // int  - for the full yield; 0 = none
     "stars": 3,                    // int  - node star rating, 0-4
@@ -58,6 +59,18 @@ sheets. See [Regenerating](#regenerating) below.
   sheet, and because `(gatheringPointBaseId, itemId)` is the only unique key: the
   same item appears on several nodes, and one node yields several items. The UI
   keys its rows on that pair.
+- **`method` is the finer split inside `type`**, straight off the game's
+  `GatheringType` sheet: a miner mines and quarries, a botanist logs and
+  harvests. `type` still decides which job can work the node and is what the
+  main window filters on; `method` only ever narrows within it. Omitted in a
+  dataset written before this field existed, in which case every node reads as
+  `Mining` — the generator's verify pass rejects that.
+- **`method` is a property of the node, not of the item.** An item is whatever
+  its nodes make it, and plenty of items have nodes of both kinds within a job:
+  16 per job, plus the 98 that span both jobs outright. The picker builds its
+  per-item summary from the nodes in the scope it is showing, so such an item
+  appears under both sub-tabs, each time describing only the zones, level and
+  windows that sub-tab can actually get it from.
 - **`iconId` is baked in, the item's description is not.** The icon id is two
   bytes and is needed for every visible row, so keeping it here means the list
   draws without a sheet read per row. Descriptions are long and localised, so

@@ -146,29 +146,34 @@ public sealed class UiStyle : IDisposable
         Color(ImGuiCol.Text, text);
         Color(ImGuiCol.TextDisabled, p.TextDim);
 
-        Color(ImGuiCol.FrameBg, Alpha(Mix(ground, text, 0.08f), 0.90f));
-        Color(ImGuiCol.FrameBgHovered, Alpha(Mix(ground, text, 0.16f), 0.95f));
-        Color(ImGuiCol.FrameBgActive, Mix(ground, text, 0.22f));
+        // Every control is a visible object standing off the panel, not a
+        // tint of it. Inputs sit a little lower than buttons, which is the
+        // usual reading: a field is a well, a button is a raised key.
+        Color(ImGuiCol.FrameBg, Alpha(Control(ground, text, 0.10f), 0.95f));
+        Color(ImGuiCol.FrameBgHovered, Control(ground, text, 0.16f));
+        Color(ImGuiCol.FrameBgActive, Control(ground, text, 0.22f));
 
-        Color(ImGuiCol.TitleBg, Mix(ground, text, 0.05f));
-        Color(ImGuiCol.TitleBgActive, Mix(ground, accent, 0.18f));
+        Color(ImGuiCol.TitleBg, Control(ground, text, 0.08f));
+        Color(ImGuiCol.TitleBgActive, AccentControl(ground, accent, text, 0.14f));
         Color(ImGuiCol.TitleBgCollapsed, Alpha(ground, 0.80f));
 
-        Color(ImGuiCol.Header, Alpha(Mix(ground, accent, 0.25f), 0.75f));
-        Color(ImGuiCol.HeaderHovered, Alpha(Mix(ground, accent, 0.35f), 0.85f));
-        Color(ImGuiCol.HeaderActive, Alpha(Mix(ground, accent, 0.45f), 0.95f));
+        Color(ImGuiCol.Header, AccentControl(ground, accent, text, 0.16f));
+        Color(ImGuiCol.HeaderHovered, AccentControl(ground, accent, text, 0.24f));
+        Color(ImGuiCol.HeaderActive, AccentControl(ground, accent, text, 0.32f));
 
-        Color(ImGuiCol.Button, Alpha(Mix(ground, text, 0.12f), 0.95f));
-        Color(ImGuiCol.ButtonHovered, Mix(ground, text, 0.20f));
-        Color(ImGuiCol.ButtonActive, Mix(ground, text, 0.28f));
+        Color(ImGuiCol.Button, Control(ground, text, 0.17f));
+        Color(ImGuiCol.ButtonHovered, Control(ground, text, 0.25f));
+        Color(ImGuiCol.ButtonActive, Control(ground, text, 0.33f));
 
-        Color(ImGuiCol.Tab, Mix(ground, text, 0.06f));
-        Color(ImGuiCol.TabHovered, Mix(ground, accent, 0.35f));
-        Color(ImGuiCol.TabActive, Mix(ground, accent, 0.22f));
-        Color(ImGuiCol.TabUnfocused, Mix(ground, text, 0.03f));
-        Color(ImGuiCol.TabUnfocusedActive, Mix(ground, accent, 0.12f));
+        // The idle tab sits lower than the active one, so the selected tab
+        // reads as the front-most of the stack.
+        Color(ImGuiCol.Tab, Control(ground, text, 0.09f));
+        Color(ImGuiCol.TabHovered, AccentControl(ground, accent, text, 0.26f));
+        Color(ImGuiCol.TabActive, AccentControl(ground, accent, text, 0.20f));
+        Color(ImGuiCol.TabUnfocused, Control(ground, text, 0.06f));
+        Color(ImGuiCol.TabUnfocusedActive, Control(ground, text, 0.14f));
 
-        Color(ImGuiCol.TableHeaderBg, Mix(ground, text, 0.10f));
+        Color(ImGuiCol.TableHeaderBg, Control(ground, text, 0.12f));
 
         // Faint and text-tinted, not accent-tinted. Accent-coloured borders
         // drew a full-height gold rule between every column, which no game list
@@ -215,21 +220,33 @@ public sealed class UiStyle : IDisposable
         Color(ImGuiCol.PlotHistogram, accent);
         Color(ImGuiCol.PlotHistogramHovered, Mix(accent, text, 0.40f));
 
-        // Game panels are barely rounded and edged with a single hairline.
-        // Every border size is pinned to 1 or 0 rather than left to the user's
-        // Dalamud style, which is where the thick frames were coming from.
-        Var(ImGuiStyleVar.WindowRounding, 3f);
-        Var(ImGuiStyleVar.ChildRounding, 2f);
-        Var(ImGuiStyleVar.FrameRounding, 2f);
-        Var(ImGuiStyleVar.PopupRounding, 2f);
-        Var(ImGuiStyleVar.ScrollbarRounding, 2f);
-        Var(ImGuiStyleVar.TabRounding, 2f);
-        Var(ImGuiStyleVar.GrabRounding, 2f);
+        // Buttons and fields are pills, as they are in game. ImGui clamps
+        // rounding to half the shorter side, so half the frame height rounds a
+        // button into a full pill while leaving a wide search field as a
+        // rounded bar with the same end caps - which is exactly the game's
+        // pair of shapes from one number.
+        var pill = ImGui.GetFrameHeight() * 0.5f;
 
+        Var(ImGuiStyleVar.FrameRounding, pill);
+        Var(ImGuiStyleVar.GrabRounding, pill);
+        Var(ImGuiStyleVar.ScrollbarRounding, pill);
+
+        // Tabs keep their top corners only; see the note in the readme about
+        // the game's angled tabs, which ImGui has no way to express.
+        Var(ImGuiStyleVar.TabRounding, 6f);
+
+        Var(ImGuiStyleVar.WindowRounding, 3f);
+        Var(ImGuiStyleVar.ChildRounding, 3f);
+        Var(ImGuiStyleVar.PopupRounding, 3f);
+
+        // A hairline on the panel, and one on every control - this is what
+        // stops a button being merely a slightly different shade of the
+        // background. Pinned rather than inherited from the user's Dalamud
+        // style, which is free to set them to zero.
         Var(ImGuiStyleVar.WindowBorderSize, 1f);
         Var(ImGuiStyleVar.ChildBorderSize, 1f);
         Var(ImGuiStyleVar.PopupBorderSize, 1f);
-        Var(ImGuiStyleVar.FrameBorderSize, 0f);
+        Var(ImGuiStyleVar.FrameBorderSize, 1f);
 
         void Color(ImGuiCol target, Vector4 value)
         {
@@ -257,11 +274,87 @@ public sealed class UiStyle : IDisposable
     }
 
     /// <summary>
-    /// The four anchors a theme is built from. Three come straight out of the
-    /// game's <c>UIColor</c> sheet; see <see cref="BuildPalette"/> for why the
-    /// background does not.
+    /// The anchors a theme is built from. Three come straight out of the game's
+    /// <c>UIColor</c> sheet; see <see cref="BuildPalette"/> for why the
+    /// background does not, and <see cref="Legible"/> for how the two status
+    /// colours are fitted to it.
     /// </summary>
-    private sealed record Palette(Vector4 Background, Vector4 Text, Vector4 TextDim, Vector4 Accent);
+    private sealed record Palette(
+        Vector4 Background,
+        Vector4 Text,
+        Vector4 TextDim,
+        Vector4 Accent,
+        Vector4 Success,
+        Vector4 Warning);
+
+    // What the node list means by "up now" and "up soon" when no game theme is
+    // selected. Tuned for Dalamud's own dark default.
+    private static readonly Vector4 DefaultSuccess = new(0.45f, 0.85f, 0.50f, 1f);
+    private static readonly Vector4 DefaultWarning = new(0.95f, 0.78f, 0.35f, 1f);
+    private static readonly Vector4 DefaultMuted = new(0.62f, 0.62f, 0.62f, 1f);
+
+    private Palette? Current => GetPalette(configuration.Theme);
+
+    /// <summary>A node that is up now. Green, adjusted to read on this theme.</summary>
+    public Vector4 StatusUp => Current?.Success ?? DefaultSuccess;
+
+    /// <summary>A node about to come up. Amber, adjusted to read on this theme.</summary>
+    public Vector4 StatusSoon => Current?.Warning ?? DefaultWarning;
+
+    /// <summary>A node that is waiting, or simply always there.</summary>
+    public Vector4 StatusIdle => Current?.TextDim ?? DefaultMuted;
+
+    /// <summary>Fills and label colours for the hand-drawn tab strip.</summary>
+    public readonly record struct TabColours(
+        Vector4 Idle,
+        Vector4 Hovered,
+        Vector4 Active,
+        Vector4 IdleLabel,
+        Vector4 ActiveLabel,
+        Vector4 Edge);
+
+    /// <summary>
+    /// The tab strip's own colours, which do not follow the rules the rest of
+    /// the interface does.
+    ///
+    /// In game a tab is dark and its label pale, on the light themes as much as
+    /// the dark ones - Light's tabs are near-black lettered in cream, sitting
+    /// on a peach panel. ImGui's tab bar could never do that, because one Text
+    /// colour has to serve the panel and the tabs alike. Drawing the strip by
+    /// hand means the label can be chosen per tab, so this follows the game
+    /// instead of compromising with it.
+    ///
+    /// The selected tab is the darker of the two, which is the opposite of most
+    /// interfaces and is what the game does: the current tab is recessed, the
+    /// others stand proud of it.
+    /// </summary>
+    public TabColours Tabs
+    {
+        get
+        {
+            var ground = Current?.Background ?? new Vector4(0.090f, 0.090f, 0.102f, 1f);
+            var accent = Current?.Accent ?? new Vector4(0.847f, 0.741f, 0.463f, 1f);
+            var onLight = Luminance(ground) > 0.4f;
+
+            // A light panel needs its tabs taken much further down to read as
+            // dark furniture; a panel that is already near-black does not.
+            var active = Mix(ground, Black, onLight ? 0.72f : 0.55f);
+            var idle = Mix(ground, Black, onLight ? 0.52f : 0.28f);
+            var hovered = Mix(ground, Black, onLight ? 0.62f : 0.40f);
+
+            return new TabColours(
+                idle,
+                hovered,
+                active,
+                LabelOn(idle),
+                LabelOn(active),
+                accent);
+        }
+    }
+
+    /// <summary>Whichever of white or black reads better on a given fill.</summary>
+    private static Vector4 LabelOn(Vector4 fill) =>
+        ContrastRatio(White, fill) >= ContrastRatio(Black, fill) ? White : Black;
 
     private readonly Dictionary<UiThemeChoice, Palette?> palettes = [];
 
@@ -323,7 +416,9 @@ public sealed class UiStyle : IDisposable
                 ground,
                 text,
                 Readable(Rgba(Column(dimRow, theme)), text, ground),
-                Rgba(Column(accentRow, theme)));
+                Rgba(Column(accentRow, theme)),
+                Legible(DefaultSuccess, ground, 4.5f),
+                Legible(DefaultWarning, ground, 4.5f));
         }
         catch (Exception ex)
         {
@@ -412,6 +507,111 @@ public sealed class UiStyle : IDisposable
             dim = Mix(dim, text, 0.25f);
 
         return dim;
+    }
+
+    /// <summary>
+    /// Darkens or lightens a colour until it reads against the panel, keeping
+    /// its hue.
+    ///
+    /// The node list's green and amber mean something - up now, up soon - so
+    /// the hue has to survive; only the lightness may move. Which way it moves
+    /// depends on the theme: away from the panel, so a light green becomes a
+    /// deep green on Light's peach and stays light on Dark.
+    ///
+    /// Without this the status column was very nearly invisible on three
+    /// themes: amber on Light's #F5D4A9 is the same colour twice.
+    /// </summary>
+    private static Vector4 Legible(Vector4 colour, Vector4 ground, float target)
+    {
+        var away = Luminance(ground) > 0.4f
+            ? new Vector4(0f, 0f, 0f, colour.W)
+            : new Vector4(1f, 1f, 1f, colour.W);
+
+        for (var step = 0; step < 12 && ContrastRatio(colour, ground) < target; step++)
+            colour = Mix(colour, away, 0.10f);
+
+        return colour;
+    }
+
+    private static readonly Vector4 White = new(1f, 1f, 1f, 1f);
+    private static readonly Vector4 Black = new(0f, 0f, 0f, 1f);
+
+    /// <summary>
+    /// The fill for a control - a button, a tab, an input, a selected row -
+    /// which has to be visible as an object in its own right and still carry a
+    /// readable label.
+    ///
+    /// Sampling the game's own theme previews shows its controls always stand
+    /// off the panel, and which way depends on the panel: lighter on the dark
+    /// themes, darker on the light ones. The game can afford to sink a control
+    /// hard on a light panel - Light's buttons are near-black - because it
+    /// flips the label to a pale colour to suit. ImGui has one Text colour for
+    /// everything, so that is not available here: the lift is kept modest, and
+    /// if the game's direction would cost the label its contrast, the other
+    /// direction is taken instead.
+    ///
+    /// This replaced an earlier version that mixed towards the text and then
+    /// pulled back towards the panel whenever contrast suffered. It protected
+    /// the label and quietly destroyed the thing the label sits on, leaving
+    /// controls that had all but dissolved into the background.
+    /// </summary>
+    private static Vector4 Control(Vector4 ground, Vector4 text, float lift)
+    {
+        var onLightPanel = Luminance(ground) > 0.4f;
+
+        var toward = onLightPanel ? Black : White;
+        var preferred = Mix(ground, toward, lift);
+
+        if (ContrastRatio(text, preferred) >= 4.5f)
+        {
+            // A small lift off a very dark, saturated panel barely registers -
+            // Classic FF's idle tab landed at 1.18:1. Keep going until the
+            // control is a distinct object, stopping the moment the label
+            // would suffer for it.
+            for (var step = 0; step < 8 && ContrastRatio(preferred, ground) < 1.25f; step++)
+            {
+                var further = Mix(preferred, toward, 0.10f);
+                if (ContrastRatio(text, further) < 4.5f)
+                    break;
+
+                preferred = further;
+            }
+
+            return preferred;
+        }
+
+        // The game's direction would cost the label its contrast, so go the
+        // other way - which is away from the text, and so can only help it.
+        // That also means there is no reason to stop at the requested lift:
+        // keep going until the control is genuinely distinct from the panel.
+        // Clear Pink needs this. Its text is only 6.4:1 off the panel, so a
+        // darker button is unreadable and a slightly lighter one is invisible.
+        var away = onLightPanel ? White : Black;
+        var result = Mix(ground, away, lift);
+
+        for (var step = 0; step < 10 && ContrastRatio(result, ground) < 1.25f; step++)
+            result = Mix(result, away, 0.12f);
+
+        return result;
+    }
+
+    /// <summary>
+    /// A control fill carrying the theme's accent, for the states that mean
+    /// "this one" - a selected row, the active tab. Tinted first, then given
+    /// the same lift and the same guarantee as any other control.
+    /// </summary>
+    private static Vector4 AccentControl(Vector4 ground, Vector4 accent, Vector4 text, float lift)
+    {
+        var plain = Control(ground, text, lift);
+        var tinted = Mix(plain, accent, 0.35f);
+
+        // The tint can undo the contrast the lift just bought; walk it back
+        // towards the plain control fill, which is already known to be both
+        // visible and readable, until the label reads again.
+        for (var step = 0; step < 12 && ContrastRatio(text, tinted) < 4.5f; step++)
+            tinted = Mix(tinted, plain, 0.25f);
+
+        return ContrastRatio(text, tinted) >= 4.5f ? tinted : plain;
     }
 
     /// <summary>WCAG relative-luminance contrast ratio, 1:1 to 21:1.</summary>
