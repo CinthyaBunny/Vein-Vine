@@ -30,6 +30,77 @@ internal static class UiShared
     /// <summary>Anything opening within this long is coloured as "soon".</summary>
     public static readonly TimeSpan SoonThreshold = TimeSpan.FromMinutes(5);
 
+    // Eorzea clock tuning, gathered so it can be adjusted by eye without
+    // reading the drawing below - the same reason GameTabBar keeps its shape
+    // constants together. Where the clock sits is the caller's decision, so
+    // moving it means calling DrawEorzeaClock somewhere else, not editing it.
+
+    /// <summary>
+    /// Font scale for the digits, 1f being the window's ordinary text. The
+    /// clock is a reference point rather than a row of data, so it can carry
+    /// being larger than the table beneath it.
+    ///
+    /// Deliberately not a const: at 1f the compiler folds the guards below into
+    /// dead code and warns, which is a poor thing to greet the next person who
+    /// wants to try 1.3f.
+    /// </summary>
+    private static readonly float ClockScale = 1f;
+
+    /// <summary>Set empty to drop the prefix and show only the digits.</summary>
+    private const string ClockLabel = "ET";
+
+    /// <summary>
+    /// Width the clock will occupy, for callers that need to place it before
+    /// drawing it - <see cref="RightAlign"/> being the reason this exists.
+    /// Measured off a fixed sample so the width does not twitch as the digits
+    /// change.
+    /// </summary>
+    public static float EorzeaClockWidth()
+    {
+        var digits = ImGui.CalcTextSize("00:00").X * ClockScale;
+
+        return ClockLabel.Length == 0
+            ? digits
+            : ImGui.CalcTextSize(ClockLabel).X + ImGui.GetStyle().ItemInnerSpacing.X + digits;
+    }
+
+    /// <summary>
+    /// The Eorzea clock, drawn at the cursor.
+    ///
+    /// The node list mixes two clocks and says so nowhere: the Windows column
+    /// is Eorzea hours, while "4m30s left" and "in 12m" are real minutes. A
+    /// window of 12-14 means nothing without knowing what time it is in the
+    /// same units, so this is what makes that column readable at all.
+    /// </summary>
+    public static void DrawEorzeaClock()
+    {
+        var (hour, minute) = EorzeaTime.CurrentEorzeaClock();
+
+        ImGui.AlignTextToFramePadding();
+
+        if (ClockLabel.Length > 0)
+        {
+            ImGui.TextDisabled(ClockLabel);
+            ImGui.SameLine(0, ImGui.GetStyle().ItemInnerSpacing.X);
+            ImGui.AlignTextToFramePadding();
+        }
+
+        // Scaling is per-window in ImGui, so it has to be put back immediately
+        // or every widget drawn afterwards inherits it.
+        if (ClockScale != 1f)
+            ImGui.SetWindowFontScale(ClockScale);
+
+        ImGui.TextUnformatted($"{hour:00}:{minute:00}");
+
+        if (ClockScale != 1f)
+            ImGui.SetWindowFontScale(1f);
+
+        Tooltip(
+            "Current Eorzea time.\n\n" +
+            "The Windows column is in Eorzea hours; the countdowns beside them\n" +
+            "are in real minutes.");
+    }
+
     public static string JobLabel(NodeType type) => type switch
     {
         NodeType.Mining => "MIN",

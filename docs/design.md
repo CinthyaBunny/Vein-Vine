@@ -73,6 +73,16 @@ having been quietly overridden. The band is found by watching for the boundary
 rather than by drawing two lists, so it lands correctly in descending order too,
 where the always-up group comes first.
 
+The toolbar carries an **Eorzea clock**, because the list quietly mixes two of
+them: the `Windows` column is Eorzea hours while `4m30s left` and `in 12m` are
+real minutes, and a window of `12-14` means nothing without knowing the time in
+the same units. Its scale and its label are two fields at the top of
+`UiShared`, and *where* it sits is the caller's decision rather than its own, so
+moving it is a change of call site rather than an edit to the clock.
+
+The hour and the minute come from a single timestamp. Read separately they can
+straddle a tick and report 12:59 as 12:00.
+
 Sort state deliberately lives in ImGui's own `.ini`, not in `Configuration`.
 ImGui already persists table column sorting, and a second copy in our config
 would only get a chance to disagree with the arrows in the header.
@@ -488,13 +498,11 @@ window already draws item icons through `ITextureProvider`; class-job icons come
 from the same provider. Worth having as a setting rather than a silent swap,
 since the three-letter form is denser when the column is narrow.
 
-**An Eorzea clock in the list.** This is the mixed-units problem: the `Windows`
-column is Eorzea hours, while `x left` and `in y` are real minutes, and nothing
-on screen says so. A clock in the header is the cheapest fix, and pairing each
-countdown with the Eorzea hour it lands on would let you plan GP recovery
-against the window rather than against a stopwatch. One caveat: `GetEorzeaMinute`
-was deleted earlier today as unused, so an `HH:MM` readout needs it restored —
-it is in git history and is four lines.
+**Pair each countdown with the Eorzea hour it lands on.** The toolbar clock now
+says what time it is, but a row still reports "in 12m" without saying which
+Eorzea hour that reaches, so the two halves of the mixed-units problem are only
+half solved. Showing both would let GP recovery be planned against the window
+rather than against a stopwatch.
 
 **More padding on the leading row.** Straightforward, though ImGui tables size
 rows uniformly, so this means either drawing that row taller deliberately or

@@ -33,7 +33,20 @@ public static class EorzeaTime
     public static int GetEorzeaHour(long unixSeconds) =>
         (int)(unixSeconds / RealSecondsPerEorzeaHour % 24);
 
+    public static int GetEorzeaMinute(long unixSeconds) =>
+        (int)(unixSeconds * 60 / RealSecondsPerEorzeaHour % 60);
+
     public static int GetCurrentEorzeaHour() => GetEorzeaHour(CurrentUnixSeconds());
+
+    /// <summary>
+    /// The Eorzea clock now. Both halves come from one timestamp deliberately:
+    /// read separately they can straddle a tick and report 12:59 as 12:00.
+    /// </summary>
+    public static (int Hour, int Minute) CurrentEorzeaClock()
+    {
+        var now = CurrentUnixSeconds();
+        return (GetEorzeaHour(now), GetEorzeaMinute(now));
+    }
 
     public static long GetWeatherWindowStart(long unixSeconds) =>
         unixSeconds - FloorMod(unixSeconds, RealSecondsPerWeatherWindow);

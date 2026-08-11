@@ -1096,8 +1096,8 @@ public sealed class MainWindow : Window
 
         ImGui.Separator();
 
-        var hour = plugin.WeatherService.CurrentEorzeaHour;
-        ImGui.TextDisabled($"Eorzea time: {hour:00}:xx");
+        var (hour, minute) = EorzeaTime.CurrentEorzeaClock();
+        ImGui.TextDisabled($"Eorzea time: {hour:00}:{minute:00}");
 
         var territory = Service.ClientState.TerritoryType;
         if (territory != 0)
