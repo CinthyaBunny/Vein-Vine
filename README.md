@@ -81,7 +81,9 @@ One window, four tabs.
 expiring, amber for up within five minutes, grey for waiting, ordinary text for
 a node that is simply always there. Nodes with no window are grouped below the
 timed ones under an `Always available` band, so they can't sit between the node
-expiring now and the one worth travelling for. The toolbar shows the current
+expiring now and the one worth travelling for. Always-up nodes in the same zone
+as the window you're waiting on are tinted, since those are worth collecting
+while you're there. The toolbar shows the current
 Eorzea time, since the `Windows` column is in Eorzea hours while the countdowns
 beside it are in real minutes; click it to swap to local time and back. Above
 the table: `Miner` / `Botanist`,

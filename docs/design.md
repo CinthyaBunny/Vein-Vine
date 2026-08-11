@@ -78,6 +78,23 @@ link quotes, so they read straight across to the in-game map without the flag
 having to be placed first. They are unsortable, an ordering on them meaning
 nothing, and the column can be hidden like any other.
 
+While a window is being waited on, the always-up rows **in that same zone** are
+tinted: those are the ones worth collecting while standing there anyway. The
+mark is scoped to the single leading node rather than to any timed node, and
+that scoping is what makes it mean anything — 955 of the dataset's 1,168
+always-up nodes share a zone with *some* timed node, so the looser reading would
+light up most of the list and say nothing.
+
+Which node is leading is a fact about the data rather than about the current
+sort: whichever is up with the least time left, or if none is up, whichever
+opens first. Sorting by name re-orders the list without moving the mark. The
+row's tooltip names the node it is keeping company with, so the colour never has
+to be decoded.
+
+Marked rather than reordered, deliberately. Being near the window you are
+waiting on is a note about a row, not a claim that it has become more urgent
+than the rows above it.
+
 The toolbar carries a **clock**, because the list quietly mixes two of them: the
 `Windows` column is Eorzea hours while `4m30s left` and `in 12m` are real
 minutes, and a window of `12-14` means nothing without knowing the time in the
@@ -517,12 +534,6 @@ sheets hold. Each is graded by what already exists, because several are much
 closer than they look and two are further away.
 
 ### Ready now — the data is already in the dataset
-
-**Highlight always-up nodes sharing a zone with the leading timed one.** The
-coordinates are now a column, so the remaining half of that idea is the one that
-makes them actionable: while waiting on a window, the always-up mats you could
-collect *in the same zone* are the ones worth knowing about. A group-by on
-`territoryTypeId` over the visible rows.
 
 **A job icon instead of `MIN` / `BTN`.** Every node has an `iconId` and the
 window already draws item icons through `ITextureProvider`; class-job icons come
