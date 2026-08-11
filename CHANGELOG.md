@@ -15,11 +15,14 @@ rest of the steps.
 
 ## [Unreleased]
 
-## [0.0.1.3b] - 2026-08-10
+<details>
+<summary><strong>v0.0.1.3b</strong> - 2026-08-10</summary>
 
-## Changed
+### Changed
 
 - **Finalized Repository Push Functions** Completed integration for pushing code and complete builds to the github repository.
+
+</details>
 
 ## [0.0.1.3] - 2026-08-10
 
