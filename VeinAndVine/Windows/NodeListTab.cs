@@ -235,13 +235,49 @@ public sealed class NodeListTab
         // it - a bad row should cost a log line, not the session.
         try
         {
-            foreach (var result in PriorityEngine.Sort(results, sort, sortDescending))
+            var ordered = PriorityEngine.Sort(results, sort, sortDescending);
+
+            // Only the priority order groups always-up nodes apart. An explicit
+            // column sort does what its header says and nothing else, so it gets
+            // no bands - they would read as the sort having been overridden.
+            var grouped = sort == NodeSort.Priority;
+            var alwaysCount = grouped ? ordered.Count(r => r.IsAlwaysAvailable) : 0;
+
+            // Detected at the boundary rather than by drawing two lists, so this
+            // holds however the groups are ordered - descending priority puts
+            // the always-up band first.
+            bool? previousGroup = null;
+
+            foreach (var result in ordered)
+            {
+                if (grouped && previousGroup is { } previous && previous != result.IsAlwaysAvailable)
+                {
+                    DrawSectionRow(result.IsAlwaysAvailable
+                        ? $"Always available ({alwaysCount})"
+                        : $"Timed ({ordered.Count - alwaysCount})");
+                }
+
+                previousGroup = result.IsAlwaysAvailable;
                 DrawRow(result);
+            }
         }
         finally
         {
             ImGui.EndTable();
         }
+    }
+
+    /// <summary>
+    /// A labelled band marking where one group of rows ends and the next
+    /// begins. The whole row is tinted rather than ruled off, because a
+    /// Separator inside a table cell spans only that cell.
+    /// </summary>
+    private static void DrawSectionRow(string label)
+    {
+        ImGui.TableNextRow();
+        ImGui.TableSetBgColor(ImGuiTableBgTarget.RowBg0, ImGui.GetColorU32(ImGuiCol.TableHeaderBg));
+        ImGui.TableNextColumn();
+        ImGui.TextDisabled(label);
     }
 
     private void DrawRow(PriorityResult result)

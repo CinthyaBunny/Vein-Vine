@@ -79,7 +79,9 @@ One window, four tabs.
 
 **Nodes** — one row per node, coloured by how urgent it is: green for up and
 expiring, amber for up within five minutes, grey for waiting, ordinary text for
-a node that is simply always there. Above the table: `Miner` / `Botanist`,
+a node that is simply always there. Nodes with no window are grouped below the
+timed ones under an `Always available` band, so they can't sit between the node
+expiring now and the one worth travelling for. Above the table: `Miner` / `Botanist`,
 `Timed only`, `Upcoming` and `This zone`, all persisted. Double-click a row to
 set the map flag; so does the marker button at its right end, and right-click
 also offers *Stop tracking*.

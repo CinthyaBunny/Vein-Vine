@@ -100,11 +100,18 @@ public sealed class PriorityEngine(IWeatherProvider weather)
     {
         if (sort == NodeSort.Priority)
         {
-            // Up now, soonest-to-expire first (grab it before it goes), then
-            // nearest. Nodes waiting on weather or time sort last, by how soon
-            // they open.
+            // Always-up nodes sort below every timed one, open or not. They used
+            // to land in between - after what is up now, before what is worth
+            // travelling for - which is the wrong place for the one kind of node
+            // that will still be there later. One tracked crystal can bring
+            // thirty of them.
+            //
+            // Within the timed group: up now, soonest-to-expire first (grab it
+            // before it goes), then nearest. Nodes waiting on weather or time
+            // sort last, by how soon they open.
             var byPriority = results
-                .OrderByDescending(r => r.IsActive)
+                .OrderBy(r => r.IsAlwaysAvailable)
+                .ThenByDescending(r => r.IsActive)
                 .ThenBy(r => r.TimeRemaining ?? TimeSpan.MaxValue)
                 .ThenBy(r => r.TimeUntilActive ?? TimeSpan.MaxValue)
                 .ThenBy(r => r.DistanceFromPlayer ?? float.MaxValue)

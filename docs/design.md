@@ -59,6 +59,20 @@ the only rows worth hurrying for. For the same reason the summary counts only
 *timed* nodes as "up now", and the default sort puts what expires above what
 doesn't.
 
+In priority order the always-up rows are also **banded off below every timed
+one**, open or upcoming, under a labelled `Always available (n)` row. They used
+to sort between the two — after what is up now, but above what is worth
+travelling for — which put the one kind of node that will still be there later
+directly in the path of the one that will not. That is not a rare shape:
+`Fire Crystal` alone has 38 nodes, 31 of them always up, so a single tracked
+crystal used to bury the next window under thirty rows you could visit any time.
+
+Only the priority order groups them. An explicit column sort does what its
+header says and nothing else, so it gets no bands — they would read as the sort
+having been quietly overridden. The band is found by watching for the boundary
+rather than by drawing two lists, so it lands correctly in descending order too,
+where the always-up group comes first.
+
 Sort state deliberately lives in ImGui's own `.ini`, not in `Configuration`.
 ImGui already persists table column sorting, and a second copy in our config
 would only get a chance to disagree with the arrows in the header.
@@ -450,14 +464,6 @@ sheets hold. Each is graded by what already exists, because several are much
 closer than they look and two are further away.
 
 ### Ready now — the data is already in the dataset
-
-**Split always-up nodes from timed ones.** The strongest of these, and the
-dataset makes the case: `Fire Crystal` alone has **38 nodes, 31 of them always
-up**. Tracking one such item buries the timed rows that are the reason to have
-the window open, and an always-up row sitting between the current node and the
-next one invites walking to it instead of pre-positioning for the node that is
-about to open. `PriorityResult.IsAlwaysAvailable` already distinguishes them, so
-this is a separator or a second section in `DrawTable`, not new data.
 
 **Zone and coordinates as columns.** Every one of the 1,587 nodes carries
 `zoneName`, `mapX` and `mapY`, and the row tooltip already prints them. Promoting
