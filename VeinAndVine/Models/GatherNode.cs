@@ -125,7 +125,11 @@ public sealed class GatherNode
     /// </summary>
     public IReadOnlyList<string> RequiredWeather { get; init; } = [];
 
-    /// <summary>How long the node stays up once its conditions are met.</summary>
+    /// <summary>
+    /// How long the node stays up once its conditions are met. Zero means no
+    /// cap, which is how always-up nodes are written - callers must not treat
+    /// it as an expiry that has already passed.
+    /// </summary>
     public int SpawnDurationMinutes { get; init; } = 60;
 
     /// <summary>

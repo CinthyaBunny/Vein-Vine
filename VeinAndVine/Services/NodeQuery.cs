@@ -70,16 +70,10 @@ public sealed record GatherItem
     public required string ItemName { get; init; }
 
     /// <summary>
-    /// The job of the item's first node. Display and sorting only - use
-    /// <see cref="Jobs"/> to decide whether a job can gather it.
-    /// </summary>
-    public required NodeType Type { get; init; }
-
-    /// <summary>
     /// Every job that can gather this item, which is not always one: 98 items
     /// in the current dataset have both mining and botany nodes. Collapsing
-    /// that to a single <see cref="Type"/> would hide each of them from one of
-    /// the two job tabs.
+    /// that to a single job would hide each of them from one of the two job
+    /// tabs.
     /// </summary>
     public required JobFilter Jobs { get; init; }
 
@@ -108,7 +102,7 @@ public sealed record GatherItem
     /// <summary>Every zone the item appears in, alphabetical.</summary>
     public required IReadOnlyList<string> Zones { get; init; }
 
-    /// <summary>Union of the Eorzea-hour windows across all of the item's nodes.</summary>
+    /// <summary>Union of the Eorzea-hour windows across the item's nodes, or "Always up".</summary>
     public required string WindowSummary { get; init; }
 
     /// <summary>
@@ -137,7 +131,6 @@ public sealed record NodeFilter
     public const int MinGatheringLevel = 1;
     public const int MaxGatheringLevel = 100;
 
-    /// <summary>Matches everything. The default when a caller passes no filter.</summary>
     public static readonly NodeFilter Unfiltered = new();
 
     public JobFilter Jobs { get; init; } = JobFilter.All;
@@ -315,15 +308,6 @@ public static class NodeQuery
         _ => MethodFilter.None,
     };
 
-    /// <summary>The methods a job can use, for building its sub-tabs.</summary>
-    public static MethodFilter MethodsFor(JobFilter job) => job switch
-    {
-        JobFilter.Miner => MethodFilter.AllMiner,
-        JobFilter.Botanist => MethodFilter.AllBotanist,
-        JobFilter.Fisher => MethodFilter.Spearfishing,
-        _ => MethodFilter.All,
-    };
-
     /// <summary>
     /// "00-02, 12-14", or "Always up" for a node with no time restriction.
     /// Duplicates are collapsed, so an item gathered from three nodes that
@@ -369,7 +353,6 @@ public static class NodeQuery
                 {
                     ItemId = group.Key,
                     ItemName = first.ItemName,
-                    Type = first.Type,
                     Methods = group.Aggregate(
                         MethodFilter.None, (acc, n) => acc | n.Method.ToMethodFilter()),
                     Jobs = group.Aggregate(

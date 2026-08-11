@@ -16,10 +16,9 @@ public class Configuration : IPluginConfiguration
 {
     public int Version { get; set; } = 1;
 
-    /// <summary>Items the player is tracking.</summary>
     public List<WishlistEntry> Wishlist { get; set; } = [];
 
-    /// <summary>Show nodes that are waiting on weather or time, greyed out.</summary>
+    /// <summary>Inactive meaning waiting on weather or time, as opposed to always-up.</summary>
     public bool ShowInactiveNodes { get; set; } = true;
 
     public bool OpenMainWindowOnStartup { get; set; } = false;
@@ -30,10 +29,7 @@ public class Configuration : IPluginConfiguration
     public bool ShowMiningNodes { get; set; } = true;
     public bool ShowBotanyNodes { get; set; } = true;
 
-    /// <summary>Limit the main window to the zone the player is standing in.</summary>
     public bool CurrentZoneOnly { get; set; } = false;
-
-    /// <summary>Hide always-up nodes, leaving only the ones with a spawn window.</summary>
     public bool TimedNodesOnly { get; set; } = false;
 
     // Appearance. The game's own look is the default: this is a plugin for a
@@ -51,7 +47,6 @@ public class Configuration : IPluginConfiguration
     public UiFontChoice Font { get; set; } = UiFontChoice.GameAxis;
     public UiThemeChoice Theme { get; set; } = UiThemeChoice.Dark;
 
-    /// <summary>Whether the node list is a tab or its own docked panel.</summary>
     public NodeListPlacement NodeListPlacement { get; set; } = NodeListPlacement.Tabbed;
 
     /// <summary>
@@ -61,9 +56,8 @@ public class Configuration : IPluginConfiguration
     public float DockedNodeListWidth { get; set; } = 420f;
 
     /// <summary>
-    /// The job toggles as the filter the engine wants. A method, not a
-    /// property, so Dalamud's serializer doesn't write a derived value into the
-    /// config file alongside the two bools it's derived from.
+    /// A method, not a property, so Dalamud's serializer doesn't write a
+    /// derived value into the config file alongside the two bools it comes from.
     /// </summary>
     public JobFilter GetJobFilter()
     {

@@ -86,13 +86,13 @@ column is a function of its inputs and can be unit tested with no game running.
 | `Services/PriorityEngine.cs` | **pure** | Availability + sorting, gated behind `IWeatherProvider` |
 | `Services/NodeQuery.cs` | **pure** | Filters, the per-item index, picker sorting |
 | `Services/ItemInfo.cs` | Lumina, textures | Item icons and descriptions, from the game client |
-| `Services/UiStyle.cs` | fonts, textures | Optional game font, palette and window frame |
+| `Services/UiStyle.cs` | Lumina, fonts | Optional game font and palette, from the `UIColor` sheet |
 | `Models/` | **pure** | `GatherNode`, `WishlistEntry` |
 | `Windows/MainWindow.cs` | ImGui | The one window: tab bar, Display and Appearance |
 | `Windows/NodeListTab.cs` | ImGui | The node list, and the map flag |
 | `Windows/NodeListWindow.cs` | ImGui | Optional docked panel hosting the same node list |
 | `Windows/GameTabBar.cs` | ImGui | The hand-drawn hexagonal tab strip |
-| `Windows/UiShared.cs` | ImGui | Colours, duration formatting, sort-spec bridge |
+| `Windows/UiShared.cs` | ImGui | Job and duration formatting, icons, sort-spec bridge |
 | `tools/NodeGen/` | Lumina, build-time | Regenerates `Data/nodes.json` from game sheets |
 
 `PriorityEngine` depends on `IWeatherProvider`, not `WeatherService`, specifically

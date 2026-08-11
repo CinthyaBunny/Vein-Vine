@@ -28,13 +28,8 @@ public sealed class Plugin : IDalamudPlugin
     public WeatherService WeatherService { get; }
     public PriorityEngine PriorityEngine { get; }
 
-    /// <summary>Icons and item descriptions, read from the game's own data.</summary>
     public ItemInfo ItemInfo { get; }
-
-    /// <summary>Game font, palette and window art, each independently optional.</summary>
     public UiStyle UiStyle { get; }
-
-    /// <summary>Static node dataset, loaded once at startup from Data/nodes.json.</summary>
     public IReadOnlyList<GatherNode> NodeDatabase { get; private set; }
 
     /// <summary>
@@ -63,7 +58,8 @@ public sealed class Plugin : IDalamudPlugin
 
     public Plugin(IDalamudPluginInterface pluginInterface)
     {
-        // Populates the static Service properties. Must happen first.
+        // Every Service property is null until this runs, so nothing above it
+        // may touch one.
         pluginInterface.Create<Service>();
 
         Configuration = Service.PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
@@ -115,15 +111,12 @@ public sealed class Plugin : IDalamudPlugin
         Service.PluginInterface.UiBuilder.OpenConfigUi -= ToggleConfigUi;
         Service.PluginInterface.UiBuilder.OpenMainUi -= ToggleMainUi;
 
+        // The windows hold no resources of their own - only UiStyle does, via a
+        // font handle occupying a slot in Dalamud's font atlas.
         windowSystem.RemoveAllWindows();
-        mainWindow.Dispose();
-        nodeListWindow.Dispose();
-
-        // Owns a font handle, which holds a slot in Dalamud's font atlas.
         UiStyle.Dispose();
     }
 
-    /// <summary>Re-reads Data/nodes.json without a plugin reload.</summary>
     public void ReloadNodeDatabase()
     {
         NodeDatabase = Services.NodeDatabase.Load();
@@ -211,6 +204,5 @@ public sealed class Plugin : IDalamudPlugin
     /// </summary>
     public void ToggleConfigUi() => mainWindow.Open(MainWindow.Tab.Display);
 
-    /// <summary>Brings up the item picker, from wherever you were.</summary>
     public void OpenWishlist() => mainWindow.Open(MainWindow.Tab.Wishlist);
 }

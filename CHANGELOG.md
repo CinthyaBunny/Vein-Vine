@@ -7,12 +7,40 @@ Versions are four-part `major.minor.patch.build`, because Dalamud requires a
 four-part `AssemblyVersion` and the in-game installer compares them to decide
 whether a user is offered an update.
 
+The newest release sits outside a `<details>` wrapper so GitHub renders it open;
+everything older is collapsed. A release build reads its notes straight out of
+this file by matching the `<strong>` version marker, so keep that line's shape
+when adding an entry.
 
-### <summary><strong>v0.0.1.3b</strong> - 2026-08-10</summary>
+
+## <strong>v0.0.1.4</strong> - 2026-08-10
+
+Housekeeping release.
+
+### Fixed
+
+- **Fixed an issue where there were multiple instances of final build files.**
+
+- **Fixed an issue where release notes were not handed off to the ingame installer**
+
+- **Fixed a version mismatching issue**
+
+- **Fixed an issue where the mainwindow discarded its own GUI**
+
+- **Fixed an issue where Luminance created duplicates**
+
+### Changed
+
+- Dead and duplicated code removed
+
+<details>
+<summary><strong>v0.0.1.3b</strong> - 2026-08-10</summary>
 
 ### Changed
 
 - **Finalized Repository Push Functions.** Github now recieves pushes from VS Code commits
+
+</details>
 
 
 <details>

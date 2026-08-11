@@ -29,7 +29,7 @@ namespace VeinAndVine.Windows;
 /// appears when the user has turned on resize-from-edges globally - not
 /// something a plugin should be depending on, or changing.
 /// </summary>
-public sealed class NodeListWindow : Window, IDisposable
+public sealed class NodeListWindow : Window
 {
     /// <summary>Narrow enough to be useless below this; the columns collapse.</summary>
     private const float MinimumWidth = 260f;
@@ -75,8 +75,6 @@ public sealed class NodeListWindow : Window, IDisposable
         ImGuiWindowFlags.NoDocking |
         ImGuiWindowFlags.NoResize;
 
-    public void Dispose() { }
-
     /// <summary>
     /// Only shown while docked, and only while the host actually has a body on
     /// screen - a panel pinned to a collapsed or closed window has nothing to
@@ -90,7 +88,6 @@ public sealed class NodeListWindow : Window, IDisposable
     public override void PreDraw()
     {
         plugin.UiStyle.PushWindowStyle();
-        Flags = BaseFlags | plugin.UiStyle.ExtraWindowFlags;
 
         width = Math.Clamp(width, MinimumWidth, MaximumWidth);
 

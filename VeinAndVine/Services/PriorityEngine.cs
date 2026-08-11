@@ -18,7 +18,6 @@ public sealed class PriorityResult
 
     public float? DistanceFromPlayer { get; init; }
 
-    /// <summary>Why the node isn't up, for the UI to explain itself.</summary>
     public string? BlockedReason { get; init; }
 
     /// <summary>

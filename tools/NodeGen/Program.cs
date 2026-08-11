@@ -413,14 +413,14 @@ internal static class Program
             Console.WriteLine($"        {nodes.Count(n => n.TimeWindows.Count > 0)} timed, " +
                               $"{nodes.Count(n => n.TimeWindows.Count == 0)} always up");
 
-            // Cosmetic rather than fatal - a node with no icon still works, it
-            // just draws a gap. Reported so a wiring mistake that zeroed the
-            // whole column would be obvious instead of silent.
             Console.WriteLine("        " + string.Join(", ", nodes
                 .GroupBy(n => n.Method)
                 .OrderBy(g => g.Key)
                 .Select(g => $"{g.Count()} {g.Key}")));
 
+            // Cosmetic rather than fatal - a node with no icon still works, it
+            // just draws a gap. Reported so a wiring mistake that zeroed the
+            // whole column would be obvious instead of silent.
             Console.WriteLine($"        {nodes.Count(n => n.IconId != 0)} with an icon, " +
                               $"{nodes.Count(n => n.Stars > 0)} starred, " +
                               $"{nodes.Count(n => n.PerceptionRequired > 0)} with a perception requirement");

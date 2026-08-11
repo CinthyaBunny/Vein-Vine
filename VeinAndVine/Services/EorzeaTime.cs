@@ -8,19 +8,18 @@ namespace VeinAndVine.Services;
 public static class EorzeaTime
 {
     /// <summary>
-    /// One Eorzea day is 70 real minutes (4200s) and 86400 Eorzea seconds,
-    /// so Eorzea time runs at exactly 86400/4200 = 3600/175 real time.
+    /// Real seconds per Eorzea hour. One Eorzea day is 70 real minutes (4200s)
+    /// and 86400 Eorzea seconds, so Eorzea time runs at exactly
+    /// 86400/4200 = 3600/175 real time.
     ///
-    /// Do not round this to 20.5716. Multiplying a modern Unix timestamp
-    /// (~1.7e9) by that rounded value drifts by roughly 300,000 Eorzea
-    /// seconds, which lands the reported hour about half a day off.
+    /// Everything here divides by this integer rather than multiplying by that
+    /// ratio, and it must stay that way. Expressed as a scale factor the ratio
+    /// is 20.571428..., and rounding it to 20.5716 before multiplying a modern
+    /// Unix timestamp (~1.7e9) drifts by roughly 300,000 Eorzea seconds - about
+    /// half a day off in the reported hour.
     /// </summary>
-    public const double TimeScale = 3600.0 / 175.0;
-
-    /// <summary>Real seconds per Eorzea hour.</summary>
     public const long RealSecondsPerEorzeaHour = 175;
 
-    /// <summary>Real seconds per Eorzea day.</summary>
     public const long RealSecondsPerEorzeaDay = 4200;
 
     /// <summary>
@@ -31,21 +30,14 @@ public static class EorzeaTime
 
     public static long CurrentUnixSeconds() => DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 
-    /// <summary>Eorzea hour (0-23) at the given real time.</summary>
     public static int GetEorzeaHour(long unixSeconds) =>
         (int)(unixSeconds / RealSecondsPerEorzeaHour % 24);
 
-    /// <summary>Eorzea minute (0-59) at the given real time.</summary>
-    public static int GetEorzeaMinute(long unixSeconds) =>
-        (int)(unixSeconds * 60 / RealSecondsPerEorzeaHour % 60);
-
     public static int GetCurrentEorzeaHour() => GetEorzeaHour(CurrentUnixSeconds());
 
-    /// <summary>Real timestamp at which the containing weather window started.</summary>
     public static long GetWeatherWindowStart(long unixSeconds) =>
         unixSeconds - FloorMod(unixSeconds, RealSecondsPerWeatherWindow);
 
-    /// <summary>Real timestamp at which the containing weather window ends.</summary>
     public static long GetWeatherWindowEnd(long unixSeconds) =>
         GetWeatherWindowStart(unixSeconds) + RealSecondsPerWeatherWindow;
 

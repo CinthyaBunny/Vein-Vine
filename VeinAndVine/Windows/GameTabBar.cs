@@ -28,9 +28,6 @@ namespace VeinAndVine.Windows;
 /// </summary>
 public static class GameTabBar
 {
-    // Shape and spacing, gathered here so the strip can be tuned by eye
-    // against the game without reading the drawing code.
-
     /// <summary>
     /// How far each pointed end is drawn in, as a fraction of the tab height.
     /// Larger is a sharper point; 0 would square the ends off.

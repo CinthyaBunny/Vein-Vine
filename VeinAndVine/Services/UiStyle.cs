@@ -6,7 +6,6 @@ using Lumina.Excel.Sheets;
 
 namespace VeinAndVine.Services;
 
-/// <summary>Which typeface the plugin's windows draw with.</summary>
 public enum UiFontChoice
 {
     /// <summary>Whatever the user configured Dalamud to use.</summary>
@@ -17,16 +16,14 @@ public enum UiFontChoice
 }
 
 /// <summary>
-/// Which colour set the plugin's windows use.
-///
 /// Everything below <see cref="Dalamud"/> is one of the game's own UI themes,
-/// named as the game names it in System Configuration - including
+/// named and ordered as the game does in System Configuration - including
 /// <see cref="ClassicFF"/>, which really is "Classic FF" and not "Classic
-/// FFXIV". The order matches the game's dropdown.
+/// FFXIV".
 ///
-/// All eight of the game's themes. <c>UIColor</c> carries a column for every
-/// one, though Lumina has only named the first six - see
-/// <see cref="UiStyle.Column"/> for how the last two are reached.
+/// <c>UIColor</c> carries a column for all eight, though Lumina has only named
+/// the first six - see <see cref="UiStyle.Column"/> for how the last two are
+/// reached.
 /// </summary>
 public enum UiThemeChoice
 {
@@ -43,7 +40,6 @@ public enum UiThemeChoice
     ClearPink,
 }
 
-/// <summary>Where the node list lives.</summary>
 public enum NodeListPlacement
 {
     /// <summary>The first tab of the main window.</summary>
@@ -57,16 +53,16 @@ public enum NodeListPlacement
 }
 
 /// <summary>
-/// Applies the game's own typeface, palette and window art to the plugin's
-/// windows, each independently switchable.
+/// Applies the game's own typeface and palette to the plugin's windows, each
+/// switchable independently of the other.
 ///
-/// All three read from the client rather than from bundled assets: Axis is the
-/// font the game's own UI uses, and the frame is the WindowA panel art that
-/// every normal game window is built from. Nothing is downloaded.
+/// Both are read out of the client rather than bundled: Axis is the font the
+/// game's own UI uses, and the colours come from the <c>UIColor</c> sheet.
+/// Nothing is downloaded.
 ///
-/// All three are on by default - a plugin window sitting next to the game's
-/// own windows may as well look like one - and each is a click from Dalamud's
-/// default in the Appearance tab for anyone who themes Dalamud themselves.
+/// Both default to the game's look - a plugin window sitting next to the
+/// game's own windows may as well look like one - and each is one click from
+/// Dalamud's default for anyone who has themed Dalamud themselves.
 /// </summary>
 public sealed class UiStyle : IDisposable
 {
@@ -89,12 +85,6 @@ public sealed class UiStyle : IDisposable
         axisFont?.Dispose();
         axisFont = null;
     }
-
-    /// <summary>
-    /// Panel and border are ImGui's own, themed - see the note on PushTheme.
-    /// Nothing extra is needed on the window itself.
-    /// </summary>
-    public ImGuiWindowFlags ExtraWindowFlags => ImGuiWindowFlags.None;
 
     /// <summary>
     /// Pushes the font and theme for one window. Call from PreDraw, before
@@ -126,10 +116,10 @@ public sealed class UiStyle : IDisposable
         if (GetPalette(configuration.Theme) is not { } p)
             return;
 
-        // Everything is derived from four anchors rather than written out per
-        // theme. Six hand-tuned tables would be six things to keep in step, and
-        // five of them would be guesses - the sheet only tells us what the text
-        // and accent should be, so the rest is blended from those.
+        // Every colour below is blended from these three rather than written
+        // out per theme. Eight hand-tuned tables would be eight things to keep
+        // in step, and most of each would be guesswork - the sheet gives only a
+        // text and an accent colour, so the rest has to be derived anyway.
         var ground = p.Background;
         var text = p.Text;
         var accent = p.Accent;
@@ -165,8 +155,10 @@ public sealed class UiStyle : IDisposable
         Color(ImGuiCol.ButtonHovered, Control(ground, text, 0.25f));
         Color(ImGuiCol.ButtonActive, Control(ground, text, 0.33f));
 
-        // The idle tab sits lower than the active one, so the selected tab
-        // reads as the front-most of the stack.
+        // Not the plugin's own tab strip - that is hand-drawn by GameTabBar
+        // from Tabs below, and no BeginTabBar exists anywhere. These style the
+        // tab ImGui itself draws once the user docks this window into another,
+        // which is why grepping for a tab bar finds nothing.
         Color(ImGuiCol.Tab, Control(ground, text, 0.09f));
         Color(ImGuiCol.TabHovered, AccentControl(ground, accent, text, 0.26f));
         Color(ImGuiCol.TabActive, AccentControl(ground, accent, text, 0.20f));
@@ -231,8 +223,6 @@ public sealed class UiStyle : IDisposable
         Var(ImGuiStyleVar.GrabRounding, pill);
         Var(ImGuiStyleVar.ScrollbarRounding, pill);
 
-        // Tabs keep their top corners only; see the note in the readme about
-        // the game's angled tabs, which ImGui has no way to express.
         Var(ImGuiStyleVar.TabRounding, 6f);
 
         Var(ImGuiStyleVar.WindowRounding, 3f);
@@ -334,7 +324,7 @@ public sealed class UiStyle : IDisposable
         {
             var ground = Current?.Background ?? new Vector4(0.090f, 0.090f, 0.102f, 1f);
             var accent = Current?.Accent ?? new Vector4(0.847f, 0.741f, 0.463f, 1f);
-            var onLight = Luminance(ground) > 0.4f;
+            var onLight = IsLight(ground);
 
             // A light panel needs its tabs taken much further down to read as
             // dark furniture; a panel that is already near-black does not.
@@ -352,7 +342,6 @@ public sealed class UiStyle : IDisposable
         }
     }
 
-    /// <summary>Whichever of white or black reads better on a given fill.</summary>
     private static Vector4 LabelOn(Vector4 fill) =>
         ContrastRatio(White, fill) >= ContrastRatio(Black, fill) ? White : Black;
 
@@ -386,7 +375,7 @@ public sealed class UiStyle : IDisposable
     ///
     /// Row 22 is the accent, in preference to the paler row 8: row 8 is pure
     /// white under Classic FF, which would make every border and checkmark
-    /// vanish into the text. Row 22 stays distinct from the text in all six,
+    /// vanish into the text. Row 22 stays distinct from the text in all eight,
     /// and gives Classic FF the pale blue it is known for.
     ///
     /// The ground is not from the sheet, and cannot be. Row 7 - the obvious
@@ -523,7 +512,7 @@ public sealed class UiStyle : IDisposable
     /// </summary>
     private static Vector4 Legible(Vector4 colour, Vector4 ground, float target)
     {
-        var away = Luminance(ground) > 0.4f
+        var away = IsLight(ground)
             ? new Vector4(0f, 0f, 0f, colour.W)
             : new Vector4(1f, 1f, 1f, colour.W);
 
@@ -557,7 +546,7 @@ public sealed class UiStyle : IDisposable
     /// </summary>
     private static Vector4 Control(Vector4 ground, Vector4 text, float lift)
     {
-        var onLightPanel = Luminance(ground) > 0.4f;
+        var onLightPanel = IsLight(ground);
 
         var toward = onLightPanel ? Black : White;
         var preferred = Mix(ground, toward, lift);
@@ -622,6 +611,20 @@ public sealed class UiStyle : IDisposable
         return (MathF.Max(la, lb) + 0.05f) / (MathF.Min(la, lb) + 0.05f);
     }
 
+    /// <summary>
+    /// Above this a panel counts as light, and every rule that depends on which
+    /// way to move a colour flips: controls sink instead of lifting, status
+    /// colours darken instead of lightening, tab labels go black instead of
+    /// white.
+    ///
+    /// One constant because those rules have to agree. Two of them disagreeing
+    /// on a single theme is how you get a control lifted the wrong way with a
+    /// label chosen for the other direction.
+    /// </summary>
+    private const float LightThreshold = 0.4f;
+
+    private static bool IsLight(Vector4 colour) => Luminance(colour) > LightThreshold;
+
     private static float Luminance(Vector4 c) =>
         (0.2126f * Channel(c.X)) + (0.7152f * Channel(c.Y)) + (0.0722f * Channel(c.Z));
 
@@ -643,10 +646,7 @@ public sealed class UiStyle : IDisposable
     /// behind modals need to darken a light theme and lighten a dark one, and
     /// a fixed black would be invisible against Dark's near-black panels.
     /// </summary>
-    private static Vector4 InvertTowards(Vector4 ground) =>
-        (0.2126f * ground.X) + (0.7152f * ground.Y) + (0.0722f * ground.Z) > 0.5f
-            ? new Vector4(0f, 0f, 0f, 1f)
-            : new Vector4(1f, 1f, 1f, 1f);
+    private static Vector4 InvertTowards(Vector4 ground) => IsLight(ground) ? Black : White;
 
     /// <summary>
     /// Scopes the chosen font. Returns null when the default font is wanted, or

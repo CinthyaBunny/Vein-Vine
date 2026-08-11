@@ -18,16 +18,6 @@ namespace VeinAndVine.Windows;
 /// </summary>
 public sealed class NodeListTab
 {
-    private const ImGuiTableFlags TableFlags =
-        ImGuiTableFlags.Resizable |
-        ImGuiTableFlags.Reorderable |
-        ImGuiTableFlags.Hideable |
-        ImGuiTableFlags.Sortable |
-        ImGuiTableFlags.RowBg |
-        ImGuiTableFlags.BordersInnerV |
-        ImGuiTableFlags.ScrollY |
-        ImGuiTableFlags.SizingStretchProp;
-
     private readonly Plugin plugin;
 
     // Mirrors the table's own sort state, which ImGui persists in its ini. Kept
@@ -169,10 +159,6 @@ public sealed class NodeListTab
     }
 
     /// <summary>
-    /// The one line worth reading at a glance: how many are up, and if none
-    /// are, when that changes.
-    /// </summary>
-    /// <summary>
     /// The one line worth reading at a glance. "Up now" counts only timed
     /// nodes - always-up ones would inflate it into a number that never
     /// changes and never means anything.
@@ -184,7 +170,7 @@ public sealed class NodeListTab
 
         if (timedUp > 0)
         {
-            ImGui.TextColored(UiShared.ActiveColor(plugin), $"{timedUp} up now");
+            ImGui.TextColored(plugin.UiStyle.StatusUp, $"{timedUp} up now");
         }
         else
         {
@@ -193,7 +179,7 @@ public sealed class NodeListTab
                 .MinBy(r => r.TimeUntilActive!.Value);
 
             if (next?.TimeUntilActive is { } until)
-                ImGui.TextColored(UiShared.SoonColor(plugin),
+                ImGui.TextColored(plugin.UiStyle.StatusSoon,
                     $"Next: {next.Node.ItemName} in {UiShared.FormatDuration(until)}");
             else
                 ImGui.TextDisabled("Nothing timed to wait for");
@@ -211,7 +197,7 @@ public sealed class NodeListTab
         if (height <= 0)
             return;
 
-        if (!ImGui.BeginTable("##veinandvine_nodes", 7, TableFlags, new Vector2(0, height)))
+        if (!ImGui.BeginTable("##veinandvine_nodes", 7, UiShared.TableFlags, new Vector2(0, height)))
             return;
 
         var scale = ImGuiHelpers.GlobalScale;
@@ -275,9 +261,9 @@ public sealed class NodeListTab
         var color = result switch
         {
             { IsAlwaysAvailable: true } => (Vector4?)null,
-            { IsActive: true } => UiShared.ActiveColor(plugin),
-            { TimeUntilActive: { } until } when until <= UiShared.SoonThreshold => UiShared.SoonColor(plugin),
-            _ => UiShared.InactiveColor(plugin),
+            { IsActive: true } => plugin.UiStyle.StatusUp,
+            { TimeUntilActive: { } until } when until <= UiShared.SoonThreshold => plugin.UiStyle.StatusSoon,
+            _ => plugin.UiStyle.StatusIdle,
         };
 
         ImGui.TableNextColumn();
@@ -350,7 +336,7 @@ public sealed class NodeListTab
 
         if (result.IsActive)
         {
-            ImGui.TextColored(color ?? UiShared.ActiveColor(plugin), result.TimeRemaining is { } remaining
+            ImGui.TextColored(color ?? plugin.UiStyle.StatusUp, result.TimeRemaining is { } remaining
                 ? $"{UiShared.FormatDuration(remaining)} left"
                 : "Up now");
             return;
@@ -358,7 +344,7 @@ public sealed class NodeListTab
 
         if (result.TimeUntilActive is { } until)
         {
-            ImGui.TextColored(color ?? UiShared.InactiveColor(plugin), $"in {UiShared.FormatDuration(until)}");
+            ImGui.TextColored(color ?? plugin.UiStyle.StatusIdle, $"in {UiShared.FormatDuration(until)}");
             return;
         }
 
@@ -410,9 +396,8 @@ public sealed class NodeListTab
     }
 
     /// <summary>
-    /// Placed the filter this window is showing. Zone is matched by territory
-    /// id rather than name because that's what the player's position gives us,
-    /// and it's the same id the map flag needs.
+    /// Zone is matched by territory id rather than name because that is what
+    /// the player's position gives us, and it is the same id the map flag needs.
     /// </summary>
     private NodeFilter BuildFilter((float X, float Y, uint TerritoryTypeId)? player)
     {

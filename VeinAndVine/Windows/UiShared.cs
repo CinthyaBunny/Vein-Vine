@@ -6,25 +6,26 @@ using VeinAndVine.Services;
 namespace VeinAndVine.Windows;
 
 /// <summary>
-/// Presentation bits both windows need: the colour vocabulary, job and
-/// duration formatting, and the bridge between an ImGui table's sort specs and
-/// <see cref="NodeSort"/>.
+/// Presentation bits both lists need: job and duration formatting, shared
+/// tooltip and icon drawing, and the bridge between an ImGui table's sort specs
+/// and <see cref="NodeSort"/>.
 /// </summary>
 internal static class UiShared
 {
-    // The status colours are no longer constants: green on a cream panel is
-    // not the same green that works on a black one. They come from UiStyle,
-    // which keeps each theme's hue but fits its lightness to that theme's
-    // panel. See UiStyle.Legible.
-
-    /// <summary>Up now.</summary>
-    public static Vector4 ActiveColor(Plugin plugin) => plugin.UiStyle.StatusUp;
-
-    /// <summary>Not up, but soon - worth walking towards.</summary>
-    public static Vector4 SoonColor(Plugin plugin) => plugin.UiStyle.StatusSoon;
-
-    /// <summary>Not up, or up permanently and so never urgent.</summary>
-    public static Vector4 InactiveColor(Plugin plugin) => plugin.UiStyle.StatusIdle;
+    /// <summary>
+    /// The flags every list in the plugin is built with. Shared so the node
+    /// list and the item picker cannot drift into behaving differently - they
+    /// are the same kind of object and should sort, resize and scroll alike.
+    /// </summary>
+    public const ImGuiTableFlags TableFlags =
+        ImGuiTableFlags.Resizable |
+        ImGuiTableFlags.Reorderable |
+        ImGuiTableFlags.Hideable |
+        ImGuiTableFlags.Sortable |
+        ImGuiTableFlags.RowBg |
+        ImGuiTableFlags.BordersInnerV |
+        ImGuiTableFlags.ScrollY |
+        ImGuiTableFlags.SizingStretchProp;
 
     /// <summary>Anything opening within this long is coloured as "soon".</summary>
     public static readonly TimeSpan SoonThreshold = TimeSpan.FromMinutes(5);
@@ -124,10 +125,6 @@ internal static class UiShared
         ImGui.SameLine(0, ImGui.GetStyle().ItemInnerSpacing.X);
     }
 
-    /// <summary>
-    /// The shared top of an item tooltip: icon, name, and the item's own
-    /// in-game description.
-    /// </summary>
     public static void DrawItemTooltipHeader(Plugin plugin, uint itemId, uint iconId, string itemName)
     {
         DrawItemIcon(plugin, iconId, ImGui.GetFontSize() * 2f);

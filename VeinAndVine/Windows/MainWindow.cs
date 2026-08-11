@@ -12,9 +12,8 @@ namespace VeinAndVine.Windows;
 /// you keep the window open to answer; everything that configures it lives
 /// behind it in the same frame rather than in a second window you have to find.
 /// </summary>
-public sealed class MainWindow : Window, IDisposable
+public sealed class MainWindow : Window
 {
-    /// <summary>Which tab a command or the installer wants brought forward.</summary>
     public enum Tab
     {
         Nodes,
@@ -22,16 +21,6 @@ public sealed class MainWindow : Window, IDisposable
         Display,
         Appearance,
     }
-
-    private const ImGuiTableFlags TableFlags =
-        ImGuiTableFlags.Resizable |
-        ImGuiTableFlags.Reorderable |
-        ImGuiTableFlags.Hideable |
-        ImGuiTableFlags.Sortable |
-        ImGuiTableFlags.RowBg |
-        ImGuiTableFlags.BordersInnerV |
-        ImGuiTableFlags.ScrollY |
-        ImGuiTableFlags.SizingStretchProp;
 
     private const string AnyZone = "All zones";
 
@@ -107,7 +96,6 @@ public sealed class MainWindow : Window, IDisposable
     /// </summary>
     public NodeListTab NodeList { get; }
 
-    /// <summary>Which tab to bring forward on the next draw, if any.</summary>
     private Tab? requestedTab;
 
     /// <summary>
@@ -144,9 +132,6 @@ public sealed class MainWindow : Window, IDisposable
         };
     }
 
-    public void Dispose() { }
-
-    /// <summary>Opens the window with a particular tab in front.</summary>
     public void Open(Tab tab)
     {
         requestedTab = tab;
@@ -159,7 +144,6 @@ public sealed class MainWindow : Window, IDisposable
     public override void PreDraw()
     {
         plugin.UiStyle.PushWindowStyle();
-        Flags = plugin.UiStyle.ExtraWindowFlags;
 
         // Cleared here and set again in Draw, which only runs when the window
         // actually has a body this frame.
@@ -222,9 +206,9 @@ public sealed class MainWindow : Window, IDisposable
     private void DrawAppearanceTab()
     {
         ImGui.TextWrapped(
-            "Vein & Vine borrows the game's own look by default. The typeface, the " +
-            "colours and the window panel all come out of the client - nothing is " +
-            "downloaded - and either can drop back to Dalamud's default on its own.");
+            "Vein & Vine borrows the game's own look by default. The typeface and " +
+            "the colours both come out of the client - nothing is downloaded - and " +
+            "either can drop back to Dalamud's default on its own.");
 
         ImGui.Spacing();
         ImGui.Separator();
@@ -234,8 +218,8 @@ public sealed class MainWindow : Window, IDisposable
         if (DrawChoice("Font", ref font,
                 [UiFontChoice.Dalamud, UiFontChoice.GameAxis],
                 ["Dalamud default", "Axis (game UI font)"],
-                "Axis is the typeface the game's own interface uses. This is the single\n" +
-                "biggest change of the three - it is what makes a window read as native."))
+                "Axis is the typeface the game's own interface uses. This is the bigger\n" +
+                "of the two changes - it is what makes a window read as native."))
         {
             configuration.Font = font;
             configuration.Save();
@@ -515,7 +499,6 @@ public sealed class MainWindow : Window, IDisposable
 
     private int CountOf(MethodFilter methods) => counts.GetValueOrDefault(methods);
 
-    /// <summary>A tab's name with its live row count, e.g. "Quarrying (202)".</summary>
     private string Labelled(string name, MethodFilter methods) =>
         $"{name} ({CountOf(methods):N0})";
 
@@ -576,7 +559,6 @@ public sealed class MainWindow : Window, IDisposable
         return built;
     }
 
-    /// <summary>Rebuilds the item and zone indexes when the dataset changes underneath us.</summary>
     private void RefreshIndex()
     {
         if (indexedVersion == plugin.NodeDatabaseVersion)
@@ -757,7 +739,7 @@ public sealed class MainWindow : Window, IDisposable
 
         // The table id carries the job, so ImGui keeps each tab's column
         // widths and sort direction apart in its own ini.
-        if (!ImGui.BeginTable($"##veinandvine_picker_{jobs}", 5, TableFlags, new Vector2(0, height)))
+        if (!ImGui.BeginTable($"##veinandvine_picker_{jobs}", 5, UiShared.TableFlags, new Vector2(0, height)))
             return;
 
         var scale = ImGuiHelpers.GlobalScale;

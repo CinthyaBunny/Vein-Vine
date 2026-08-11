@@ -7,10 +7,8 @@ namespace VeinAndVine.Services;
 /// </summary>
 public interface IWeatherProvider
 {
-    /// <summary>Eorzea hour (0-23) right now.</summary>
     int CurrentEorzeaHour { get; }
 
-    /// <summary>Real time right now, as a Unix timestamp in seconds.</summary>
     long CurrentUnixSeconds { get; }
 
     /// <summary>
