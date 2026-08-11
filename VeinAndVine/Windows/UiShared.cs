@@ -39,7 +39,9 @@ internal static class UiShared
         Configuration.MinRowTextScale,
         Configuration.MaxRowTextScale);
 
-    private static float PaddingScale(Plugin plugin) => Math.Clamp(
+    // The setting is relative to an ordinary row, so the baseline that makes a
+    // row a row lives here rather than in the number the user sees.
+    private static float PaddingScale(Plugin plugin) => Configuration.BaseRowPadding * Math.Clamp(
         plugin.Configuration.RowPaddingScale,
         Configuration.MinRowPaddingScale,
         Configuration.MaxRowPaddingScale);

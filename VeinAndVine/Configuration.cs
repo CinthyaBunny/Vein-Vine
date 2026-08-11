@@ -14,7 +14,13 @@ namespace VeinAndVine;
 [Serializable]
 public class Configuration : IPluginConfiguration
 {
-    public int Version { get; set; } = 1;
+    /// <summary>
+    /// Bumped whenever a stored value changes meaning rather than just being
+    /// added. <see cref="Migrate"/> is what acts on it.
+    /// </summary>
+    public const int CurrentVersion = 2;
+
+    public int Version { get; set; } = CurrentVersion;
 
     public List<WishlistEntry> Wishlist { get; set; } = [];
 
@@ -47,10 +53,21 @@ public class Configuration : IPluginConfiguration
     // list of one row and no way back to this screen, so every read clamps.
     public const float MinRowTextScale = 0.8f;
     public const float MaxRowTextScale = 2.0f;
-    public const float MinRowPaddingScale = 1.0f;
-    public const float MaxRowPaddingScale = 4.0f;
+    public const float MinRowPaddingScale = 0.5f;
+    public const float MaxRowPaddingScale = 2.0f;
     public const float MinLeadingRowScale = 1.0f;
     public const float MaxLeadingRowScale = 2.0f;
+
+    /// <summary>
+    /// The frame-padding multiplier that counts as normal, i.e. what the
+    /// settings screen calls 1.00x.
+    ///
+    /// A row wants appreciably more room around its contents than the window's
+    /// own frame padding gives a button, so the neutral point is not 1. Folding
+    /// that into a constant here keeps it out of the setting, where a default
+    /// of "2x" would invite the reasonable question of two times what.
+    /// </summary>
+    public const float BaseRowPadding = 2.0f;
 
     /// <summary>
     /// Text size inside list rows, relative to the window's own. Scoped to the
@@ -60,10 +77,11 @@ public class Configuration : IPluginConfiguration
     public float RowTextScale { get; set; } = 1.0f;
 
     /// <summary>
-    /// Row height, as a multiple of the window's frame padding. Everything in a
-    /// row measures from the frame, so this carries the icons and buttons too.
+    /// Row height, where 1 is the ordinary row and the real padding is this
+    /// times <see cref="BaseRowPadding"/>. Everything in a row measures from
+    /// the frame, so this carries the icons and buttons with it.
     /// </summary>
-    public float RowPaddingScale { get; set; } = 2.2f;
+    public float RowPaddingScale { get; set; } = 1.0f;
 
     /// <summary>How much taller the row being waited on is than the rest.</summary>
     public float LeadingRowScale { get; set; } = 1.35f;
@@ -90,6 +108,29 @@ public class Configuration : IPluginConfiguration
     /// main window, so this is the only part of its geometry worth keeping.
     /// </summary>
     public float DockedNodeListWidth { get; set; } = 420f;
+
+    /// <summary>
+    /// Brings a file written by an older build up to date. Called once on load,
+    /// before anything reads a setting.
+    ///
+    /// Only for values whose *meaning* changed. A newly added setting needs
+    /// nothing here: a property missing from the file keeps its initializer.
+    /// </summary>
+    public void Migrate()
+    {
+        if (Version >= CurrentVersion)
+            return;
+
+        // Version 2 re-based the row height. It was a raw frame-padding
+        // multiplier, where an ordinary row was 2.2; it is now a multiple of an
+        // ordinary row, where an ordinary row is 1. Carried across untouched, a
+        // value written under the old meaning reads as about twice the height
+        // it was chosen for.
+        RowPaddingScale = 1.0f;
+
+        Version = CurrentVersion;
+        Save();
+    }
 
     /// <summary>
     /// A method, not a property, so Dalamud's serializer doesn't write a

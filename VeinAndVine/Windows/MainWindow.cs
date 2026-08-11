@@ -379,13 +379,32 @@ public sealed class MainWindow : Window
         UiShared.Tooltip(help);
 
         ImGui.SameLine(130f * scale);
-        ImGui.SetNextItemWidth(200f * scale);
+        ImGui.SetNextItemWidth(150f * scale);
 
-        var changed = ImGui.SliderFloat($"##{label}", ref value, min, max, "%.2fx");
+        var changed = ImGui.SliderFloat($"##{label}_slider", ref value, min, max, "%.2fx");
 
-        // Read straight after the slider, before anything else becomes the
-        // "current item".
+        // Read straight after each widget, before the next becomes the "current
+        // item". Either control can be the one that finishes an edit.
         commit = ImGui.IsItemDeactivatedAfterEdit();
+
+        // A slider is for finding a value by eye; the box is for setting one you
+        // already know, and for reading back exactly what a drag landed on.
+        ImGui.SameLine();
+        ImGui.SetNextItemWidth(70f * scale);
+
+        if (ImGui.InputFloat($"##{label}_input", ref value, 0f, 0f, "%.2f"))
+            changed = true;
+
+        if (ImGui.IsItemDeactivatedAfterEdit())
+        {
+            // Typing bypasses the slider's own limits, so the range is enforced
+            // here rather than trusted. Clamped on commit rather than per
+            // keystroke: clamping live turns "1" into the minimum before the
+            // second digit of "1.5" can be typed.
+            value = Math.Clamp(value, min, max);
+            changed = true;
+            commit = true;
+        }
 
         ImGui.SameLine();
         ImGuiComponents.HelpMarker(help);

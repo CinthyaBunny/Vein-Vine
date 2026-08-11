@@ -63,6 +63,7 @@ public sealed class Plugin : IDalamudPlugin
         pluginInterface.Create<Service>();
 
         Configuration = Service.PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
+        Configuration.Migrate();
 
         WeatherService = new WeatherService();
         PriorityEngine = new PriorityEngine(WeatherService);

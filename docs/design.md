@@ -78,8 +78,14 @@ their own text size — and everything in them measures from that: the icons, th
 flag button, the row-spanning hit box, and text centred with
 `AlignTextToFramePadding`.
 
-Both are settings, on the Appearance tab under *List rows*, and both are scoped
-to the rows rather than to the window. The rows are the part being read; the
+Both are settings, on the Appearance tab under *List rows*, each with a slider
+for finding a value by eye and a box for typing one you already know — the box
+also being how you read back exactly what a drag landed on. `1.00x` is an
+ordinary row in both cases; the frame padding a row actually wants is roughly
+double the window's own, and that factor is a constant rather than part of the
+setting, since a default reading "2x" invites the question of two times what.
+
+Both are scoped to the rows rather than to the window. The rows are the part being read; the
 toolbar and the tab strip are furniture you look past, and growing them
 alongside would cost the list the space it just gained. Every read is clamped,
 because the config is a plain file on disk and a hand-edited 40x row scale would
