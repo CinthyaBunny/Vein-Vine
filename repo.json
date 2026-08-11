@@ -4,7 +4,7 @@
     "Name": "Vein & Vine",
     "InternalName": "VeinAndVine",
     "AssemblyVersion": "0.0.1.4",
-    "Changelog": "Housekeeping release. \n\nFixed:\n- Fixed an issue where there were multiple instances of final build files.\n- Fixed an issue where release notes were not handed off to the ingame installer\n- Fixed a version mismatching issue.\n- Fixed an issue where the mainwindow discarded its own GUI.\n- Fixed an issue where Luminance created duplicates.\n\nChanged:\n- Dead and duplicated code removed.",
+    "Changelog": "Housekeeping release. Nothing you can see has changed.\n\nFixed:\n- Fixed an issue where there were multiple instances of final build files.\n- Fixed an issue where release notes were not handed off to the ingame installer.\n- Fixed a version mismatching issue.\n- Fixed an issue where the main window reset its own window settings every frame.\n- Fixed two different brightness calculations being used to decide whether a theme is light or dark. Both agreed on all eight themes, so nothing looked wrong, but they could have disagreed on a theme added later.\n\nChanged:\n- Dead and duplicated code removed.",
     "Punchline": "Priority-sorted gathering node tracker. No automation.",
     "Description": "Shows a priority-sorted list of active and upcoming gathering nodes from your wishlist, using FFXIV's deterministic weather and Eorzea clock. Read-only by design: no automated movement or gathering.",
     "ApplicableVersion": "any",

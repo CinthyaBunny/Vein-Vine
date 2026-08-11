@@ -44,6 +44,36 @@ knowledge: sheet columns that are mislabelled, formulas that break when
 rounded, ImGui ordering requirements that crash the game client if violated.
 That is exactly what to keep. Prune restatement, never the reasoning.
 
+## Changelog entries
+
+`CHANGELOG.md` is not a developer document. A release build lifts its text
+verbatim into both manifests, so what is written there is what a player reads
+in the in-game installer, next to the Update button.
+
+**Write every item as plain language describing what happened to the plugin
+from the outside.** "Fixed an issue where the node list showed the wrong
+countdown", not "corrected the `TimeRemaining` guard in `PriorityEngine`".
+
+Keep out of it:
+
+- File, type, method, and field names.
+- Regexes, metrics, contrast ratios, row counts, and sheet column numbers.
+- Internal architecture, and the reasoning behind a fix.
+
+If a change has no effect a player can see — build plumbing, dead code, a
+refactor — say that plainly in a line or two rather than explaining the
+engineering. A player who cannot see a difference needs to know only that
+there isn't one.
+
+This does not compete with the comments rule above; the two divide the work.
+The reasoning behind a change belongs in a code comment or a commit message,
+where the next developer will look. The changelog gets the outcome.
+
+Accuracy still binds. Plain language is not licence to describe something that
+did not happen — if an item cannot be said simply and truthfully, it is usually
+because the change needs naming from the player's point of view rather than the
+code's.
+
 ## Building
 
 ```
