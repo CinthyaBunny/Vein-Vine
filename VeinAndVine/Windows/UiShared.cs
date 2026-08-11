@@ -72,9 +72,23 @@ internal static class UiShared
     /// <summary>
     /// Width the clock will occupy, for callers that need to place it before
     /// drawing it - <see cref="RightAlign"/> being the reason this exists.
+    ///
+    /// The scale is pushed around the measurement because the shape sizes
+    /// itself from the font: measuring outside it would reserve a width the
+    /// drawn clock then overflows.
     /// </summary>
-    public static float ClockWidth() =>
-        (ImGui.CalcTextSize(ClockSample).X * ClockScale) + (ImGui.GetStyle().FramePadding.X * 2f);
+    public static float ClockWidth()
+    {
+        if (ClockScale != 1f)
+            ImGui.SetWindowFontScale(ClockScale);
+
+        var width = GameTabBar.MeasureButton(ClockSample);
+
+        if (ClockScale != 1f)
+            ImGui.SetWindowFontScale(1f);
+
+        return width;
+    }
 
     /// <summary>
     /// The clock, as a button that swaps between Eorzea and local time.
@@ -101,15 +115,16 @@ internal static class UiShared
             text = $"ET {hour:00}:{minute:00}";
         }
 
+        // Drawn in the tab strip's hexagon rather than as an ImGui button, so
+        // the toolbar reads as one piece of game furniture. The shape carries
+        // its own id, so the caption changing every minute costs nothing.
+        //
         // Scaling is per-window in ImGui, so it has to be put back immediately
         // or every widget drawn afterwards inherits it.
         if (ClockScale != 1f)
             ImGui.SetWindowFontScale(ClockScale);
 
-        // The trailing ### fixes the widget's identity. Without it the label is
-        // the id, so the button would become a different widget every minute
-        // and lose whatever interaction was in flight across that frame.
-        var clicked = ImGui.Button($"{text}###veinandvine_clock", new Vector2(ClockWidth(), 0));
+        var clicked = GameTabBar.DrawButton(plugin, "##veinandvine_clock", text, ClockWidth());
 
         if (ClockScale != 1f)
             ImGui.SetWindowFontScale(1f);

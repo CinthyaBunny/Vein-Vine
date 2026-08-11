@@ -86,11 +86,16 @@ double-click reads as a fault rather than a feature — and that cooldown runs o
 ImGui's monotonic clock rather than the system's, so moving the wall clock
 cannot strand it.
 
-Two details keep it steady. Its width is fixed to the widest text it can hold,
-so the toolbar does not shift as the digits tick or the mode changes, which is
-also why both labels are two characters. And its identity is pinned with a
-trailing `###`: a button's label *is* its id, so without that it would become a
-different widget every minute and drop whatever interaction was in flight.
+It is drawn in the tab strip's hexagon rather than as an ImGui button, so the
+toolbar reads as one piece of the game's furniture instead of a game-shaped
+strip above a stock-shaped control. That also sidesteps a problem an ImGui
+button has here: a button's label *is* its id, so a caption changing every
+minute would make it a different widget each time and drop whatever interaction
+was in flight. The hexagon carries its own id and only ever draws the caption.
+
+Its width is fixed to the widest text it can hold, so the toolbar does not shift
+as the digits tick or the mode changes — which is also why both labels are two
+characters.
 
 Scale and sample are fields at the top of `UiShared`, and *where* it sits is the
 caller's decision rather than its own, so moving it is a change of call site
@@ -423,6 +428,11 @@ The whole tab is clickable, points included, which is only safe while the gap
 keeps neighbours apart — the hit boxes narrow by half a slant automatically if
 `GapPixels` is taken negative. The selected tab is painted last either way, so
 the tab after it can't cut into its edge.
+
+The same shape is available on its own as `GameTabBar.DrawButton`, for a control
+that should belong to this furniture without being a tab. The toolbar clock uses
+it. A caller can pin the width, which anything whose caption changes needs so its
+neighbours don't shuffle underneath it.
 
 ## Docking the node list (experimental)
 

@@ -25,6 +25,9 @@ namespace VeinAndVine.Windows;
 /// caller draws only the content it needs - no per-tab Begin, no hidden state,
 /// and a set of tabs that can change from frame to frame (the Nodes tab
 /// disappears while the list is docked) costs nothing to express.
+///
+/// The shape is also available on its own through <see cref="DrawButton"/>, for
+/// a control that belongs to this furniture without being a tab.
 /// </summary>
 public static class GameTabBar
 {
@@ -155,6 +158,57 @@ public static class GameTabBar
         ImGui.Dummy(new Vector2(stripWidth, height));
 
         return clicked >= 0 ? clicked : selected;
+    }
+
+    /// <summary>
+    /// Width the strip's shape needs to hold <paramref name="label"/>, for
+    /// callers that must place a button before drawing it.
+    /// </summary>
+    public static float MeasureButton(string label)
+    {
+        var height = ImGui.GetFrameHeight();
+        var slant = height * SlantRatio;
+        return ImGui.CalcTextSize(label).X + (LabelPadding * ImGuiHelpers.GlobalScale * 2) + (slant * 2);
+    }
+
+    /// <summary>
+    /// One hexagon on its own, for a control that should read as part of the
+    /// same furniture as the strip without being a tab. Returns true on click.
+    ///
+    /// <paramref name="width"/> of zero sizes to the label; pass a width to pin
+    /// it, which is what a control whose text changes needs so its neighbours
+    /// do not shuffle.
+    ///
+    /// The label is only ever drawn, never used as an identifier - the hit box
+    /// carries <paramref name="id"/> instead - so a caption that changes every
+    /// frame costs nothing here, where an ImGui button would need a "###" to
+    /// keep its identity.
+    /// </summary>
+    public static bool DrawButton(Plugin plugin, string id, string label, float width = 0f, bool active = false)
+    {
+        var colours = plugin.UiStyle.Tabs;
+        var height = ImGui.GetFrameHeight();
+        var slant = height * SlantRatio;
+
+        if (width <= 0f)
+            width = MeasureButton(label);
+
+        // Captured before the hit box, which advances the cursor past it.
+        var origin = ImGui.GetCursorScreenPos();
+        var drawList = ImGui.GetWindowDrawList();
+
+        ImGui.InvisibleButton(id, new Vector2(width, height));
+
+        var hovered = ImGui.IsItemHovered();
+        var clicked = ImGui.IsItemClicked();
+
+        DrawTab(drawList, label, origin, width, height, slant,
+            active ? colours.Active : hovered ? colours.Hovered : colours.Idle,
+            active ? colours.ActiveLabel : colours.IdleLabel,
+            colours.Edge,
+            active);
+
+        return clicked;
     }
 
     private static void DrawTab(
