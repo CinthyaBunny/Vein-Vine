@@ -30,15 +30,15 @@ internal static class UiShared
     /// <summary>Anything opening within this long is coloured as "soon".</summary>
     public static readonly TimeSpan SoonThreshold = TimeSpan.FromMinutes(5);
 
-    // Eorzea clock tuning, gathered so it can be adjusted by eye without
-    // reading the drawing below - the same reason GameTabBar keeps its shape
-    // constants together. Where the clock sits is the caller's decision, so
-    // moving it means calling DrawEorzeaClock somewhere else, not editing it.
+    // Clock tuning, gathered so it can be adjusted by eye without reading the
+    // drawing below - the same reason GameTabBar keeps its shape constants
+    // together. Where the clock sits is the caller's decision, so moving it
+    // means calling DrawClock somewhere else, not editing it.
 
     /// <summary>
-    /// Font scale for the digits, 1f being the window's ordinary text. The
-    /// clock is a reference point rather than a row of data, so it can carry
-    /// being larger than the table beneath it.
+    /// Font scale for the clock, 1f being the window's ordinary text. This
+    /// scales the button along with its text, so raising it makes the whole
+    /// toolbar row taller.
     ///
     /// Deliberately not a const: at 1f the compiler folds the guards below into
     /// dead code and warns, which is a poor thing to greet the next person who
@@ -46,43 +46,59 @@ internal static class UiShared
     /// </summary>
     private static readonly float ClockScale = 1f;
 
-    /// <summary>Set empty to drop the prefix and show only the digits.</summary>
-    private const string ClockLabel = "ET";
+    /// <summary>
+    /// The widest text the clock can hold. Its width is fixed to this so the
+    /// toolbar does not shift as the digits tick or the mode is switched -
+    /// which is also why both labels are two characters.
+    /// </summary>
+    private const string ClockSample = "ET 00:00";
+
+    /// <summary>
+    /// How long the clock ignores a repeat click. A label that flickers under a
+    /// double-click reads as a fault rather than a feature, and nothing here is
+    /// worth switching twice inside a third of a second.
+    /// </summary>
+    private const double ClockToggleCooldown = 0.3;
+
+    /// <summary>
+    /// When the clock last changed mode, on ImGui's own clock.
+    ///
+    /// Static because exactly one clock is ever on screen: the Nodes tab and the
+    /// docked panel are the same list and never draw together. A second one
+    /// would share this cooldown rather than get its own.
+    /// </summary>
+    private static double lastClockToggle;
 
     /// <summary>
     /// Width the clock will occupy, for callers that need to place it before
     /// drawing it - <see cref="RightAlign"/> being the reason this exists.
-    /// Measured off a fixed sample so the width does not twitch as the digits
-    /// change.
     /// </summary>
-    public static float EorzeaClockWidth()
-    {
-        var digits = ImGui.CalcTextSize("00:00").X * ClockScale;
-
-        return ClockLabel.Length == 0
-            ? digits
-            : ImGui.CalcTextSize(ClockLabel).X + ImGui.GetStyle().ItemInnerSpacing.X + digits;
-    }
+    public static float ClockWidth() =>
+        (ImGui.CalcTextSize(ClockSample).X * ClockScale) + (ImGui.GetStyle().FramePadding.X * 2f);
 
     /// <summary>
-    /// The Eorzea clock, drawn at the cursor.
+    /// The clock, as a button that swaps between Eorzea and local time.
     ///
-    /// The node list mixes two clocks and says so nowhere: the Windows column
-    /// is Eorzea hours, while "4m30s left" and "in 12m" are real minutes. A
-    /// window of 12-14 means nothing without knowing what time it is in the
-    /// same units, so this is what makes that column readable at all.
+    /// The node list mixes two clocks and says so nowhere: the Windows column is
+    /// Eorzea hours, while "4m30s left" and "in 12m" are real minutes. A window
+    /// of 12-14 means nothing without the time in the same units, and the local
+    /// reading turns "in 12m" into a wall-clock answer to whether there is time
+    /// to do something else first.
     /// </summary>
-    public static void DrawEorzeaClock()
+    public static void DrawClock(Plugin plugin)
     {
-        var (hour, minute) = EorzeaTime.CurrentEorzeaClock();
+        var showLocal = plugin.Configuration.ClockShowsLocalTime;
 
-        ImGui.AlignTextToFramePadding();
-
-        if (ClockLabel.Length > 0)
+        string text;
+        if (showLocal)
         {
-            ImGui.TextDisabled(ClockLabel);
-            ImGui.SameLine(0, ImGui.GetStyle().ItemInnerSpacing.X);
-            ImGui.AlignTextToFramePadding();
+            var now = DateTime.Now;
+            text = $"LT {now.Hour:00}:{now.Minute:00}";
+        }
+        else
+        {
+            var (hour, minute) = EorzeaTime.CurrentEorzeaClock();
+            text = $"ET {hour:00}:{minute:00}";
         }
 
         // Scaling is per-window in ImGui, so it has to be put back immediately
@@ -90,15 +106,32 @@ internal static class UiShared
         if (ClockScale != 1f)
             ImGui.SetWindowFontScale(ClockScale);
 
-        ImGui.TextUnformatted($"{hour:00}:{minute:00}");
+        // The trailing ### fixes the widget's identity. Without it the label is
+        // the id, so the button would become a different widget every minute
+        // and lose whatever interaction was in flight across that frame.
+        var clicked = ImGui.Button($"{text}###veinandvine_clock", new Vector2(ClockWidth(), 0));
 
         if (ClockScale != 1f)
             ImGui.SetWindowFontScale(1f);
 
         Tooltip(
-            "Current Eorzea time.\n\n" +
-            "The Windows column is in Eorzea hours; the countdowns beside them\n" +
-            "are in real minutes.");
+            (showLocal ? "Your local time. Click for Eorzea time." : "Eorzea time. Click for local time.") +
+            "\n\nThe Windows column is in Eorzea hours; the countdowns beside\n" +
+            "them are in real minutes.");
+
+        if (!clicked)
+            return;
+
+        // ImGui's clock rather than the system's: it is monotonic and already
+        // ticking per frame, so a cooldown cannot be skipped or stranded by the
+        // wall clock being adjusted underneath it.
+        var pressedAt = ImGui.GetTime();
+        if (pressedAt - lastClockToggle < ClockToggleCooldown)
+            return;
+
+        lastClockToggle = pressedAt;
+        plugin.Configuration.ClockShowsLocalTime = !showLocal;
+        plugin.Configuration.Save();
     }
 
     public static string JobLabel(NodeType type) => type switch

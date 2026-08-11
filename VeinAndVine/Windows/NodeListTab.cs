@@ -149,9 +149,9 @@ public sealed class NodeListTab
         // Clock and cog share the right end of the toolbar, so the reserved
         // width is both of them plus the gap between.
         UiShared.RightAlign(
-            UiShared.EorzeaClockWidth() + ImGui.GetStyle().ItemSpacing.X + ImGui.GetFrameHeight());
+            UiShared.ClockWidth() + ImGui.GetStyle().ItemSpacing.X + ImGui.GetFrameHeight());
 
-        UiShared.DrawEorzeaClock();
+        UiShared.DrawClock(plugin);
 
         ImGui.SameLine();
         if (ImGuiComponents.IconButton("##pick", FontAwesomeIcon.Cog))

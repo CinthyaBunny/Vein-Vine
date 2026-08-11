@@ -32,6 +32,9 @@ public class Configuration : IPluginConfiguration
     public bool CurrentZoneOnly { get; set; } = false;
     public bool TimedNodesOnly { get; set; } = false;
 
+    /// <summary>The toolbar clock reads local time instead of Eorzea time.</summary>
+    public bool ClockShowsLocalTime { get; set; } = false;
+
     // Appearance. The game's own look is the default: this is a plugin for a
     // game, shown next to that game's windows, and matching them is the less
     // surprising of the two options. Each axis is still one click from

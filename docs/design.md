@@ -73,12 +73,28 @@ having been quietly overridden. The band is found by watching for the boundary
 rather than by drawing two lists, so it lands correctly in descending order too,
 where the always-up group comes first.
 
-The toolbar carries an **Eorzea clock**, because the list quietly mixes two of
-them: the `Windows` column is Eorzea hours while `4m30s left` and `in 12m` are
-real minutes, and a window of `12-14` means nothing without knowing the time in
-the same units. Its scale and its label are two fields at the top of
-`UiShared`, and *where* it sits is the caller's decision rather than its own, so
-moving it is a change of call site rather than an edit to the clock.
+The toolbar carries a **clock**, because the list quietly mixes two of them: the
+`Windows` column is Eorzea hours while `4m30s left` and `in 12m` are real
+minutes, and a window of `12-14` means nothing without knowing the time in the
+same units.
+
+It is a button, and clicking it swaps between Eorzea and local time. The local
+reading is the one that turns "in 12m" into a wall-clock answer to whether
+there is time to do something else first, and the choice is remembered. A repeat
+click inside a third of a second is ignored — a label flickering under a
+double-click reads as a fault rather than a feature — and that cooldown runs on
+ImGui's monotonic clock rather than the system's, so moving the wall clock
+cannot strand it.
+
+Two details keep it steady. Its width is fixed to the widest text it can hold,
+so the toolbar does not shift as the digits tick or the mode changes, which is
+also why both labels are two characters. And its identity is pinned with a
+trailing `###`: a button's label *is* its id, so without that it would become a
+different widget every minute and drop whatever interaction was in flight.
+
+Scale and sample are fields at the top of `UiShared`, and *where* it sits is the
+caller's decision rather than its own, so moving it is a change of call site
+rather than an edit to the clock.
 
 The hour and the minute come from a single timestamp. Read separately they can
 straddle a tick and report 12:59 as 12:00.
