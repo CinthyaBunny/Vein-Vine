@@ -73,23 +73,30 @@ having been quietly overridden. The band is found by watching for the boundary
 rather than by drawing two lists, so it lands correctly in descending order too,
 where the always-up group comes first.
 
-Rows are drawn on **their own metrics** — roomier vertical frame padding, and
-their own text size — and everything in them measures from that: the icons, the
-flag button, the row-spanning hit box, and text centred with
-`AlignTextToFramePadding`.
+Rows are drawn with **roomier vertical frame padding** than the rest of the
+window, and everything in them measures from that: the icons, the flag button,
+the row-spanning hit box, and text centred with `AlignTextToFramePadding`.
 
-Both are settings, on the Appearance tab under *List rows*, each with a slider
-for finding a value by eye and a box for typing one you already know — the box
-also being how you read back exactly what a drag landed on. They are shown as
-whole percentages, 100% being an ordinary row: a size people already have a feel
-for, where a multiplier needs translating, and an integer keeps a decimal point
-out of a box nobody wants to type one into.
+It is a setting, on the Appearance tab under *List rows*, with a slider for
+finding a value by eye and a box for typing one you already know — the box also
+being how you read back exactly what a drag landed on. It shows whole
+percentages, 100% being an ordinary row: a size people already have a feel for,
+where a multiplier needs translating, and an integer keeps a decimal point out
+of a box nobody wants to type one into.
 
 The frame padding a row actually wants is roughly double the window's own, and
 that factor is a constant rather than part of the setting — a default reading
 220% would invite the question of a percentage of what.
 
-Both are scoped to the rows rather than to the window. The rows are the part being read; the
+**There is deliberately no text-size setting.** One existed briefly and was
+removed: per-window text scaling resamples the font atlas rather than rendering
+at the new size, so it buys height by stretching glyphs, and a list of item
+names is exactly the wrong place to spend sharpness. Padding reaches the same
+legibility by spacing, and leaves the letters untouched. Genuinely larger crisp
+text has to come from the font — a different `GameFontFamilyAndSize` on the Axis
+handle in `UiStyle` — not from a scale.
+
+It is scoped to the rows rather than to the window. The rows are the part being read; the
 toolbar and the tab strip are furniture you look past, and growing them
 alongside would cost the list the space it just gained. Every read is clamped,
 because the config is a plain file on disk and a hand-edited 40x row scale would

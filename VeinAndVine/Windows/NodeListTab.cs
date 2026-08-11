@@ -323,7 +323,7 @@ public sealed class NodeListTab
         }
         finally
         {
-            UiShared.PopRowStyle(plugin);
+            UiShared.PopRowStyle();
             ImGui.EndTable();
         }
     }

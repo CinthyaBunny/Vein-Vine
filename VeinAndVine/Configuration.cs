@@ -51,8 +51,6 @@ public class Configuration : IPluginConfiguration
     // Row metrics. Bounds are declared beside the values because the config is
     // a plain JSON file on disk: a hand-edited 40x row scale would produce a
     // list of one row and no way back to this screen, so every read clamps.
-    public const float MinRowTextScale = 0.8f;
-    public const float MaxRowTextScale = 2.0f;
     public const float MinRowPaddingScale = 0.5f;
     public const float MaxRowPaddingScale = 2.0f;
     public const float MinLeadingRowScale = 1.0f;
@@ -69,12 +67,11 @@ public class Configuration : IPluginConfiguration
     /// </summary>
     public const float BaseRowPadding = 2.0f;
 
-    /// <summary>
-    /// Text size inside list rows, relative to the window's own. Scoped to the
-    /// rows rather than applied to the window, so the toolbar and tabs keep
-    /// their proportions while the thing being read gets bigger.
-    /// </summary>
-    public float RowTextScale { get; set; } = 1.0f;
+    // No text-size setting here on purpose. Scaling text per-window resamples
+    // the font atlas rather than rendering at the new size, so it buys height
+    // at the cost of sharpness. Row height gets the same legibility from
+    // spacing and leaves the glyphs alone; a genuinely larger, still-crisp
+    // typeface has to come from the font itself - see UiStyle's Axis handle.
 
     /// <summary>
     /// Row height, where 1 is the ordinary row and the real padding is this

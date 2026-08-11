@@ -301,28 +301,21 @@ public sealed class MainWindow : Window
         ImGui.TextUnformatted("List rows");
         ImGui.Spacing();
 
-        var text = configuration.RowTextScale;
-        if (DrawPercent("Text size", ref text, Configuration.MinRowTextScale, Configuration.MaxRowTextScale,
-                "Text size inside the node list and the item picker.\n\n" +
-                "Only the rows: the toolbar, the tabs and this screen keep the\n" +
-                "size Dalamud draws them at.", out var commit))
-            configuration.RowTextScale = text;
-
-        if (commit)
-            configuration.Save();
-
         var padding = configuration.RowPaddingScale;
-        if (DrawPercent("Row height", ref padding, Configuration.MinRowPaddingScale, Configuration.MaxRowPaddingScale,
+        if (DrawPercent("Row Scale", ref padding, Configuration.MinRowPaddingScale, Configuration.MaxRowPaddingScale,
                 "How much room a row gets around its contents.\n\n" +
                 "Everything in a row measures from this - the icons, the map\n" +
-                "flag button and the clickable area all grow with it.", out commit))
+                "flag button and the clickable area all grow with it.\n\n" +
+                "There is no text-size setting: scaling text stretches the font\n" +
+                "rather than redrawing it, so it comes out blurred. Spacing buys\n" +
+                "the same legibility and leaves the letters sharp.", out var commit))
             configuration.RowPaddingScale = padding;
 
         if (commit)
             configuration.Save();
 
         var leading = configuration.LeadingRowScale;
-        if (DrawPercent("Leading row", ref leading, Configuration.MinLeadingRowScale, Configuration.MaxLeadingRowScale,
+        if (DrawPercent("Leading Row Scale", ref leading, Configuration.MinLeadingRowScale, Configuration.MaxLeadingRowScale,
                 "Extra height for the node you're waiting on, so the row that\n" +
                 "matters most is the easiest one to find.\n\n" +
                 "Set to 100% to draw it like any other row.", out commit))
@@ -350,7 +343,6 @@ public sealed class MainWindow : Window
         if (ImGui.Button("Reset row settings"))
         {
             var defaults = new Configuration();
-            configuration.RowTextScale = defaults.RowTextScale;
             configuration.RowPaddingScale = defaults.RowPaddingScale;
             configuration.LeadingRowScale = defaults.LeadingRowScale;
             configuration.ShowJobIcons = defaults.ShowJobIcons;
@@ -952,7 +944,7 @@ public sealed class MainWindow : Window
         }
         finally
         {
-            UiShared.PopRowStyle(plugin);
+            UiShared.PopRowStyle();
             ImGui.EndTable();
         }
     }

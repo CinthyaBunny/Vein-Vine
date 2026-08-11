@@ -34,11 +34,6 @@ internal static class UiShared
     // settings screen can move them. Every read clamps: the config is a plain
     // file on disk, and a hand-edited value has to be survivable.
 
-    private static float TextScale(Plugin plugin) => Math.Clamp(
-        plugin.Configuration.RowTextScale,
-        Configuration.MinRowTextScale,
-        Configuration.MaxRowTextScale);
-
     // The setting is relative to an ordinary row, so the baseline that makes a
     // row a row lives here rather than in the number the user sees.
     private static float PaddingScale(Plugin plugin) => Configuration.BaseRowPadding * Math.Clamp(
@@ -52,33 +47,28 @@ internal static class UiShared
         Configuration.MaxLeadingRowScale);
 
     /// <summary>
-    /// Puts a list's rows on their own metrics: roomier frame padding, and the
-    /// configured text size. Pair with <see cref="PopRowStyle"/>, and push it
-    /// after the header row so the headers keep the window's own proportions.
+    /// Puts a list's rows on roomier frame padding. Pair with
+    /// <see cref="PopRowStyle"/>, and push it after the header row so the
+    /// headers keep the window's own proportions.
     ///
-    /// Both go through the frame rather than being applied to each widget.
+    /// It goes through the frame rather than being applied to each widget.
     /// Icons, the flag button and text centred with AlignTextToFramePadding all
     /// measure themselves from the frame height, so scaling the frame carries
     /// the row's contents with it; scaling any one of them alone just leaves
     /// the others riding the ceiling of a taller row.
+    ///
+    /// Nothing here touches the font. Per-window text scaling resamples the
+    /// atlas rather than rendering at the new size, so it trades sharpness for
+    /// height - and height is what the padding already buys, with the glyphs
+    /// left alone.
     /// </summary>
     public static void PushRowStyle(Plugin plugin)
     {
         var padding = ImGui.GetStyle().FramePadding;
         ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, new Vector2(padding.X, padding.Y * PaddingScale(plugin)));
-
-        var text = TextScale(plugin);
-        if (text != 1f)
-            ImGui.SetWindowFontScale(text);
     }
 
-    public static void PopRowStyle(Plugin plugin)
-    {
-        if (TextScale(plugin) != 1f)
-            ImGui.SetWindowFontScale(1f);
-
-        ImGui.PopStyleVar();
-    }
+    public static void PopRowStyle() => ImGui.PopStyleVar();
 
     /// <summary>
     /// Stacks extra height onto the row being waited on. Call inside
@@ -97,11 +87,10 @@ internal static class UiShared
     /// The height a row will have once <see cref="PushRowStyle"/> is in effect,
     /// for sizing columns - which happens before the push.
     ///
-    /// Only valid *outside* the push. It reads the style's frame padding and
-    /// the window's font size, both of which the push changes, so asking inside
-    /// would apply the scales a second time. Inside a row the height is simply
-    /// <c>ImGui.GetFrameHeight()</c>, which is what every widget there already
-    /// measures itself against.
+    /// Only valid *outside* the push. It reads the style's frame padding, which
+    /// the push scales, so asking inside would scale it a second time. Inside a
+    /// row the height is simply <c>ImGui.GetFrameHeight()</c>, which is what
+    /// every widget there already measures itself against.
     /// </summary>
     public static float PredictedRowHeight(Plugin plugin, bool leading = false)
     {
@@ -111,8 +100,8 @@ internal static class UiShared
             padding *= LeadingScale(plugin);
 
         // Doubled because frame padding applies above and below. That is the
-        // frame-height formula, not a third scale.
-        return (ImGui.GetFontSize() * TextScale(plugin)) + (padding * 2f);
+        // frame-height formula, not a second scale.
+        return ImGui.GetFontSize() + (padding * 2f);
     }
 
     // Clock tuning, gathered so it can be adjusted by eye without reading the
@@ -124,6 +113,13 @@ internal static class UiShared
     /// Font scale for the clock, 1f being the window's ordinary text. This
     /// scales the button along with its text, so raising it makes the whole
     /// toolbar row taller.
+    ///
+    /// Know what it costs: scaling text per-window resamples the font atlas
+    /// rather than rendering at the new size, so anything above 1f trades
+    /// sharpness for height. The rows deliberately have no such setting for
+    /// that reason - they buy height from padding instead. Four digits on a
+    /// button can carry a little softness where a list of item names cannot,
+    /// but a crisp larger clock means a larger font, not a larger scale.
     ///
     /// Deliberately not a const: at 1f the compiler folds the guards below into
     /// dead code and warns, which is a poor thing to greet the next person who
