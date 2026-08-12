@@ -179,7 +179,7 @@ per commit burns numbers on work nobody can install.
 
 [`CHANGELOG.md`](CHANGELOG.md) is the index of what changed between versions.
 Entries are written for players rather than developers — see the rules in
-[`CLAUDE.md`](CLAUDE.md) before adding one.
+[`CONTRIBUTING.md`](CONTRIBUTING.md) before adding one.
 
 **It reaches the in-game installer on its own.** Every build, the
 `SyncChangelogToManifests` target finds the entry whose `<strong>` marker names

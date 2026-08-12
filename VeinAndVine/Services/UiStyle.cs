@@ -124,7 +124,7 @@ public sealed class UiStyle : IDisposable
         var onLight = IsLight(ground);
 
         // Which measure this theme's control fills are fitted against. Every
-        // theme but Dark is held to APCA - see TextReads.
+        // theme but Dark is held to APCA - see BodyFloor.
         var apca = UsesApca(configuration.Theme);
 
         Color(ImGuiCol.WindowBg, Alpha(ground, 0.95f));
@@ -142,34 +142,34 @@ public sealed class UiStyle : IDisposable
         // Every control is a visible object standing off the panel, not a
         // tint of it. Inputs sit a little lower than buttons, which is the
         // usual reading: a field is a well, a button is a raised key.
-        Color(ImGuiCol.FrameBg, Alpha(Control(ground, text, 0.10f, apca), 0.95f));
-        Color(ImGuiCol.FrameBgHovered, Control(ground, text, 0.16f, apca));
-        Color(ImGuiCol.FrameBgActive, Control(ground, text, 0.22f, apca));
+        Color(ImGuiCol.FrameBg, Alpha(Fill(0.10f), 0.95f));
+        Color(ImGuiCol.FrameBgHovered, Fill(0.16f));
+        Color(ImGuiCol.FrameBgActive, Fill(0.22f));
 
-        Color(ImGuiCol.TitleBg, Control(ground, text, 0.08f, apca));
-        Color(ImGuiCol.TitleBgActive, AccentControl(ground, accent, text, 0.14f, apca));
+        Color(ImGuiCol.TitleBg, Fill(0.08f));
+        Color(ImGuiCol.TitleBgActive, AccentFill(0.14f));
         Color(ImGuiCol.TitleBgCollapsed, Alpha(ground, 0.80f));
 
-        Color(ImGuiCol.Header, AccentControl(ground, accent, text, 0.16f, apca));
-        Color(ImGuiCol.HeaderHovered, AccentControl(ground, accent, text, 0.24f, apca));
+        Color(ImGuiCol.Header, AccentFill(0.16f));
+        Color(ImGuiCol.HeaderHovered, AccentFill(HoveredLift));
         // Make active headers (row highlights) darker on light themes so they read as a distinct, recessed object.
-        Color(ImGuiCol.HeaderActive, AccentControl(ground, accent, text, onLight ? 0.48f : 0.32f, apca));
+        Color(ImGuiCol.HeaderActive, AccentFill(SelectedLift(onLight)));
 
-        Color(ImGuiCol.Button, Control(ground, text, 0.17f, apca));
-        Color(ImGuiCol.ButtonHovered, Control(ground, text, 0.25f, apca));
-        Color(ImGuiCol.ButtonActive, Control(ground, text, 0.33f, apca));
+        Color(ImGuiCol.Button, Fill(0.17f));
+        Color(ImGuiCol.ButtonHovered, Fill(0.25f));
+        Color(ImGuiCol.ButtonActive, Fill(0.33f));
 
         // Not the plugin's own tab strip - that is hand-drawn by GameTabBar
         // from Tabs below, and no BeginTabBar exists anywhere. These style the
         // tab ImGui itself draws once the user docks this window into another,
         // which is why grepping for a tab bar finds nothing.
-        Color(ImGuiCol.Tab, Control(ground, text, 0.09f, apca));
-        Color(ImGuiCol.TabHovered, AccentControl(ground, accent, text, 0.26f, apca));
-        Color(ImGuiCol.TabActive, AccentControl(ground, accent, text, 0.20f, apca));
-        Color(ImGuiCol.TabUnfocused, Control(ground, text, 0.06f, apca));
-        Color(ImGuiCol.TabUnfocusedActive, Control(ground, text, 0.14f, apca));
+        Color(ImGuiCol.Tab, Fill(0.09f));
+        Color(ImGuiCol.TabHovered, AccentFill(0.26f));
+        Color(ImGuiCol.TabActive, AccentFill(0.20f));
+        Color(ImGuiCol.TabUnfocused, Fill(0.06f));
+        Color(ImGuiCol.TabUnfocusedActive, Fill(0.14f));
 
-        Color(ImGuiCol.TableHeaderBg, Control(ground, text, 0.12f, apca));
+        Color(ImGuiCol.TableHeaderBg, Fill(0.12f));
 
         // Faint and text-tinted, not accent-tinted. Accent-coloured borders
         // drew a full-height gold rule between every column, which no game list
@@ -242,6 +242,13 @@ public sealed class UiStyle : IDisposable
         Var(ImGuiStyleVar.PopupBorderSize, 1f);
         Var(ImGuiStyleVar.FrameBorderSize, 1f);
 
+        // The lift is the only thing that varies between these - the panel, the
+        // text and the measure are fixed for the whole window - so it is the
+        // only thing worth reading at each call site.
+        Vector4 Fill(float lift) => Control(ground, text, lift, apca);
+
+        Vector4 AccentFill(float lift) => AccentControl(ground, accent, text, lift, apca);
+
         void Color(ImGuiCol target, Vector4 value)
         {
             ImGui.PushStyleColor(target, value);
@@ -266,6 +273,28 @@ public sealed class UiStyle : IDisposable
         pushedColors = 0;
         pushedVars = 0;
     }
+
+    /// <summary>
+    /// The two lifts the row highlight is drawn with. Named rather than written
+    /// at the point of use, because <see cref="BuildPalette"/> has to fit the
+    /// status colours against these exact fills: a number changed in one place
+    /// and not the other would fit them to a highlight that is not the one the
+    /// list draws, which is a failure with no symptom until someone hovers a
+    /// row on the wrong theme.
+    /// </summary>
+    private const float HoveredLift = 0.24f;
+
+    private static float SelectedLift(bool onLight) => onLight ? 0.48f : 0.32f;
+
+    /// <summary>
+    /// Every surface a row's text is drawn on: the panel, and the two fills the
+    /// row highlight paints over it.
+    ///
+    /// A colour fitted against the panel alone is fitted against the one moment
+    /// it is least likely to be read closely. The row under the pointer is the
+    /// row being read, and it is not the panel colour - it is the highlight.
+    /// </summary>
+    private readonly record struct Surfaces(Vector4 Panel, Vector4 Hovered, Vector4 Selected);
 
     /// <summary>
     /// The anchors a theme is built from. Three come straight out of the game's
@@ -347,12 +376,7 @@ public sealed class UiStyle : IDisposable
     }
 
     private static Vector4 LabelOn(Vector4 fill, bool apca) =>
-        apca
-            ? Apca.Contrast(White, fill) >= Apca.Contrast(Black, fill) ? White : Black
-            : LabelOnByRatio(fill);
-
-    private static Vector4 LabelOnByRatio(Vector4 fill) =>
-        ContrastRatio(White, fill) >= ContrastRatio(Black, fill) ? White : Black;
+        TextScore(White, fill, apca) >= TextScore(Black, fill, apca) ? White : Black;
 
     private readonly Dictionary<UiThemeChoice, Palette?> palettes = [];
 
@@ -421,7 +445,20 @@ public sealed class UiStyle : IDisposable
             // text colour is meant for the backgrounds the game pairs it with,
             // and the panel colours here are sampled from previews rather than
             // taken from it, so the pairing is ours to make good.
-            var text = Legible(Rgba(Column(textRow, theme)), ground, 4.5f, apca);
+            var text = Legible(Rgba(Column(textRow, theme)), ground, apca);
+            var accent = Rgba(Column(accentRow, theme));
+
+            // The body text is fitted against the panel alone, and needs no more
+            // than that: every control fill is built to carry it, so a fill that
+            // would cost it its floor is never chosen in the first place. The
+            // dimmed and status colours get no such guarantee - nothing consults
+            // them when a fill is picked - so they are fitted against the
+            // highlight as well as the panel, in the order the window builds
+            // them: the fills depend on the text, and these depend on the fills.
+            var surfaces = new Surfaces(
+                ground,
+                AccentControl(ground, accent, text, HoveredLift, apca),
+                AccentControl(ground, accent, text, SelectedLift(IsLight(ground)), apca));
 
             return new Palette(
                 ground,
@@ -429,10 +466,10 @@ public sealed class UiStyle : IDisposable
                 // After the text, and against it: this walks the dimmed colour
                 // towards whatever the text ended up being, so it has to be the
                 // fitted one or it would be aiming at a colour nothing uses.
-                Readable(Rgba(Column(dimRow, theme)), text, ground, apca),
-                Rgba(Column(accentRow, theme)),
-                Legible(DefaultSuccess, ground, 4.5f, apca),
-                Legible(DefaultWarning, ground, 4.5f, apca));
+                Readable(Rgba(Column(dimRow, theme)), text, surfaces, apca),
+                accent,
+                Legible(DefaultSuccess, surfaces, apca),
+                Legible(DefaultWarning, surfaces, apca));
         }
         catch (Exception ex)
         {
@@ -444,9 +481,16 @@ public sealed class UiStyle : IDisposable
     /// <summary>
     /// Which measure a theme's colours are fitted with. Everything but
     /// <see cref="UiThemeChoice.Dark"/> uses APCA - see
-    /// <see cref="TextReads"/> for why Dark is the exception.
+    /// <see cref="BodyFloor"/> for why Dark is the exception.
     /// </summary>
     private static bool UsesApca(UiThemeChoice theme) => theme != UiThemeChoice.Dark;
+
+    /// <summary>
+    /// How far past the body floor a panel is fitted, in Lc. Covers the gap
+    /// between what pure black or white can reach against it and what a colour
+    /// that must keep its hue can.
+    /// </summary>
+    private const float PanelHeadroom = 6f;
 
     /// <summary>
     /// Moves a panel away from mid-tone, keeping its hue, until body text can
@@ -470,13 +514,6 @@ public sealed class UiStyle : IDisposable
     /// lighter so dark text works, a dark one darker so light text does. Moving
     /// either toward the middle is what caused this.
     /// </summary>
-    /// <summary>
-    /// How far past the body floor a panel is fitted, in Lc. Covers the gap
-    /// between what pure black or white can reach against it and what a colour
-    /// that must keep its hue can.
-    /// </summary>
-    private const float PanelHeadroom = 6f;
-
     private static Vector4 FitGroundForText(Vector4 ground, bool apca)
     {
         if (!apca)
@@ -579,16 +616,57 @@ public sealed class UiStyle : IDisposable
     ///
     /// Written as a guard rather than a correction to one theme: it does
     /// nothing at all to the seven that already pass.
+    ///
+    /// Held to the secondary-text floor rather than the body-text one. This
+    /// colour carries whole columns, so it has to be comfortably readable - but
+    /// it is also the plugin's way of saying "this is the lesser information",
+    /// and fitting it to the same floor as the text beside it would make the two
+    /// indistinguishable and lose that.
+    ///
+    /// Against the highlight as well as the panel, which costs it some of that
+    /// distinctness on the dark themes: their row highlight is a mid-tone slab
+    /// two to three times the panel's luminance, and a dimmed grey vanishes into
+    /// it - Clear Blue's fell to Lc 35 under the pointer, on the row the reader
+    /// is looking at. Clearing that pushes the colour pale enough to sit close
+    /// to the body text it is meant to defer to. The trade is deliberate: text
+    /// that cannot be read has lost more than text that reads as slightly less
+    /// quiet than intended.
     /// </summary>
-    private static Vector4 Readable(Vector4 dim, Vector4 text, Vector4 ground, bool apca)
+    private static Vector4 Readable(Vector4 dim, Vector4 text, Surfaces on, bool apca)
     {
-        // Held to the secondary-text floor rather than the body-text one. This
-        // colour carries whole columns, so it has to be comfortably readable -
-        // but it is also the plugin's way of saying "this is the lesser
-        // information", and fitting it to the same floor as the text beside it
-        // would make the two indistinguishable and lose that.
-        for (var step = 0; step < 12 && !TextReads(dim, ground, apca, Apca.SecondaryText, 3f); step++)
+        // The panel first, and unconditionally. This floor is not negotiable
+        // against the one below it: a dimmed colour that cannot be read on the
+        // panel fails on every row, where one that cannot be read on the
+        // highlight fails only on the row under the pointer.
+        for (var step = 0; step < 12 && !SecondaryReads(dim, on.Panel, apca); step++)
             dim = Mix(dim, text, 0.25f);
+
+        // Then the highlight, as far as the colour can go and still be dim.
+        var best = TextScore(dim, on.Panel, apca);
+
+        for (var step = 0; step < 12 && !SecondaryOnHighlight(dim, on, apca); step++)
+        {
+            var moved = Mix(dim, text, 0.25f);
+
+            // The walk is towards the body text, so there is a point past which
+            // it has not made the dimmed colour readable, it has made it the
+            // body text. That is not a fitted colour, it is a lost distinction:
+            // the zone and level columns stop being visibly quieter than the
+            // name beside them. Where the highlight cannot be cleared without
+            // going that far, the colour stops here and stays dim.
+            if (TextScore(moved, text, apca) < DimGap(apca))
+                break;
+
+            // Progress on the panel, for the reason Legible gives: it is the one
+            // surface the walk moves monotonically away from.
+            var score = TextScore(moved, on.Panel, apca);
+
+            if (score <= best)
+                break;
+
+            dim = moved;
+            best = score;
+        }
 
         return dim;
     }
@@ -606,8 +684,19 @@ public sealed class UiStyle : IDisposable
     /// Without this the status column was very nearly invisible on three
     /// themes: amber on Light's #F5D4A9 is the same colour twice.
     /// </summary>
-    private static Vector4 Legible(Vector4 colour, Vector4 ground, float target, bool apca)
+    /// <remarks>
+    /// The panel-only overload is for the body text, which needs nothing more:
+    /// every control fill is chosen to carry it, so no surface it lands on can
+    /// cost it its floor. Anything the fills do not consult - the status
+    /// colours - takes the <see cref="Surfaces"/> overload instead.
+    /// </remarks>
+    private static Vector4 Legible(Vector4 colour, Vector4 ground, bool apca) =>
+        Legible(colour, new Surfaces(ground, ground, ground), apca);
+
+    private static Vector4 Legible(Vector4 colour, Surfaces on, bool apca)
     {
+        var ground = on.Panel;
+
         // The two directions are not mirror images, and treating them as one
         // was costing the status colours their identity. Blending towards black
         // scales every channel down, which leaves hue and saturation untouched;
@@ -631,9 +720,19 @@ public sealed class UiStyle : IDisposable
         // case - its panel is a mid grey, and even pure black only reaches
         // Lc 64 against it - so its text stops where the sheet left it rather
         // than being marched to black for nothing.
+        //
+        // Progress is measured against the panel even though the colour has to
+        // satisfy all three surfaces, because the panel is the only one it moves
+        // monotonically away from. Scoring the step on the worst surface instead
+        // stopped the walk dead: a colour travelling from light to dark passes
+        // straight through the highlight's own luminance on the way, APCA scores
+        // that crossing as zero - its way of saying "too close to call" - and
+        // the guard read the crossing as a step that had stopped paying. Every
+        // status colour on the three light themes was left exactly where it
+        // started.
         var best = TextScore(colour, ground, apca);
 
-        for (var step = 0; step < 28 && best < (apca ? Apca.BodyText : target); step++)
+        for (var step = 0; step < 28 && !StatusReads(colour, on, apca); step++)
         {
             var moved = lighten
                 ? Brighten(colour, 0.10f)
@@ -649,6 +748,28 @@ public sealed class UiStyle : IDisposable
 
         return colour;
     }
+
+    /// <summary>
+    /// A status colour has arrived when it clears the body floor on the panel
+    /// and at least the secondary floor on the highlight fills.
+    ///
+    /// Not the body floor on all three: the highlight is a transient state, and
+    /// holding a colour to the full floor on a mid-tone fill costs it either its
+    /// saturation or its hue, which for green and amber is the whole message.
+    /// </summary>
+    private static bool StatusReads(Vector4 colour, Surfaces on, bool apca) =>
+        BodyReads(colour, on.Panel, apca) && SecondaryOnHighlight(colour, on, apca);
+
+    private static bool SecondaryOnHighlight(Vector4 colour, Surfaces on, bool apca) =>
+        SecondaryReads(colour, on.Hovered, apca) && SecondaryReads(colour, on.Selected, apca);
+
+    /// <summary>
+    /// How far dimmed text has to stay from the body text to still read as
+    /// dimmed. A distinctness floor rather than a legibility one - the other
+    /// floors ask whether a colour can be read, this one asks whether it is
+    /// still saying "lesser".
+    /// </summary>
+    private static float DimGap(bool apca) => apca ? 12f : 1.25f;
 
     private static readonly Vector4 White = new(1f, 1f, 1f, 1f);
     private static readonly Vector4 Black = new(0f, 0f, 0f, 1f);
@@ -758,7 +879,7 @@ public sealed class UiStyle : IDisposable
         var toward = onLightPanel ? Black : White;
         var preferred = Mix(ground, toward, lift);
 
-        if (TextReads(text, preferred, apca, Apca.BodyText, 4.5f))
+        if (BodyReads(text, preferred, apca))
         {
             // A small lift off a very dark, saturated panel barely registers -
             // Classic FF's idle tab landed at 1.18:1. Keep going until the
@@ -767,7 +888,7 @@ public sealed class UiStyle : IDisposable
             for (var step = 0; step < 8 && !ShapeReads(preferred, ground); step++)
             {
                 var further = Mix(preferred, toward, 0.10f);
-                if (!TextReads(text, further, apca, Apca.BodyText, 4.5f))
+                if (!BodyReads(text, further, apca))
                     break;
 
                 preferred = further;
@@ -787,37 +908,66 @@ public sealed class UiStyle : IDisposable
         // of pressed into it - the opposite of "this one".
         //
         // So the direction is fixed and the depth negotiates. Ease back until
-        // the label reads, and take the deepest that does.
-        for (var step = 0; step < 8; step++)
-        {
-            lift *= 0.65f;
-            var eased = Mix(ground, toward, lift);
+        // the label reads, and take the deepest that does - but stop before the
+        // fill stops being a fill.
+        //
+        // That floor is the whole fix for a highlight nobody could see. Light
+        // and Clear Pink carry dark text on a panel fitted to barely clear the
+        // body floor, so sinking a fill by even a few percent costs the label
+        // its last few Lc, and this walk used to run to the end of its rope and
+        // hand back a row highlight 1.02:1 against the panel. A control eased
+        // until it is invisible has not been saved, it has been deleted.
+        //
+        // The step is small because on those panels the depths that satisfy
+        // both tests are a narrow band, and the coarse ladder this used to walk
+        // stepped straight over it - landing either just too pale to read or
+        // just too faint to see, on either side of the answer.
+        var eased = preferred;
 
-            if (TextReads(text, eased, apca, Apca.BodyText, 4.5f))
+        // The deepest fill that at least clears the secondary floor. Kept as
+        // the walk passes it, because it is only wanted if the body floor turns
+        // out to be unreachable at any visible depth, and by then the walk has
+        // gone too shallow to find it again.
+        Vector4? lesser = SecondaryReads(text, preferred, apca) ? preferred : null;
+
+        for (var step = 0; step < 24; step++)
+        {
+            var shallower = Mix(ground, toward, lift * 0.90f);
+
+            if (!ShapeReads(shallower, ground))
+                break;
+
+            lift *= 0.90f;
+            eased = shallower;
+
+            if (BodyReads(text, eased, apca))
                 return eased;
+
+            lesser ??= SecondaryReads(text, eased, apca) ? eased : null;
         }
 
-        // Nothing in this direction satisfies the body floor, which happens on
+        // Nothing at a visible depth satisfies the body floor, which happens on
         // a light panel because sinking the fill moves it towards the dark text
         // sitting on it. Held to the secondary floor instead of abandoned: a
         // control fill is a transient state rather than a column of prose, and
         // the game's own escape - flipping the label pale - is not available
         // when one Text colour serves the whole window. The hand-drawn tab strip
         // does have that escape, and uses it; see Tabs.
-        var deepest = Mix(ground, toward, lift);
+        if (lesser is { } readable)
+            return readable;
 
-        for (var step = 0; step < 8; step++)
+        // Not even the secondary floor, anywhere a fill would still be visible.
+        // Only here is visibility finally traded away, because a label nobody
+        // can read is the one failure worse than furniture nobody can see.
+        var settled = eased;
+
+        for (var step = 0; step < 7 && !SecondaryReads(text, settled, apca); step++)
         {
-            var eased = Mix(ground, toward, lift);
-
-            if (TextReads(text, eased, apca, Apca.SecondaryText, 3f))
-                return eased;
-
             lift *= 0.65f;
-            deepest = eased;
+            settled = Mix(ground, toward, lift);
         }
 
-        return deepest;
+        return settled;
     }
 
     /// <summary>
@@ -833,10 +983,27 @@ public sealed class UiStyle : IDisposable
         // The tint can undo the contrast the lift just bought; walk it back
         // towards the plain control fill, which is already known to be both
         // visible and readable, until the label reads again.
-        for (var step = 0; step < 12 && !TextReads(text, tinted, apca, Apca.BodyText, 4.5f); step++)
+        //
+        // Against what the plain fill actually achieved, not against the body
+        // floor flat. On a light panel the plain fill is itself held to the
+        // secondary floor - it cannot reach the body one at any visible depth -
+        // so demanding the body floor of the tinted version asked it to beat a
+        // mark the colour it is walking back towards already fails, and the
+        // accent could never survive on the three themes at all.
+        var floor = MathF.Min(BodyFloor(apca), TextScore(text, plain, apca));
+
+        for (var step = 0; step < 12 && TextScore(text, tinted, apca) < floor; step++)
             tinted = Mix(tinted, plain, 0.25f);
 
-        return TextReads(text, tinted, apca, Apca.BodyText, 4.5f) ? tinted : plain;
+        // The tint has to leave the control visible as well as legible. Tinting
+        // moves the fill on both axes, and on a light panel a dark accent can
+        // carry it back across the panel's own luminance - a row highlight that
+        // reads perfectly and cannot be seen. Walking back towards the plain
+        // fill only ever helps both, so anything that still fails either test
+        // gives up its tint rather than its visibility.
+        return TextScore(text, tinted, apca) >= floor && ShapeReads(tinted, ground)
+            ? tinted
+            : plain;
     }
 
     /// <summary>WCAG relative-luminance contrast ratio, 1:1 to 21:1.</summary>
@@ -848,7 +1015,7 @@ public sealed class UiStyle : IDisposable
     }
 
     /// <summary>
-    /// Whether text reads on a background, by whichever measure the theme is
+    /// The floor body text has to clear, on whichever measure the theme is
     /// fitted with.
     ///
     /// Every theme but <see cref="UiThemeChoice.Dark"/> is fitted with APCA,
@@ -862,12 +1029,25 @@ public sealed class UiStyle : IDisposable
     /// a different one would move colours that are already right - a change
     /// with a cost and no benefit.
     ///
-    /// The two thresholds are not convertible into one another. They are
-    /// different scales, so each is passed explicitly rather than derived.
+    /// The two numbers are not convertible into one another. They are different
+    /// scales, so each floor names both of its values rather than deriving one
+    /// from the other - and they are paired here, once, so that no caller can
+    /// hold a colour to one tier on one scale and a different tier on the other.
     /// </summary>
-    private static bool TextReads(
-        Vector4 text, Vector4 background, bool apca, float minimumLc, float minimumRatio) =>
-        TextScore(text, background, apca) >= (apca ? minimumLc : minimumRatio);
+    private static float BodyFloor(bool apca) => apca ? Apca.BodyText : 4.5f;
+
+    /// <summary>
+    /// The floor for text that is deliberately lesser - dimmed columns, and the
+    /// control fills that have nowhere left to go. See <see cref="BodyFloor"/>
+    /// for why both scales appear.
+    /// </summary>
+    private static float SecondaryFloor(bool apca) => apca ? Apca.SecondaryText : 3f;
+
+    private static bool BodyReads(Vector4 text, Vector4 background, bool apca) =>
+        TextScore(text, background, apca) >= BodyFloor(apca);
+
+    private static bool SecondaryReads(Vector4 text, Vector4 background, bool apca) =>
+        TextScore(text, background, apca) >= SecondaryFloor(apca);
 
     /// <summary>
     /// The same judgement as a number, for the fitting loops - they need to
@@ -959,5 +1139,4 @@ public sealed class UiStyle : IDisposable
 
         return axisFont;
     }
-
 }

@@ -19,7 +19,106 @@ and the reasoning behind a fix to the code and the commit history. Where a
 change has no visible effect, say so briefly rather than explaining it.
 
 
-## <strong>v0.0.1.5</strong> - 2026-08-10
+## <strong>v0.0.2.0</strong> - 2026-08-11
+
+The node list learns to tell you *where* and *when*, and the themes get a
+thorough pass over how readable they actually are.
+
+### Added
+
+- **An Eorzea clock on the node list toolbar.** The `Windows` column is in
+  Eorzea hours while the countdowns beside it are in real minutes, which is a
+  conversion nobody should be doing in their head. Click the clock to swap it to
+  local time and back. It is drawn into the tab strip's own hexagon rather than
+  as a separate control, so the toolbar reads as one piece of furniture.
+
+- **Countdowns now carry the Eorzea time they run out on** — `4m30s @ 14:23` —
+  for the same reason. You no longer have to hold two clocks in your head to
+  work out whether a window closes before you can get there.
+
+- **Map coordinates in the node list.** Previously you had to place the flag to
+  find out where a node actually was.
+
+- **The game's own gathering icon in the job column.** It says more than the
+  three letters it replaces — `MIN` covered both mining and quarrying, where the
+  icons tell them apart, and the tooltip now names the method rather than the
+  job. `Job column shows gathering icons` turns it back to text.
+
+- **Always-up nodes in the zone you are standing in are tinted.** Those cost no
+  travelling, which is worth saying about a row that never expires and so never
+  earns its place by being urgent. It is a mark on the row rather than a
+  reordering: being underfoot is a note about a node, not a claim that it beats
+  the ones above it.
+
+- **The row you are waiting on is drawn taller than the rest**, so the one you
+  are actually watching is findable without reading the list.
+
+- **Row size settings.** `Row Scale` sets how much room a row gets around its
+  contents, and everything in a row measures from it — icons, coordinates,
+  spacing. `Leading Row Scale` sets how much taller the row you are waiting on
+  is drawn; 100% draws it like any other row. Both read as percentages, and
+  there is a `Reset row settings` button.
+
+### Changed
+
+- **Always-up nodes are grouped below the timed ones**, under an `Always
+  available` band. They used to be free to sort in between, so a node that will
+  still be there tomorrow could sit between the one expiring now and the one
+  worth travelling for.
+
+- **The whole row is the click target in the wishlist picker**, rather than a
+  small control on it.
+
+- **Every theme has been re-checked for readability, with a better measure of
+  it.** The one used before could not tell light text on a dark panel from dark
+  text on a light one, and this plugin themes a window eight ways — half of them
+  light, half dark. Several colours it called comfortable were not, and those
+  have moved.
+
+- **Clear White and Clear Pink have slightly lighter panels.** Both sat close
+  enough to a mid grey that *no* text colour could be comfortable on them —
+  neither black nor white had the room. They are moved the smallest distance
+  that fixes it, and stay recognisably themselves.
+
+### Fixed
+
+- **The highlight under the row you are pointing at is visible again on the
+  light themes.** On Light, Clear White and Clear Pink it had been landing so
+  close to the panel behind it that there was nothing to see, and the list gave
+  no sign of which row the mouse was on. Rows now darken under the pointer, as
+  they do in the game's own lists. Text over that darker band sits a little
+  softer than it does over the bare panel: those three themes leave very little
+  room between text you can comfortably read and a highlight you can see at
+  all, and a highlight nobody can see is the worse of the two.
+
+- **The green and amber in the node list no longer wash out on the row you are
+  pointing at.** They were chosen to sit well on the window's background, and
+  the highlighted row is not that background, so hovering a row could take the
+  colour that tells you a node is up and leave it barely there. They are now
+  chosen to hold up on the highlight as well. The zone and level columns are
+  improved on the darker themes for the same reason; on Light and Clear White
+  they stay as they were, because anything more would have made them as loud as
+  the item name they sit beside.
+
+- **Selected rows on the light themes no longer highlight in the wrong
+  direction.** They were coming out lighter than the panel, which reads as the
+  row being lifted off the list rather than pressed into it — the opposite of
+  "this one". The game sinks a row into a light panel, and so does this now.
+
+### Removed
+
+- **The row text-size setting.** Scaling text stretched the font rather than
+  drawing it larger, so it made the list blurrier rather than easier to read.
+  Row Scale gives the rows room without touching the type.
+
+### Behind the scenes
+
+Nothing you can see. The documentation was split up by who it is for, and some
+of the theming code was tidied without changing any colour it produces.
+
+
+<details>
+<summary><strong>v0.0.1.5</strong> - 2026-08-10</summary>
 
 ### Added
 
@@ -30,6 +129,8 @@ change has no visible effect, say so briefly rather than explaining it.
   own sub-tabs. The same explanation was previously only on the footer at the
   bottom of the list, which is not where you look when the numbers at the top
   are what puzzle you.
+
+</details>
 
 
 <details>

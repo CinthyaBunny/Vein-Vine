@@ -454,8 +454,8 @@ Three guards handle the rest, all of them measuring rather than assuming:
 | Guard | What it protects |
 |---|---|
 | `FitGroundForText` | The panel itself, where no text colour could otherwise reach the floor |
-| `Readable` | Dimmed text against the panel, floor Lc 60 |
-| `Legible` | The body text, and the node list's green and amber, floor Lc 75 |
+| `Readable` | Dimmed text, floor Lc 60 on the panel and as close to it on the highlight as dimness allows |
+| `Legible` | The body text against the panel, floor Lc 75; and the node list's green and amber against the panel *and* the row highlight |
 | `Control` | Every control, on **two** fronts at once — visible against the panel *and* readable underneath its label |
 | `AccentControl` | The same, for the "this one" states — selected rows, the active tab |
 
@@ -579,6 +579,43 @@ transient state, not a column of prose, and the game's own escape of flipping
 the label pale is not available when one `Text` colour serves the whole window.
 The hand-drawn tab strip *does* have that escape, and takes it.
 
+**That easing needs a floor of its own, and not having one cost the light themes
+their row highlight entirely.** Light and Clear Pink carry dark text on a panel
+fitted to only just clear the body floor, so sinking a fill at all costs the
+label its last few Lc. The walk therefore ran to the end of its rope every time
+and returned a highlight **1.02:1** against the panel — a label with perfect
+contrast, sitting on nothing at all. Clear White managed 1.14:1. The direction
+was right and the depth had been negotiated away to zero.
+
+So the walk now refuses the step that would take the fill below `ShapeReads`,
+and where the body floor cannot be met at any visible depth it takes the
+*deepest* fill that clears the secondary one rather than the shallowest. Both
+halves were needed: the step size also had to come down, because on those panels
+the depths satisfying both tests are a narrow band and the old ×0.65 ladder
+stepped straight over it, landing either just too pale to read (Lc 57.5) or just
+too faint to see (1.2488:1) on either side of the answer.
+
+Row highlights, before and after:
+
+| Theme | Was | Now | Label on it |
+|---|---|---|---|
+| Light | 1.02:1 | 1.33:1 | Lc 60.4 |
+| Clear Pink | 1.02:1 | 1.33:1 | Lc 60.9 |
+| Clear White | 1.14:1 | 1.48:1 | Lc 61.8 |
+
+The four dark themes are untouched by this, and Clear Green moved by one step.
+The cost is that row text over a highlight on those three themes now sits at the
+secondary floor instead of the body one, which is the trade those panels force:
+no colour is both a visible highlight and a body-floor background there.
+
+`AccentControl` had the same hole from the other side. It guarded the label
+after tinting but never re-checked that the control was still *visible*, so a
+dark accent on a light panel could carry the fill back across the panel's own
+luminance — and it held the tinted fill to the body floor even where the plain
+fill it walks back towards only reaches the secondary one, which is a mark the
+destination already fails. The accent could never survive on the three light
+themes at all.
+
 An earlier version solved only half of this — it mixed toward the text and
 pulled back whenever contrast suffered, which protected the label and quietly
 dissolved the thing the label sits on. Both constraints are now checked
@@ -590,13 +627,71 @@ Every control also gets a **1px border**, pinned by the theme rather than
 inherited from the user's Dalamud style, so a control is an object with an edge
 rather than just a slightly different shade.
 
-Measured across the seven APCA-fitted themes, every one of them now clears its
-floor: body text Lc 76–103, dimmed text Lc 60–69, and the status green and amber
-Lc 75–77. Dark, on its own measure, sits at 15.7:1 body text and 6.0:1 dimmed.
+### The panel is not the only thing text is read on
+
+Every colour above was fitted against the panel, and the panel is the one
+surface a row is *least* likely to be read on closely: the row under the pointer
+is the row being read, and that row is painted with the highlight.
+
+Measured, the status colours fell off a cliff there. Green and amber sat at
+Lc 75–79 on the panel and Lc 50–56 on the highlight; the dimmed colour, which
+carries the zone and level columns, reached **Lc 35** under the pointer on Clear
+Blue. Compliant on the surface they were fitted against, and unreadable on the
+one that matters.
+
+The body text needs no such treatment, and that asymmetry is the reason the fix
+is narrow: `Control` picks every fill *to carry the body text*, so no fill it
+chooses can cost that text its floor. Nothing consults the dimmed or status
+colours when a fill is picked, so they are the ones that have to look.
+
+They are now fitted against a `Surfaces` triple — panel, hovered, selected —
+holding the body floor on the panel and at least the secondary floor on both
+highlight fills. Not the body floor on all three: the highlight is transient,
+and holding a colour to the full floor on a mid-tone fill costs it either its
+saturation or its hue, which for green and amber is the entire message.
+
+**One trap here is worth recording, because it silently reverted the whole
+change.** Scoring each step on the *worst* surface looks like the obvious
+generalisation and is wrong: a colour travelling from light to dark passes
+straight through the highlight's own luminance on the way, APCA scores that
+crossing as 0 — its way of saying "too close to call" — and the "did this step
+help?" guard reads the crossing as a step that stopped paying. Every status
+colour on all three light themes was left exactly where it started. Progress has
+to be measured against the panel, which is the only surface the walk moves
+monotonically away from; the other two decide when to *stop*.
+
+The dimmed colour gets a second floor instead, and a distinctness one rather
+than a legibility one. Its walk runs towards the body text, so past a certain
+point it has not been made readable, it has been made *the body text* — and the
+zone and level columns stop reading as quieter than the name beside them. On the
+dark themes it can clear the highlight and still stay dim; on Light and Clear
+White it cannot, and it stops while it is still dim. Its panel floor is never
+traded for its highlight one: failing on the panel fails on every row, failing
+on the highlight fails only under the pointer.
+
+### Where the floors landed
+
+Measured across the seven APCA-fitted themes:
+
+| | Panel | Hovered | Selected |
+|---|---|---|---|
+| Body text | Lc 76–103 | (guaranteed by `Control`) | (guaranteed by `Control`) |
+| Green and amber | Lc 75–87 | Lc 61–64 | Lc 60–62 |
+| Dimmed | Lc 63–84 | Lc 47–60 | Lc 46–58 |
+
+Dark, on its own measure, sits at 15.7:1 body text, 10.9:1 dimmed, and 3.2–3.4:1
+for the status colours on the highlight.
+
+The dimmed row is the one that does not fully clear, and it is the trade above:
+it stops where it stops because the next step would cost it its dimness. The
+alternative is capping how far a highlight fill may travel from the panel, which
+would fix it from the other side at the price of the dark themes' highlights —
+those run 2.9–3.3:1 against their panels today, which is what eats a dimmed grey
+in the first place.
 
 The tightest margin is 0.0 Lc, which is worth knowing rather than reassuring: a
-change to a panel colour, a status default or a floor will move something below
-its line, and the numbers above are where to check.
+change to a panel colour, a status default, a highlight lift or a floor will
+move something below its line, and the numbers above are where to check.
 
 ### Shapes
 
