@@ -18,8 +18,7 @@ public enum UiFontChoice
 /// <summary>
 /// Everything below <see cref="Dalamud"/> is one of the game's own UI themes,
 /// named and ordered as the game does in System Configuration - including
-/// <see cref="ClassicFF"/>, which really is "Classic FF" and not "Classic
-/// FFXIV".
+/// <see cref="ClassicFF"/>
 ///
 /// <c>UIColor</c> carries a column for all eight, though Lumina has only named
 /// the first six - see <see cref="UiStyle.Column"/> for how the last two are
@@ -29,7 +28,6 @@ public enum UiThemeChoice
 {
     /// <summary>Whatever the user configured Dalamud to use.</summary>
     Dalamud,
-
     Dark,
     Light,
     ClassicFF,
