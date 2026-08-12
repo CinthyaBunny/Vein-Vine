@@ -453,10 +453,74 @@ Three guards handle the rest, all of them measuring rather than assuming:
 
 | Guard | What it protects |
 |---|---|
-| `Readable` | Dimmed text against the panel, floor 3:1 |
-| `Legible` | The node list's green and amber against the panel, floor 4.5:1 |
-| `Control` | Every control, on **two** fronts at once — visible against the panel (1.25:1) *and* readable underneath its label (4.5:1) |
+| `FitGroundForText` | The panel itself, where no text colour could otherwise reach the floor |
+| `Readable` | Dimmed text against the panel, floor Lc 60 |
+| `Legible` | The body text, and the node list's green and amber, floor Lc 75 |
+| `Control` | Every control, on **two** fronts at once — visible against the panel *and* readable underneath its label |
 | `AccentControl` | The same, for the "this one" states — selected rows, the active tab |
+
+### Measured with APCA, not the 2.x ratio
+
+Every theme but Dark is fitted with [APCA](https://git.apcacontrast.com/), the
+contrast measure behind WCAG 3.
+
+The 2.x ratio is symmetric: it scores a pair of colours without knowing which
+one is the text, so it cannot tell light text on a dark panel from dark text on
+a light one. Perception is not symmetric, and the ratio is known to flatter the
+first case. Seven of the eight themes here are exactly where that costs
+something — three are light panels, and the saturated ones sit where the
+symmetry hurts most.
+
+Dark keeps the ratio it was tuned against. Its palette was measured by eye
+across every control state under that measure, and re-fitting colours that are
+already right has a cost and no benefit.
+
+What the change exposed is that **the body text was never fitted at all**. It
+went into the palette exactly as the sheet gave it, which was survivable only
+because the ratio flattered it:
+
+| Theme | Sheet text, measured | Ratio said |
+|---|---|---|
+| Light | Lc 74 | 8.1:1 |
+| Clear White | Lc 65 | 10.4:1 |
+| Clear Pink | Lc 59 | 6.4:1 |
+
+The sheet is not wrong; it is answering about the backgrounds the game pairs its
+text with. The panels here are sampled from previews instead, so the pairing is
+ours to make good.
+
+**Non-text contrast stays on the ratio for every theme.** APCA is a text measure
+and its authors are explicit that non-text is a separate question, so holding a
+control's fill to a text threshold would be a misreading of the algorithm rather
+than a stricter application of it.
+
+### When the panel is the problem
+
+Two panels could not be fixed by choosing better text, because the text was
+never what was wrong. A mid-tone panel is too close to both ends at once: on
+Clear White's grey, pure black reaches only Lc 64 and pure white only Lc 45, so
+no text colour exists that passes and every guard can do is pick the least bad.
+
+`FitGroundForText` moves such a panel away from mid-tone — lighter if it is
+light, darker if it is dark — keeping its hue, in the smallest steps that reach
+the floor. It touches two themes and leaves the other five untouched:
+
+| Theme | Panel | Body text |
+|---|---|---|
+| Clear White | `#B3B7B9` → `#D5D7D8` | Lc 65 → 82 |
+| Clear Pink | `#E7A7D6` → `#F0CAE6` | Lc 59 → 76 |
+
+It is fitted a little *past* the floor, because black and white are not the only
+text here. The status green and amber must keep their hue to keep their meaning,
+so they can never be taken all the way to an extreme, and a panel that only just
+permits pure black leaves them a few Lc short.
+
+That headroom is deliberately small, and the burden falls on the status colours
+first: they are an arbitrary default green and amber, where a panel colour is
+sampled ground truth. An earlier attempt put the headroom at 12 Lc instead and
+pushed Clear White to `#DEE0E1` — most of the way back to the near-white this
+document records as a *wrong* earlier guess. Moving the cheap colour further and
+the measured one less lands both inside the floor with far less drift.
 
 All of them ask one question first — is this a light panel or a dark one — and
 they ask it through a single `IsLight` helper. Two different brightness
@@ -489,9 +553,13 @@ Every control also gets a **1px border**, pinned by the theme rather than
 inherited from the user's Dalamud style, so a control is an object with an edge
 rather than just a slightly different shade.
 
-Measured across all eight themes and all seven control states: body text
-6.4–15.7:1, status colours 4.5–9.8:1, control fills 1.21–2.80:1 against their
-panel, and every label 4.5:1 or better on the control beneath it.
+Measured across the seven APCA-fitted themes, every one of them now clears its
+floor: body text Lc 76–103, dimmed text Lc 60–69, and the status green and amber
+Lc 75–77. Dark, on its own measure, sits at 15.7:1 body text and 6.0:1 dimmed.
+
+The tightest margin is 0.0 Lc, which is worth knowing rather than reassuring: a
+change to a panel colour, a status default or a floor will move something below
+its line, and the numbers above are where to check.
 
 ### Shapes
 

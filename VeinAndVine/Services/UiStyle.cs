@@ -407,8 +407,8 @@ public sealed class UiStyle : IDisposable
                 !sheet.TryGetRow(22, out var accentRow))
                 return null;
 
-            var ground = Ground(theme);
             var apca = UsesApca(theme);
+            var ground = FitGroundForText(Ground(theme), apca);
 
             // The body text is fitted too, which it did not used to be - it went
             // into the palette exactly as the sheet gave it. That was survivable
@@ -447,6 +447,64 @@ public sealed class UiStyle : IDisposable
     /// <see cref="TextReads"/> for why Dark is the exception.
     /// </summary>
     private static bool UsesApca(UiThemeChoice theme) => theme != UiThemeChoice.Dark;
+
+    /// <summary>
+    /// Moves a panel away from mid-tone, keeping its hue, until body text can
+    /// actually reach its floor against it.
+    ///
+    /// This is the one case the text guards cannot solve, because the problem
+    /// is not the text. A mid-tone panel is too close to both ends at once:
+    /// Clear White's grey gives pure black only Lc 64 and pure white only
+    /// Lc 45, so no text colour exists that would pass, and every guard above
+    /// can do is pick the least bad of them. The panel has to move.
+    ///
+    /// It costs something real, and the cost is the point of keeping it
+    /// minimal. These panel colours are sampled from the game's own theme
+    /// previews and are treated everywhere else as ground truth, so this walks
+    /// in the smallest steps that reach the floor and stops - Clear White and
+    /// Clear Pink are the only two themes it touches at all, and it leaves both
+    /// recognisably themselves. The alternative was a plugin whose Clear White
+    /// nobody with less than perfect eyesight could read.
+    ///
+    /// Away from mid-tone rather than toward a fixed colour: a light panel gets
+    /// lighter so dark text works, a dark one darker so light text does. Moving
+    /// either toward the middle is what caused this.
+    /// </summary>
+    /// <summary>
+    /// How far past the body floor a panel is fitted, in Lc. Covers the gap
+    /// between what pure black or white can reach against it and what a colour
+    /// that must keep its hue can.
+    /// </summary>
+    private const float PanelHeadroom = 6f;
+
+    private static Vector4 FitGroundForText(Vector4 ground, bool apca)
+    {
+        if (!apca)
+            return ground;
+
+        var lighten = IsLight(ground);
+        var toward = lighten ? White : Black;
+
+        // The best text this panel could ever carry. If that cannot reach the
+        // floor, no choice of text colour will.
+        var bestPossibleText = lighten ? Black : White;
+
+        // Fitted past the floor rather than to it, because black and white are
+        // not the only text here. The status green and amber have to keep their
+        // hue to keep their meaning, so they can never be taken all the way to
+        // the extreme - and a panel that only just permits pure black leaves
+        // them a few Lc short. This is the room they need.
+        var target = Apca.BodyText + PanelHeadroom;
+
+        for (var step = 0;
+             step < 12 && Apca.Contrast(bestPossibleText, ground) < target;
+             step++)
+        {
+            ground = Mix(ground, toward, 0.08f);
+        }
+
+        return ground;
+    }
 
     /// <summary>
     /// Each theme's panel colour, sampled from the game's own theme previews in
@@ -567,7 +625,7 @@ public sealed class UiStyle : IDisposable
         // than being marched to black for nothing.
         var best = TextScore(colour, ground, apca);
 
-        for (var step = 0; step < 16 && best < (apca ? Apca.BodyText : target); step++)
+        for (var step = 0; step < 28 && best < (apca ? Apca.BodyText : target); step++)
         {
             var moved = Mix(colour, away, 0.10f);
             var score = TextScore(moved, ground, apca);
