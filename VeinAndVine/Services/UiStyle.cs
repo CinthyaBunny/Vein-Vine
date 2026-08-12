@@ -123,6 +123,7 @@ public sealed class UiStyle : IDisposable
         var ground = p.Background;
         var text = p.Text;
         var accent = p.Accent;
+        var onLight = IsLight(ground);
 
         // Which measure this theme's control fills are fitted against. Every
         // theme but Dark is held to APCA - see TextReads.
@@ -153,7 +154,8 @@ public sealed class UiStyle : IDisposable
 
         Color(ImGuiCol.Header, AccentControl(ground, accent, text, 0.16f, apca));
         Color(ImGuiCol.HeaderHovered, AccentControl(ground, accent, text, 0.24f, apca));
-        Color(ImGuiCol.HeaderActive, AccentControl(ground, accent, text, 0.32f, apca));
+        // Make active headers (row highlights) darker on light themes so they read as a distinct, recessed object.
+        Color(ImGuiCol.HeaderActive, AccentControl(ground, accent, text, onLight ? 0.48f : 0.32f, apca));
 
         Color(ImGuiCol.Button, Control(ground, text, 0.17f, apca));
         Color(ImGuiCol.ButtonHovered, Control(ground, text, 0.25f, apca));
