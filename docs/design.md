@@ -1,4 +1,4 @@
-# Vein & Vine — design notes
+# Gleaner — design notes
 
 Why the plugin is built the way it is. For how to build, run and ship it, see
 the [README](../README.md).
@@ -434,7 +434,7 @@ The game keeps the real panel colour as a tint on its window textures rather
 than as a sheet entry, so the grounds are **sampled from the game's own theme
 previews** in System Configuration — the most frequent pixel in the middle of
 each preview panel. Reference shots are in
-[`Alpha 0.0.1.x Photos/Theme Examples`](../VeinAndVine/Alpha%200.0.1.x%20Photos/Theme%20Examples).
+[`Alpha 0.0.1.x Photos/Theme Examples`](../Gleaner/Alpha%200.0.1.x%20Photos/Theme%20Examples).
 
 Measuring them mattered, because the themes are far more saturated than they
 look in memory:
@@ -700,7 +700,7 @@ the shorter side, so one number turns a button into a full pill while leaving a
 wide search field as a rounded bar with the same end caps — which is the game's
 pair of shapes exactly.
 
-**Tabs are drawn by hand**, in [`GameTabBar.cs`](../VeinAndVine/Windows/GameTabBar.cs).
+**Tabs are drawn by hand**, in [`GameTabBar.cs`](../Gleaner/Windows/GameTabBar.cs).
 The game's are elongated hexagons — flat top and bottom, both ends drawn to a
 point at mid-height. ImGui's tab bar offers a corner radius and nothing else,
 so this builds the polygon with `PathLineTo` / `PathFillConvex` / `PathStroke`.

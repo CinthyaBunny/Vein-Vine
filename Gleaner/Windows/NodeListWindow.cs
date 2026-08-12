@@ -2,9 +2,9 @@ using System.Numerics;
 using Dalamud.Bindings.ImGui;
 using Dalamud.Interface.Utility;
 using Dalamud.Interface.Windowing;
-using VeinAndVine.Services;
+using Gleaner.Services;
 
-namespace VeinAndVine.Windows;
+namespace Gleaner.Windows;
 
 /// <summary>
 /// The node list as a panel pinned to the main window's left edge.
@@ -48,7 +48,7 @@ public sealed class NodeListWindow : Window
     private float width;
 
     public NodeListWindow(Plugin plugin, MainWindow host, NodeListTab nodeList)
-        : base("Vein & Vine - Nodes###VeinAndVineNodes")
+        : base("Gleaner - Nodes###GleanerNodes")
     {
         this.plugin = plugin;
         this.host = host;

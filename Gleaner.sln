@@ -1,9 +1,9 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VeinAndVine", "VeinAndVine\VeinAndVine.csproj", "{52E4D52F-0551-4A48-8E05-B7375332BF2B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gleaner", "Gleaner\Gleaner.csproj", "{52E4D52F-0551-4A48-8E05-B7375332BF2B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{07C2787E-EAC7-C090-1BA3-A61EC2A24D84}"
 EndProject

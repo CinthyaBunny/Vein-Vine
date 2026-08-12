@@ -1,11 +1,12 @@
 using Dalamud.Configuration;
-using VeinAndVine.Models;
-using VeinAndVine.Services;
+using Gleaner.Models;
+using Gleaner.Services;
+using Newtonsoft.Json;
 
-namespace VeinAndVine;
+namespace Gleaner;
 
 /// <summary>
-/// Serialized to %AppData%\XIVLauncher\pluginConfigs\VeinAndVine.json by Dalamud
+/// Serialized to %AppData%\XIVLauncher\pluginConfigs\Gleaner.json by Dalamud
 /// (Newtonsoft.Json, public fields and properties).
 ///
 /// Bump <see cref="Version"/> and migrate in a Migrate() call if you ever
@@ -106,6 +107,72 @@ public class Configuration : IPluginConfiguration
     /// </summary>
     public float DockedNodeListWidth { get; set; } = 420f;
 
+    private const string LegacyConfigFileName = "VeinAndVine.json";
+
+    /// <summary>
+    /// The stored config, falling back once to the file this plugin wrote
+    /// before it was renamed.
+    ///
+    /// Dalamud names the config file after the plugin's InternalName, so the
+    /// rename left every existing user's wishlist and settings on disk under a
+    /// name nothing reads any more. This picks that file up the first time and
+    /// writes it straight back out under the new name.
+    ///
+    /// The old file is deliberately left where it is rather than deleted: the
+    /// installer treats a changed InternalName as a different plugin, so the
+    /// build that wrote it may still be installed alongside this one and would
+    /// lose its own settings if this deleted them.
+    /// </summary>
+    public static Configuration Load()
+    {
+        if (Service.PluginInterface.GetPluginConfig() is Configuration current)
+            return current;
+
+        if (LoadLegacy() is not { } recovered)
+            return new Configuration();
+
+        // Written out immediately, so a crash before the first settings change
+        // does not throw away what was just recovered.
+        recovered.Save();
+        return recovered;
+    }
+
+    private static Configuration? LoadLegacy()
+    {
+        try
+        {
+            if (Service.PluginInterface.ConfigFile.Directory is not { } directory)
+                return null;
+
+            var legacy = Path.Combine(directory.FullName, LegacyConfigFileName);
+
+            if (!File.Exists(legacy))
+                return null;
+
+            // TypeNameHandling.None is the point of doing this by hand. Dalamud
+            // stamps a "$type" of "VeinAndVine.Configuration, VeinAndVine" into
+            // the file, and that assembly no longer exists - resolving it would
+            // throw. Ignoring the field and populating this type instead is
+            // exactly what is wanted, and is safe because the shape either
+            // matches or leaves properties at their initializers.
+            var recovered = JsonConvert.DeserializeObject<Configuration>(
+                File.ReadAllText(legacy),
+                new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.None });
+
+            if (recovered is not null)
+                Service.Log.Information(
+                    $"Carried settings over from {LegacyConfigFileName}.");
+
+            return recovered;
+        }
+        catch (Exception ex)
+        {
+            Service.Log.Error(
+                ex, $"Could not read {LegacyConfigFileName}; starting with fresh settings.");
+            return null;
+        }
+    }
+
     /// <summary>
     /// Brings a file written by an older build up to date. Called once on load,
     /// before anything reads a setting.
@@ -158,7 +225,7 @@ public class Configuration : IPluginConfiguration
         }
         catch (Exception ex)
         {
-            Service.Log.Error(ex, "Could not save the Vein & Vine configuration.");
+            Service.Log.Error(ex, "Could not save the Gleaner configuration.");
         }
     }
 }

@@ -1,6 +1,6 @@
-using VeinAndVine.Models;
+using Gleaner.Models;
 
-namespace VeinAndVine.Services;
+namespace Gleaner.Services;
 
 /// <summary>
 /// Which gathering jobs a list is showing. Flags rather than a nullable

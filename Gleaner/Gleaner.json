@@ -1,0 +1,26 @@
+{
+  "Name": "Gleaner",
+  "InternalName": "Gleaner",
+  "Author": "CinthyaBunny",
+  "Punchline": "Priority-sorted gathering node tracker. No automation.",
+  "Description": "Shows a priority-sorted list of active and upcoming gathering nodes from your wishlist, using FFXIV's deterministic weather and Eorzea clock.\n\nRead-only by design: it never moves your character and never gathers for you. The only action it takes is placing a map flag, which you still have to walk to.",
+  "RepoUrl": "https://github.com/CinthyaBunny/Vein-Vine",
+  "ApplicableVersion": "any",
+  "DalamudApiLevel": 15,
+  "LoadRequiredState": 0,
+  "LoadSync": false,
+  "CanUnloadAsync": false,
+  "LoadPriority": 0,
+  "AcceptsFeedback": true,
+  "Tags": [
+    "gathering",
+    "botany",
+    "mining",
+    "fishing"
+  ],
+  "CategoryTags": [
+    "jobs"
+  ],
+  "IconUrl": "",
+  "Changelog": "Vein & Vine is now called Gleaner. Nothing about what the plugin does has changed — this release is the new name, and the one move you have to make to keep using it.\n\nChanged:\n- The plugin is called Gleaner. The old name was hard to pick out in a list of installed plugins, which is where you actually go looking for it.\n- The commands are now /gleaner and /gln. They do exactly what /veinvine and /vnv did: /gleaner opens the window on whichever tab you left it, and /gleaner cfg opens it on Display. The old commands are gone.\n- Your wishlist and settings carry over on their own. The first time Gleaner starts it picks up everything you had set before — wishlist, theme, row sizes, filters — with nothing to copy across by hand. The one thing that does not survive is the column widths in the node list, which go back to their defaults once.\n\nUpgrading: Gleaner arrives as a separate plugin rather than as an update to Vein & Vine, so the in-game installer will not offer it to you on its own. Install Gleaner the same way you installed Vein & Vine, check your wishlist is where you left it, and then remove Vein & Vine. That order is worth keeping: the old plugin holds on to its own settings until you delete it, so if something has not come across you still have the original to go back to."
+}

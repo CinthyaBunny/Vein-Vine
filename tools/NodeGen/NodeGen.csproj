@@ -22,7 +22,7 @@
   </PropertyGroup>
 
   <!--
-    References the plugin so it emits the real VeinAndVine.Models.GatherNode
+    References the plugin so it emits the real Gleaner.Models.GatherNode
     and reuses MapUtil's coordinate formula. If the model changes, this stops
     compiling - which is the point: the dataset cannot silently drift from the
     type that parses it.
@@ -36,7 +36,7 @@
       across a reference, so without it the plugin gets built a second time as
       AnyCPU into its bin\<cfg> folder, packager and all.
     -->
-    <ProjectReference Include="..\..\VeinAndVine\VeinAndVine.csproj" SetPlatform="Platform=x64" />
+    <ProjectReference Include="..\..\Gleaner\Gleaner.csproj" SetPlatform="Platform=x64" />
   </ItemGroup>
 
   <!--

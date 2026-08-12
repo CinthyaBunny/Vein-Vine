@@ -8,7 +8,7 @@
       "type": "process",
       "args": [
         "build",
-        "${workspaceFolder}/VeinAndVine.sln",
+        "${workspaceFolder}/Gleaner.sln",
         "-c",
         "Debug",
         "/property:GenerateFullPaths=true",
@@ -22,12 +22,12 @@
     },
     {
       "label": "build release",
-      "detail": "Release build. Also produces bin/x64/Release/VeinAndVine/latest.zip.",
+      "detail": "Release build. Also produces bin/x64/Release/Gleaner/latest.zip.",
       "command": "dotnet",
       "type": "process",
       "args": [
         "build",
-        "${workspaceFolder}/VeinAndVine.sln",
+        "${workspaceFolder}/Gleaner.sln",
         "-c",
         "Release",
         "/property:GenerateFullPaths=true",
@@ -43,7 +43,7 @@
       "type": "process",
       "args": [
         "clean",
-        "${workspaceFolder}/VeinAndVine.sln"
+        "${workspaceFolder}/Gleaner.sln"
       ],
       "problemMatcher": "$msCompile",
       "group": "build"

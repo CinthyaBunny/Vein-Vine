@@ -4,10 +4,10 @@ using Dalamud.Game.Text.SeStringHandling.Payloads;
 using Dalamud.Interface;
 using Dalamud.Interface.Components;
 using Dalamud.Interface.Utility;
-using VeinAndVine.Models;
-using VeinAndVine.Services;
+using Gleaner.Models;
+using Gleaner.Services;
 
-namespace VeinAndVine.Windows;
+namespace Gleaner.Windows;
 
 /// <summary>
 /// The node list: what is up now, what is coming, and where. The plugin's
@@ -204,7 +204,7 @@ public sealed class NodeListTab
         if (height <= 0)
             return;
 
-        if (!ImGui.BeginTable("##veinandvine_nodes", 8, UiShared.TableFlags, new Vector2(0, height)))
+        if (!ImGui.BeginTable("##gleaner_nodes", 8, UiShared.TableFlags, new Vector2(0, height)))
             return;
 
         var scale = ImGuiHelpers.GlobalScale;

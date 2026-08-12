@@ -1,6 +1,6 @@
 using Lumina.Excel.Sheets;
 
-namespace VeinAndVine.Services;
+namespace Gleaner.Services;
 
 /// <summary>
 /// FFXIV weather is deterministic: a single 0-99 roll per 8-Eorzea-hour

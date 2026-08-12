@@ -3,9 +3,9 @@ using Dalamud.Bindings.ImGui;
 using Dalamud.Interface.Components;
 using Dalamud.Interface.Utility;
 using Dalamud.Interface.Windowing;
-using VeinAndVine.Services;
+using Gleaner.Services;
 
-namespace VeinAndVine.Windows;
+namespace Gleaner.Windows;
 
 /// <summary>
 /// The plugin's only window. The node list leads, because that is the question
@@ -119,7 +119,7 @@ public sealed class MainWindow : Window
     /// </summary>
     public bool IsDrawing { get; private set; }
 
-    public MainWindow(Plugin plugin) : base("Vein & Vine###VeinAndVineMain")
+    public MainWindow(Plugin plugin) : base("Gleaner###GleanerMain")
     {
         this.plugin = plugin;
         configuration = plugin.Configuration;
@@ -181,7 +181,7 @@ public sealed class MainWindow : Window
             currentTab = tabs[0];
 
         var labels = tabs.ConvertAll(TabLabel);
-        var chosen = GameTabBar.Draw(plugin, "##veinandvine_tabs", labels, tabs.IndexOf(currentTab));
+        var chosen = GameTabBar.Draw(plugin, "##gleaner_tabs", labels, tabs.IndexOf(currentTab));
         currentTab = tabs[chosen];
 
         ImGui.Separator();
@@ -206,7 +206,7 @@ public sealed class MainWindow : Window
     private void DrawAppearanceTab()
     {
         ImGui.TextWrapped(
-            "Vein & Vine borrows the game's own look by default. The typeface and " +
+            "Gleaner borrows the game's own look by default. The typeface and " +
             "the colours both come out of the client - nothing is downloaded - and " +
             "either can drop back to Dalamud's default on its own.");
 
@@ -285,7 +285,7 @@ public sealed class MainWindow : Window
         ImGui.Separator();
         ImGui.Spacing();
 
-        ImGui.TextDisabled("Everything here affects only Vein & Vine's own windows.");
+        ImGui.TextDisabled("Everything here affects only Gleaner's own windows.");
     }
 
     /// <summary>
@@ -503,7 +503,7 @@ public sealed class MainWindow : Window
         ];
 
         currentJob = jobs[GameTabBar.Draw(
-            plugin, "##veinandvine_picker_jobs", labels, Array.IndexOf(jobs, currentJob), tips)];
+            plugin, "##gleaner_picker_jobs", labels, Array.IndexOf(jobs, currentJob), tips)];
 
         ImGui.Separator();
 
@@ -556,7 +556,7 @@ public sealed class MainWindow : Window
             selected = 0;
 
         tab.Methods = methods[GameTabBar.Draw(
-            plugin, $"##veinandvine_methods_{job}", labels, selected, tips)];
+            plugin, $"##gleaner_methods_{job}", labels, selected, tips)];
 
         ImGui.Spacing();
     }
@@ -885,7 +885,7 @@ public sealed class MainWindow : Window
 
         // The table id carries the job, so ImGui keeps each tab's column
         // widths and sort direction apart in its own ini.
-        if (!ImGui.BeginTable($"##veinandvine_picker_{jobs}", 5, UiShared.TableFlags, new Vector2(0, height)))
+        if (!ImGui.BeginTable($"##gleaner_picker_{jobs}", 5, UiShared.TableFlags, new Vector2(0, height)))
             return;
 
         var scale = ImGuiHelpers.GlobalScale;

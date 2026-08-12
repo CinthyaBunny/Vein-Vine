@@ -1,6 +1,6 @@
 using System.Numerics;
 
-namespace VeinAndVine.Services;
+namespace Gleaner.Services;
 
 /// <summary>
 /// APCA, the Accessible Perceptual Contrast Algorithm - the contrast measure

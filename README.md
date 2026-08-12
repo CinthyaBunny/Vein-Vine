@@ -1,12 +1,15 @@
-# Vein & Vine
+# Gleaner
 
 A read-only gathering companion for FFXIV. Shows a priority-sorted list of active
 and upcoming nodes from your wishlist. Never moves the player, never gathers
 automatically — the only game-state-changing action is a native map flag, which
 the player still has to walk to.
 
-Internal name is `VeinAndVine`; the display name `Vein & Vine` appears only in the
-manifest `Name` field and UI strings.
+Internal name and display name are both `Gleaner`. It was released as
+`VeinAndVine` up to and including 0.0.2.0; because Dalamud keys both the config
+file and the update check on the internal name, an install of that build does
+not update to this one — it has to be installed separately, and the old one
+removed. Settings and wishlist carry over on first launch.
 
 Design rationale — architecture, the theming work, the picker's overlapping
 counts — lives in [`docs/design.md`](docs/design.md).
@@ -33,7 +36,7 @@ Dalamud reference assemblies resolve from `%AppData%\XIVLauncher\addon\Hooks\dev
 (see `Directory.Build.props`); override with `DALAMUD_HOME`. The build fails with a
 readable message if it can't find `Dalamud.dll`.
 
-Release output: `VeinAndVine\bin\x64\Release\VeinAndVine\latest.zip`.
+Release output: `Gleaner\bin\x64\Release\Gleaner\latest.zip`.
 
 **x64 only.** Do not add `Any CPU` or `x86` configurations to the solution: both
 projects build to `bin\x64\`, and an AnyCPU mapping makes the plugin build a
@@ -44,7 +47,7 @@ second time into `bin\`, producing a second `latest.zip`.
 The `devPlugins` folder is deprecated. Instead:
 
 1. `/xlsettings` → **Experimental** → **Dev Plugin Locations**
-2. Add `C:\AGB_C3\VeinAndVine\bin\x64\Debug`
+2. Add `C:\AGB_C3\Gleaner\bin\x64\Debug`
 3. `/xlplugins` → **Dev Tools** → **Installed Dev Plugins** → load / reload
 
 Unload before rebuilding, or the DLL stays file-locked.
@@ -69,9 +72,9 @@ for more than a few seconds while online will disconnect you — use the log
 
 | Command | Effect |
 |---|---|
-| `/veinvine` | Toggle the window, on whichever tab you left it |
-| `/vnv` | Alias, hidden from the command list |
-| `/veinvine cfg` | Open it on the **Display** tab |
+| `/gleaner` | Toggle the window, on whichever tab you left it |
+| `/gln` | Alias, hidden from the command list |
+| `/gleaner cfg` | Open it on the **Display** tab |
 
 ## The UI
 
@@ -120,7 +123,7 @@ See [`docs/design.md`](docs/design.md) for why any of this is the way it is.
 
 `Data/nodes.json` ships next to the DLL and is read at load time, so a data
 refresh doesn't need a rebuild. See
-[`Data/nodes.schema.md`](VeinAndVine/Data/nodes.schema.md) for the format.
+[`Data/nodes.schema.md`](Gleaner/Data/nodes.schema.md) for the format.
 
 It currently holds **1,587 nodes** — 1,050 distinct items across 47 zones, Lv1
 through Lv100, in a 577 KB file. Of those, **419 are timed** (unspoiled,
@@ -162,11 +165,11 @@ Release steps:
    `<details>` wrapper so GitHub renders it open, and wrap the previous newest
    entry in one.
 2. Set the same version in **both** places:
-   - `<Version>` in [`VeinAndVine.csproj`](VeinAndVine/VeinAndVine.csproj)
+   - `<Version>` in [`Gleaner.csproj`](Gleaner/Gleaner.csproj)
    - `"AssemblyVersion"` in [`repo.json`](repo.json)
 3. `dotnet build -c Release` — the guard runs, the release notes are copied
    into both manifests, and you get
-   `VeinAndVine\bin\x64\Release\VeinAndVine\latest.zip`.
+   `Gleaner\bin\x64\Release\Gleaner\latest.zip`.
 4. Commit — including the two manifests, which the build will have updated —
    then `git tag -a vX -m "..."`, push both, and attach `latest.zip` to the
    GitHub release so `repo.json`'s download links resolve.
@@ -188,7 +191,7 @@ manifests:
 
 | Manifest | What reads it |
 |---|---|
-| [`VeinAndVine.json`](VeinAndVine/VeinAndVine.json) | copied into `latest.zip`; the installed plugin's own notes |
+| [`Gleaner.json`](Gleaner/Gleaner.json) | copied into `latest.zip`; the installed plugin's own notes |
 | [`repo.json`](repo.json) | the installer, deciding an update exists — the copy a user sees *before* updating |
 
 Markdown and HTML are flattened on the way, because none of it renders there:
@@ -205,7 +208,7 @@ block the build.
 
 Worth knowing: DalamudPackager does expose a `Changelog` MSBuild property, but
 it's only a fallback for projects with no manifest file. When
-`VeinAndVine.json` exists it wins outright and the properties are ignored, so
+`Gleaner.json` exists it wins outright and the properties are ignored, so
 the field has to be correct in the file before the packager reads it. Hence
 writing the manifests rather than passing a property.
 
@@ -230,5 +233,5 @@ writing the manifests rather than passing a property.
    additionally require a folklore tome. They'll show as available when the
    clock says so, whether or not you've read the book.
 5. **No plugin icon.** `repo.json`'s `IconUrl` points at
-   `VeinAndVine/images/icon.png`, which does not exist yet; the csproj already
+   `Gleaner/images/icon.png`, which does not exist yet; the csproj already
    includes `images/**` when present, so dropping a PNG there is all it needs.

@@ -4,7 +4,7 @@ using Dalamud.Interface.GameFonts;
 using Dalamud.Interface.ManagedFontAtlas;
 using Lumina.Excel.Sheets;
 
-namespace VeinAndVine.Services;
+namespace Gleaner.Services;
 
 public enum UiFontChoice
 {

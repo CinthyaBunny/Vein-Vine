@@ -1,4 +1,4 @@
-namespace VeinAndVine.Models;
+namespace Gleaner.Models;
 
 /// <summary>
 /// A single item the player wants to track. Kept separate from GatherNode

@@ -2,7 +2,7 @@ using Dalamud.Interface.Textures;
 using Dalamud.Interface.Textures.TextureWraps;
 using Lumina.Excel.Sheets;
 
-namespace VeinAndVine.Services;
+namespace Gleaner.Services;
 
 /// <summary>
 /// Item presentation the static dataset deliberately does not carry: the icon

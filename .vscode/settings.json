@@ -1,10 +1,10 @@
 {
   // Pin the solution explicitly. Without this the C# extension scans the
-  // folder and may latch onto Helpful Data/_original_scaffold/VeinAndVine.csproj,
-  // which targets an SDK you don't have installed (Dalamud.NET.Sdk 12.0.2) and
-  // will fill the Problems panel with restore errors that look like they're
-  // coming from the real project.
-  "dotnet.defaultSolution": "VeinAndVine.sln",
+  // folder and may latch onto a stray scaffold project rather than this one -
+  // the original was a copy under "Helpful Data" targeting an SDK you don't
+  // have installed (Dalamud.NET.Sdk 12.0.2), which filled the Problems panel
+  // with restore errors that looked like they came from the real project.
+  "dotnet.defaultSolution": "Gleaner.sln",
 
   // The stale scaffold is reference material, not code to be indexed.
   "search.exclude": {

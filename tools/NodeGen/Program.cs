@@ -2,13 +2,13 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Lumina;
 using Lumina.Excel.Sheets;
-using VeinAndVine.Models;
-using VeinAndVine.Services;
+using Gleaner.Models;
+using Gleaner.Services;
 
 namespace NodeGen;
 
 /// <summary>
-/// Regenerates <c>VeinAndVine/Data/nodes.json</c> from the game's own Excel
+/// Regenerates <c>Gleaner/Data/nodes.json</c> from the game's own Excel
 /// sheets.
 ///
 /// Hand-maintaining this dataset is not viable: territoryTypeId and mapId have
@@ -21,7 +21,7 @@ namespace NodeGen;
 ///   dotnet run --project tools/NodeGen [-- &lt;sqpack path&gt; [output path]]
 ///
 /// With no arguments it reads the game path from XIVLauncher's config and
-/// writes to VeinAndVine/Data/nodes.json.
+/// writes to Gleaner/Data/nodes.json.
 /// </summary>
 internal static class Program
 {
@@ -462,12 +462,12 @@ internal static class Program
     {
         // From tools/NodeGen/bin/x64/<cfg>/ back up to the repository root.
         var dir = new DirectoryInfo(AppContext.BaseDirectory);
-        while (dir is not null && !File.Exists(Path.Combine(dir.FullName, "VeinAndVine.sln")))
+        while (dir is not null && !File.Exists(Path.Combine(dir.FullName, "Gleaner.sln")))
             dir = dir.Parent;
 
         if (dir is null)
             throw new DirectoryNotFoundException("Could not locate the repository root. Pass an output path as the second argument.");
 
-        return Path.Combine(dir.FullName, "VeinAndVine", "Data", "nodes.json");
+        return Path.Combine(dir.FullName, "Gleaner", "Data", "nodes.json");
     }
 }

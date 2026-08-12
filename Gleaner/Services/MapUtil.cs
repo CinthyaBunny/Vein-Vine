@@ -1,7 +1,7 @@
 using System.Numerics;
 using Lumina.Excel.Sheets;
 
-namespace VeinAndVine.Services;
+namespace Gleaner.Services;
 
 /// <summary>
 /// World-space to map-coordinate conversion.

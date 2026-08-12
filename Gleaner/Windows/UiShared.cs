@@ -1,9 +1,9 @@
 using System.Numerics;
 using Dalamud.Bindings.ImGui;
-using VeinAndVine.Models;
-using VeinAndVine.Services;
+using Gleaner.Models;
+using Gleaner.Services;
 
-namespace VeinAndVine.Windows;
+namespace Gleaner.Windows;
 
 /// <summary>
 /// Presentation bits both lists need: job and duration formatting, shared
@@ -205,7 +205,7 @@ internal static class UiShared
         if (ClockScale != 1f)
             ImGui.SetWindowFontScale(ClockScale);
 
-        var clicked = GameTabBar.DrawButton(plugin, "##veinandvine_clock", text, ClockWidth());
+        var clicked = GameTabBar.DrawButton(plugin, "##gleaner_clock", text, ClockWidth());
 
         if (ClockScale != 1f)
             ImGui.SetWindowFontScale(1f);

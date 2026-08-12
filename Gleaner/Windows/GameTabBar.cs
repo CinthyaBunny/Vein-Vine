@@ -2,7 +2,7 @@ using System.Numerics;
 using Dalamud.Bindings.ImGui;
 using Dalamud.Interface.Utility;
 
-namespace VeinAndVine.Windows;
+namespace Gleaner.Windows;
 
 /// <summary>
 /// A tab strip shaped like the game's.

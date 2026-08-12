@@ -1,4 +1,4 @@
-namespace VeinAndVine.Services;
+namespace Gleaner.Services;
 
 /// <summary>
 /// The only thing PriorityEngine needs to know about weather and time.

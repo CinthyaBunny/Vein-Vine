@@ -1,6 +1,6 @@
-using VeinAndVine.Models;
+using Gleaner.Models;
 
-namespace VeinAndVine.Services;
+namespace Gleaner.Services;
 
 public sealed class PriorityResult
 {

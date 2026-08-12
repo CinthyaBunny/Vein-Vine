@@ -2,7 +2,7 @@ using Dalamud.IoC;
 using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
 
-namespace VeinAndVine;
+namespace Gleaner;
 
 /// <summary>
 /// Dalamud service container. Populated once by <c>pluginInterface.Create&lt;Service&gt;()</c>

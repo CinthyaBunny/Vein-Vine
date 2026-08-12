@@ -1,4 +1,4 @@
-namespace VeinAndVine.Models;
+namespace Gleaner.Models;
 
 /// <summary>The job that can work a node.</summary>
 public enum NodeType

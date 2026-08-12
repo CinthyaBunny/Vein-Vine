@@ -102,7 +102,7 @@ dotnet run --project tools/NodeGen -c Release
 ```
 
 It finds the game via XIVLauncher's `launcherConfigV3.json` and overwrites
-`VeinAndVine/Data/nodes.json`. Override either end:
+`Gleaner/Data/nodes.json`. Override either end:
 
 ```bash
 dotnet run --project tools/NodeGen -c Release -- "<path>\game\sqpack" out.json

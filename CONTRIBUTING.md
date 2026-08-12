@@ -1,4 +1,4 @@
-# Vein & Vine
+# Gleaner
 
 A Dalamud plugin for FFXIV: a priority-sorted gathering node tracker. Read-only
 by design — it never moves the player and never gathers. The one game-state
@@ -12,7 +12,7 @@ them:
 |---|---|
 | Build, run, release, commands | [`README.md`](README.md) |
 | Why it is built this way | [`docs/design.md`](docs/design.md) |
-| Dataset format | [`VeinAndVine/Data/nodes.schema.md`](VeinAndVine/Data/nodes.schema.md) |
+| Dataset format | [`Gleaner/Data/nodes.schema.md`](Gleaner/Data/nodes.schema.md) |
 
 Before changing theming or the picker's counts, read the matching section of
 `docs/design.md` first — both encode measurements and rejected alternatives that
@@ -26,7 +26,7 @@ are not recoverable from the code.
   wrong artifact.
 - **`Private=false` on every Dalamud reference.** Dalamud already has those
   assemblies loaded, and shipping a second copy breaks type identity.
-- **`<Version>` in `VeinAndVine.csproj` and `AssemblyVersion` in `repo.json`
+- **`<Version>` in `Gleaner.csproj` and `AssemblyVersion` in `repo.json`
   must match.** A Release build refuses to produce a zip when they disagree.
 - **Never let an exception escape an ImGui draw.** Unwinding out of a table or
   a tab bar leaves ImGui's begin/end stack unbalanced, which takes the game

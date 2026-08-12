@@ -1,17 +1,17 @@
 using Dalamud.Game.Command;
 using Dalamud.Interface.Windowing;
 using Dalamud.Plugin;
-using VeinAndVine.Models;
-using VeinAndVine.Services;
-using VeinAndVine.Windows;
+using Gleaner.Models;
+using Gleaner.Services;
+using Gleaner.Windows;
 
-namespace VeinAndVine;
+namespace Gleaner;
 
 /// <summary>
 /// Entry point. Dalamud finds the single IDalamudPlugin implementation in the
 /// assembly, constructs it with injected services, and calls Dispose() on unload.
 ///
-/// Vein and Vine is read-only by design: it never moves the player and never
+/// Gleaner is read-only by design: it never moves the player and never
 /// gathers. The single game-state-changing action is placing a map flag, which
 /// the player still has to walk to.
 ///
@@ -21,8 +21,8 @@ namespace VeinAndVine;
 /// </summary>
 public sealed class Plugin : IDalamudPlugin
 {
-    private const string CommandName = "/veinvine";
-    private const string CommandAlias = "/vnv";
+    private const string CommandName = "/gleaner";
+    private const string CommandAlias = "/gln";
 
     public Configuration Configuration { get; }
     public WeatherService WeatherService { get; }
@@ -52,7 +52,7 @@ public sealed class Plugin : IDalamudPlugin
     // One window, tabbed. The node list and the things that configure it are
     // the same task, and splitting them across two windows meant hunting for
     // the second one every time you wanted to track something.
-    private readonly WindowSystem windowSystem = new("VeinAndVine");
+    private readonly WindowSystem windowSystem = new("Gleaner");
     private readonly MainWindow mainWindow;
     private readonly NodeListWindow nodeListWindow;
 
@@ -62,7 +62,7 @@ public sealed class Plugin : IDalamudPlugin
         // may touch one.
         pluginInterface.Create<Service>();
 
-        Configuration = Service.PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
+        Configuration = Configuration.Load();
         Configuration.Migrate();
 
         WeatherService = new WeatherService();
@@ -89,7 +89,7 @@ public sealed class Plugin : IDalamudPlugin
 
         Service.CommandManager.AddHandler(CommandName, new CommandInfo(OnCommand)
         {
-            HelpMessage = "Toggle the Vein & Vine window. \"/veinvine cfg\" opens it on settings.",
+            HelpMessage = "Toggle the Gleaner window. \"/gleaner cfg\" opens it on settings.",
         });
         Service.CommandManager.AddHandler(CommandAlias, new CommandInfo(OnCommand)
         {
@@ -100,7 +100,7 @@ public sealed class Plugin : IDalamudPlugin
         if (Configuration.OpenMainWindowOnStartup)
             mainWindow.IsOpen = true;
 
-        Service.Log.Information("Vein & Vine loaded.");
+        Service.Log.Information("Gleaner loaded.");
     }
 
     public void Dispose()
@@ -199,7 +199,7 @@ public sealed class Plugin : IDalamudPlugin
     public void ToggleMainUi() => mainWindow.Toggle();
 
     /// <summary>
-    /// The installer's cog and "/veinvine cfg". Both now land on the same
+    /// The installer's cog and "/gleaner cfg". Both now land on the same
     /// window as everything else, so this opens rather than toggles - a cog
     /// that closes the window you were reading would be a surprise.
     /// </summary>

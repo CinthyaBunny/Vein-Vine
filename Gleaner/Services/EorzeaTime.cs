@@ -1,4 +1,4 @@
-namespace VeinAndVine.Services;
+namespace Gleaner.Services;
 
 /// <summary>
 /// Pure Eorzea clock and weather-seed math. No Dalamud, no game state, no

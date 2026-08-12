@@ -3,7 +3,7 @@
   <PropertyGroup>
     <!-- Dalamud reads this as AssemblyVersion; it must be a 4-part version and
          must match the "AssemblyVersion" in repo.json for repo installs. -->
-    <Version>0.0.2.0</Version>
+    <Version>0.0.3.0</Version>
     <Authors>CinthyaBunny</Authors>
     <Company></Company>
     <Description>Priority-sorted gathering node tracker. No automation.</Description>
@@ -24,8 +24,8 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <AssemblyName>VeinAndVine</AssemblyName>
-    <RootNamespace>VeinAndVine</RootNamespace>
+    <AssemblyName>Gleaner</AssemblyName>
+    <RootNamespace>Gleaner</RootNamespace>
     <OutputType>Library</OutputType>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
@@ -130,7 +130,7 @@
            Text="Could not read a four-part &quot;AssemblyVersion&quot; from '$(RepoManifestPath)'. Expected a line like: &quot;AssemblyVersion&quot;: &quot;$(Version)&quot;" />
 
     <Error Condition="'$(RepoManifestVersion)' != '$(Version)'"
-           Text="Version mismatch: the csproj says $(Version) but repo.json says $(RepoManifestVersion). The zip and the repository manifest must agree, or the in-game installer will not offer the update. Set both to the same value: &lt;Version&gt; in VeinAndVine.csproj and &quot;AssemblyVersion&quot; in repo.json." />
+           Text="Version mismatch: the csproj says $(Version) but repo.json says $(RepoManifestVersion). The zip and the repository manifest must agree, or the in-game installer will not offer the update. Set both to the same value: &lt;Version&gt; in Gleaner.csproj and &quot;AssemblyVersion&quot; in repo.json." />
 
     <Message Importance="normal" Text="Version check: csproj and repo.json both at $(Version)." />
   </Target>
@@ -142,7 +142,7 @@
 
     Why write the files rather than pass a property: DalamudPackager exposes a
     Changelog parameter, but it is only a fallback for projects with no
-    manifest file at all. When VeinAndVine.json exists it wins outright and the
+    manifest file at all. When Gleaner.json exists it wins outright and the
     MSBuild properties are ignored entirely - verified, not assumed. So the
     field has to be correct in the file before the packager reads it.
 

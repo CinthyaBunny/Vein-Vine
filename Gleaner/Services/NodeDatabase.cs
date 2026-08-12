@@ -1,8 +1,8 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using VeinAndVine.Models;
+using Gleaner.Models;
 
-namespace VeinAndVine.Services;
+namespace Gleaner.Services;
 
 /// <summary>
 /// Loads the static node dataset shipped alongside the plugin DLL

@@ -1,7 +1,7 @@
 using Lumina.Excel.Sheets;
-using VeinAndVine.Models;
+using Gleaner.Models;
 
-namespace VeinAndVine.Services;
+namespace Gleaner.Services;
 
 /// <summary>
 /// The game's own icon for each gathering method, read from the

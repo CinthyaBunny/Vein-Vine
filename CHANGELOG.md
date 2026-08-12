@@ -1,7 +1,11 @@
 # Changelog
 
-Everything notable that changes in Vein & Vine, newest first. The format
+Everything notable that changes in Gleaner, newest first. The format
 follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
+
+The plugin was called Vein & Vine up to and including 0.0.2.0. Entries from
+then still say so, and still name the `/veinvine` and `/vnv` commands, because
+that is what shipped at the time.
 
 Versions are four-part `major.minor.patch.build`, because Dalamud requires a
 four-part `AssemblyVersion` and the in-game installer compares them to decide
@@ -19,7 +23,39 @@ and the reasoning behind a fix to the code and the commit history. Where a
 change has no visible effect, say so briefly rather than explaining it.
 
 
-## <strong>v0.0.2.0</strong> - 2026-08-11
+## <strong>v0.0.3.0</strong> - 2026-08-12
+
+Vein & Vine is now called Gleaner. Nothing about what the plugin does has
+changed — this release is the new name, and the one move you have to make to
+keep using it.
+
+### Changed
+
+- **The plugin is called Gleaner.** The old name was hard to pick out in a list
+  of installed plugins, which is where you actually go looking for it.
+
+- **The commands are now `/gleaner` and `/gln`.** They do exactly what
+  `/veinvine` and `/vnv` did: `/gleaner` opens the window on whichever tab you
+  left it, and `/gleaner cfg` opens it on `Display`. The old commands are gone.
+
+- **Your wishlist and settings carry over on their own.** The first time
+  Gleaner starts it picks up everything you had set before — wishlist, theme,
+  row sizes, filters — with nothing to copy across by hand. The one thing that
+  does not survive is the column widths in the node list, which go back to
+  their defaults once.
+
+### Upgrading
+
+Gleaner arrives as a separate plugin rather than as an update to Vein & Vine,
+so the in-game installer will not offer it to you on its own. Install Gleaner
+the same way you installed Vein & Vine, check your wishlist is where you left
+it, and then remove Vein & Vine. That order is worth keeping: the old plugin
+holds on to its own settings until you delete it, so if something has not come
+across you still have the original to go back to.
+
+
+<details>
+<summary><strong>v0.0.2.0</strong> - 2026-08-11</summary>
 
 The node list learns to tell you *where* and *when*, and the themes get a
 thorough pass over how readable they actually are.
@@ -115,6 +151,8 @@ thorough pass over how readable they actually are.
 
 Nothing you can see. The documentation was split up by who it is for, and some
 of the theming code was tidied without changing any colour it produces.
+
+</details>
 
 
 <details>
