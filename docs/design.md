@@ -528,8 +528,29 @@ calculations once answered it two different ways; they agreed on all eight
 current themes, but a ninth could have had a control lifted one way and its
 label chosen for the other.
 
-**`Legible` keeps the hue and moves only the lightness**, because green and
-amber *mean* something here — up now, up soon. On the dark themes they stay
+**`Legible` keeps the hue and the saturation**, because green and amber *mean*
+something here — up now, up soon — and a status colour that has lost its
+saturation has lost the thing it was there to say.
+
+The two directions are not mirror images, and treating them as one was quietly
+costing that. Blending towards black scales every channel down, so hue and
+saturation both survive; blending towards white pulls every channel towards the
+same number, which is the definition of desaturating. On Clear Green — whose
+panel is itself green, so the green has furthest to travel — "up now" arrived as
+a near-white mint with **two thirds of its saturation gone**: legible, and no
+longer recognisably green.
+
+Lightening now raises the colour's *value* and leaves saturation alone, spending
+saturation only once value is exhausted. Six of the seven themes keep 100% of
+it. Clear Green keeps 64%, and that is the floor of what physics allows: a dark
+green panel demands very bright text, and no fully saturated colour is that
+bright.
+
+One trap worth recording, because it hid the fix for a while. The value step is
+a flat increment, not a fraction of what remains. A proportional step never
+arrives — from 0.85 it needs about fifty passes to come within a thousandth of
+the ceiling, and the fitting loop gives up long before — so saturation never got
+its turn and the colour sat just short of full brightness for ever. On the dark themes they stay
 light; on Light, Clear White and Clear Pink they invert to a deep green and a
 dark olive. This one mattered: the amber was `#F2C759` on Light's `#F5D4A9`
 peach, which is the same colour twice.
@@ -541,6 +562,22 @@ suit when it sinks a control hard. ImGui has a single `Text` colour, so that
 escape isn't available: the lift is kept modest, and if the game's direction
 would cost the label its contrast, the opposite direction is taken and pushed
 until the control is properly distinct.
+
+**The direction is fixed and only the depth negotiates.** `Control` used to turn
+round when the requested lift cost the label too much, and that was wrong in a
+way only the light themes showed: a selected row came out *lighter* than the
+panel on Light, Clear White and Clear Pink. The game sinks a control into a
+light panel rather than raising it out of one, and a highlight that goes the
+other way reads as the row being lifted off the list instead of pressed into it
+— the opposite of "this one". So it now eases the lift back until the label
+reads, and takes the deepest that does.
+
+Where no depth satisfies the body floor — which happens on a light panel,
+because sinking the fill moves it towards the dark text sitting on it — the fill
+is held to the secondary floor rather than abandoned. A control fill is a
+transient state, not a column of prose, and the game's own escape of flipping
+the label pale is not available when one `Text` colour serves the whole window.
+The hand-drawn tab strip *does* have that escape, and takes it.
 
 An earlier version solved only half of this — it mixed toward the text and
 pulled back whenever contrast suffered, which protected the label and quietly

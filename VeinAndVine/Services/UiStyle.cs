@@ -608,15 +608,23 @@ public sealed class UiStyle : IDisposable
     /// </summary>
     private static Vector4 Legible(Vector4 colour, Vector4 ground, float target, bool apca)
     {
-        var away = IsLight(ground)
-            ? new Vector4(0f, 0f, 0f, colour.W)
-            : new Vector4(1f, 1f, 1f, colour.W);
-
-        // Sixteen steps rather than twelve. The APCA floor is the stricter of
-        // the two, and a colour starting close to its panel needs more room to
-        // walk out to it.
+        // The two directions are not mirror images, and treating them as one
+        // was costing the status colours their identity. Blending towards black
+        // scales every channel down, which leaves hue and saturation untouched;
+        // blending towards white washes saturation out, and on Clear Green -
+        // whose panel is itself green, so the green has furthest to travel -
+        // "up now" arrived as a near-white mint with two thirds of its
+        // saturation gone. Legible, and no longer recognisably green.
         //
-        // The loop also stops the moment a step stops helping, which is not
+        // So lightening raises the colour's value and leaves its saturation
+        // alone, and only surrenders saturation once value has nowhere left to
+        // go. See Brighten.
+        var lighten = !IsLight(ground);
+
+        // Generous step count, because a colour starting close to its panel has
+        // a long way to walk.
+        //
+        // The loop stops the moment a step stops helping, which is not
         // belt-and-braces: on a mid-tone panel the floor can be unreachable in
         // both directions, and walking on regardless would trade a colour that
         // was as good as that panel allows for a worse one. Clear White is the
@@ -627,7 +635,9 @@ public sealed class UiStyle : IDisposable
 
         for (var step = 0; step < 28 && best < (apca ? Apca.BodyText : target); step++)
         {
-            var moved = Mix(colour, away, 0.10f);
+            var moved = lighten
+                ? Brighten(colour, 0.10f)
+                : Mix(colour, new Vector4(0f, 0f, 0f, colour.W), 0.10f);
             var score = TextScore(moved, ground, apca);
 
             if (score <= best)
@@ -642,6 +652,85 @@ public sealed class UiStyle : IDisposable
 
     private static readonly Vector4 White = new(1f, 1f, 1f, 1f);
     private static readonly Vector4 Black = new(0f, 0f, 0f, 1f);
+
+    /// <summary>
+    /// Makes a colour lighter without washing it out: raises its value and
+    /// leaves hue and saturation where they are.
+    ///
+    /// The counterpart to blending towards black, which gets this for free -
+    /// scaling every channel down keeps the ratios between them, so the hue and
+    /// the saturation both survive. Blending towards white does not: it pulls
+    /// every channel towards the same number, which is exactly what desaturates
+    /// a colour, and a status colour that has lost its saturation has lost the
+    /// thing it was there to say.
+    ///
+    /// Saturation is only spent once value is exhausted. A colour already at
+    /// full brightness has nowhere else to go, and a pale version of the right
+    /// hue is still better than the wrong one.
+    /// </summary>
+    private static Vector4 Brighten(Vector4 colour, float amount)
+    {
+        var (hue, saturation, value) = ToHsv(colour);
+
+        // Value climbs by a flat step rather than by a fraction of what is left.
+        // A proportional step never actually arrives - from 0.85 it needs about
+        // fifty passes to come within a thousandth of the ceiling, and the loop
+        // calling this gives up long before that - so saturation would never
+        // get its turn and the colour would sit just short of full brightness
+        // for ever. Clear Green is where that showed: its panel is green, so its
+        // green status colour has the furthest to travel and was the one left
+        // below the floor.
+        if (value < 1f)
+            value = MathF.Min(1f, value + amount);
+        else
+            saturation = MathF.Max(0f, saturation - (saturation * amount));
+
+        return FromHsv(hue, saturation, value, colour.W);
+    }
+
+    private static (float Hue, float Saturation, float Value) ToHsv(Vector4 colour)
+    {
+        var max = MathF.Max(colour.X, MathF.Max(colour.Y, colour.Z));
+        var min = MathF.Min(colour.X, MathF.Min(colour.Y, colour.Z));
+        var chroma = max - min;
+
+        var hue = 0f;
+
+        if (chroma > 0.000001f)
+        {
+            if (max == colour.X)
+                hue = 60f * (((colour.Y - colour.Z) / chroma) % 6f);
+            else if (max == colour.Y)
+                hue = 60f * (((colour.Z - colour.X) / chroma) + 2f);
+            else
+                hue = 60f * (((colour.X - colour.Y) / chroma) + 4f);
+        }
+
+        if (hue < 0f)
+            hue += 360f;
+
+        return (hue, max <= 0.000001f ? 0f : chroma / max, max);
+    }
+
+    private static Vector4 FromHsv(float hue, float saturation, float value, float alpha)
+    {
+        var chroma = value * saturation;
+        var sector = hue / 60f;
+        var second = chroma * (1f - MathF.Abs((sector % 2f) - 1f));
+        var offset = value - chroma;
+
+        var (r, g, b) = ((int)MathF.Floor(sector) % 6) switch
+        {
+            0 => (chroma, second, 0f),
+            1 => (second, chroma, 0f),
+            2 => (0f, chroma, second),
+            3 => (0f, second, chroma),
+            4 => (second, 0f, chroma),
+            _ => (chroma, 0f, second),
+        };
+
+        return new Vector4(r + offset, g + offset, b + offset, alpha);
+    }
 
     /// <summary>
     /// The fill for a control - a button, a tab, an input, a selected row -
@@ -687,19 +776,48 @@ public sealed class UiStyle : IDisposable
             return preferred;
         }
 
-        // The game's direction would cost the label its contrast, so go the
-        // other way - which is away from the text, and so can only help it.
-        // That also means there is no reason to stop at the requested lift:
-        // keep going until the control is genuinely distinct from the panel.
-        // Clear Pink needs this. Its text is only 6.4:1 off the panel, so a
-        // darker button is unreadable and a slightly lighter one is invisible.
-        var away = onLightPanel ? White : Black;
-        var result = Mix(ground, away, lift);
+        // The requested lift costs the label too much - but the answer is a
+        // smaller lift, not the opposite direction.
+        //
+        // This used to turn round here, and that was wrong in a way only the
+        // light themes showed: a selected row came out *lighter* than the panel
+        // on Light, Clear White and Clear Pink. The game sinks its controls into
+        // a light panel rather than raising them out of it, and a highlight that
+        // goes the other way reads as the row being lifted off the list instead
+        // of pressed into it - the opposite of "this one".
+        //
+        // So the direction is fixed and the depth negotiates. Ease back until
+        // the label reads, and take the deepest that does.
+        for (var step = 0; step < 8; step++)
+        {
+            lift *= 0.65f;
+            var eased = Mix(ground, toward, lift);
 
-        for (var step = 0; step < 10 && !ShapeReads(result, ground); step++)
-            result = Mix(result, away, 0.12f);
+            if (TextReads(text, eased, apca, Apca.BodyText, 4.5f))
+                return eased;
+        }
 
-        return result;
+        // Nothing in this direction satisfies the body floor, which happens on
+        // a light panel because sinking the fill moves it towards the dark text
+        // sitting on it. Held to the secondary floor instead of abandoned: a
+        // control fill is a transient state rather than a column of prose, and
+        // the game's own escape - flipping the label pale - is not available
+        // when one Text colour serves the whole window. The hand-drawn tab strip
+        // does have that escape, and uses it; see Tabs.
+        var deepest = Mix(ground, toward, lift);
+
+        for (var step = 0; step < 8; step++)
+        {
+            var eased = Mix(ground, toward, lift);
+
+            if (TextReads(text, eased, apca, Apca.SecondaryText, 3f))
+                return eased;
+
+            lift *= 0.65f;
+            deepest = eased;
+        }
+
+        return deepest;
     }
 
     /// <summary>
